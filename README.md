@@ -88,7 +88,7 @@ This runs the robot with **no spring** on any joint — pure motor control. Use 
 **Terminal 1 — Launch Gazebo:**
 
 ```bash
-cd FYP-Legged-Robot/Code/ROS
+cd ROS
 source install/setup.bash
 ros2 launch sim_robot spring_experiment.launch.py spring:=none
 ```
@@ -96,7 +96,7 @@ ros2 launch sim_robot spring_experiment.launch.py spring:=none
 **Terminal 2 — Run the gait:**
 
 ```bash
-cd FYP-Legged-Robot/Code/ROS
+cd ROS
 source install/setup.bash
 ros2 run sim_robot kinematic_gait
 ```
@@ -229,7 +229,7 @@ After editing `SPRING_CONFIG`, you must **regenerate** the SDF model files and *
 
 ```bash
 # Step 1: Regenerate the model SDF files
-cd FYP-Legged-Robot/Code/ROS/src/sim_robot/models/THex_Quadruped/
+cd ROS/src/sim_robot/models/THex_Quadruped/
 python3 make_spring_models.py
 ```
 
@@ -246,7 +246,7 @@ Springs DISABLED on: hip, foot
 
 ```bash
 # Step 2: Rebuild the workspace
-cd FYP-Legged-Robot/Code/ROS
+cd ROS
 colcon build --symlink-install
 
 # Step 3: Source the workspace
