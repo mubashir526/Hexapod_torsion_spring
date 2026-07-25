@@ -1,0 +1,28 @@
+[1.542s] Invoking command in '/home/ros/ws/ROS/src/rl_ros2': PYTHONPATH=/home/ros/ws/build/rl_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ros/ws/install/rl_ros2/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../../build/rl_ros2 build --build-base /home/ros/ws/build/rl_ros2/build install --record /home/ros/ws/build/rl_ros2/install.log --single-version-externally-managed install_data
+[2.074s] running egg_info
+[2.077s] writing ../../../build/rl_ros2/rl_ros2.egg-info/PKG-INFO
+[2.081s] writing dependency_links to ../../../build/rl_ros2/rl_ros2.egg-info/dependency_links.txt
+[2.084s] writing entry points to ../../../build/rl_ros2/rl_ros2.egg-info/entry_points.txt
+[2.088s] writing requirements to ../../../build/rl_ros2/rl_ros2.egg-info/requires.txt
+[2.090s] writing top-level names to ../../../build/rl_ros2/rl_ros2.egg-info/top_level.txt
+[2.107s] reading manifest file '../../../build/rl_ros2/rl_ros2.egg-info/SOURCES.txt'
+[2.115s] writing manifest file '../../../build/rl_ros2/rl_ros2.egg-info/SOURCES.txt'
+[2.117s] running build
+[2.119s] running build_py
+[2.122s] copying rl_ros2/rl_policy.py -> /home/ros/ws/build/rl_ros2/build/lib/rl_ros2
+[2.126s] running install
+[2.128s] running install_lib
+[2.134s] copying /home/ros/ws/build/rl_ros2/build/lib/rl_ros2/rl_policy.py -> /home/ros/ws/install/rl_ros2/lib/python3.10/site-packages/rl_ros2
+[2.141s] byte-compiling /home/ros/ws/install/rl_ros2/lib/python3.10/site-packages/rl_ros2/rl_policy.py to rl_policy.cpython-310.pyc
+[2.147s] running install_data
+[2.159s] running install_egg_info
+[2.164s] removing '/home/ros/ws/install/rl_ros2/lib/python3.10/site-packages/rl_ros2-0.0.0-py3.10.egg-info' (and everything under it)
+[2.169s] Copying ../../../build/rl_ros2/rl_ros2.egg-info to /home/ros/ws/install/rl_ros2/lib/python3.10/site-packages/rl_ros2-0.0.0-py3.10.egg-info
+[2.191s] running install_scripts
+[2.243s] Installing flight_recorder script to /home/ros/ws/install/rl_ros2/lib/rl_ros2
+[2.246s] Installing rl_action script to /home/ros/ws/install/rl_ros2/lib/rl_ros2
+[2.248s] Installing rl_obs script to /home/ros/ws/install/rl_ros2/lib/rl_ros2
+[2.250s] Installing rl_policy script to /home/ros/ws/install/rl_ros2/lib/rl_ros2
+[2.252s] Installing teleop script to /home/ros/ws/install/rl_ros2/lib/rl_ros2
+[2.256s] writing list of installed files to '/home/ros/ws/build/rl_ros2/install.log'
+[2.313s] Invoked command in '/home/ros/ws/ROS/src/rl_ros2' returned '0': PYTHONPATH=/home/ros/ws/build/rl_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ros/ws/install/rl_ros2/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../../build/rl_ros2 build --build-base /home/ros/ws/build/rl_ros2/build install --record /home/ros/ws/build/rl_ros2/install.log --single-version-externally-managed install_data

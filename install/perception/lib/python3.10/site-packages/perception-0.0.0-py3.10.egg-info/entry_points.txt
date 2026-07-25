@@ -1,0 +1,6 @@
+[console_scripts]
+ceiling_filter = perception.ceiling_filter_node:main
+ceiling_flipper = perception.ceiling_flipper_node:main
+map2apf = perception.map2apf_node:main
+map_flipper = perception.map_flipper_node:main
+

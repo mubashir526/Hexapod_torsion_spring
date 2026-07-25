@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>gz_joint_torsional_spring</name>
+  <version>0.2.0</version>
+  <description>
+    Parallel torsion spring (parallel elastic actuator) System plugin for
+    gz-sim / ROS 2, plus a commanded-effort publisher used to measure the
+    motor/PID torque a parallel spring actually reduces. Port of
+    aminsung/gazebo_joint_torsional_spring_plugin (classic Gazebo / ROS 1)
+    with multi-joint support, torque accumulation, damping, saturation and an
+    optional nonlinear torque-angle lookup table.
+  </description>
+
+  <maintainer email="rh08461@st.habib.edu.pk">T-Quad FYP</maintainer>
+  <license>BSD-3-Clause</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <!--
+    NOTE (build environment): this package is built on ROS 2 Humble + Gazebo
+    Harmonic. The Gazebo libraries are installed straight from apt (the
+    gz-harmonic metapackage), and CMakeLists.txt locates them with
+    find_package(gz-sim8, gz-plugin2, gz-transport13, gz-msgs10).
+
+    The upstream port depended on the gz_sim_vendor, gz_plugin_vendor,
+    gz_common_vendor and sdformat_vendor packages. Those only exist on
+    ROS 2 Jazzy and newer, so rosdep fails to resolve them on Humble.
+    They are intentionally omitted here. Do NOT run rosdep for this package;
+    build it directly with colcon (packages-select gz_joint_torsional_spring).
+  -->
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

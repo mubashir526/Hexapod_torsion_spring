@@ -1,0 +1,26 @@
+running develop
+running egg_info
+writing sim_robot.egg-info/PKG-INFO
+writing dependency_links to sim_robot.egg-info/dependency_links.txt
+writing entry points to sim_robot.egg-info/entry_points.txt
+writing requirements to sim_robot.egg-info/requires.txt
+writing top-level names to sim_robot.egg-info/top_level.txt
+reading manifest file 'sim_robot.egg-info/SOURCES.txt'
+writing manifest file 'sim_robot.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/lib/python3.10/site-packages/sim-robot.egg-link (link to .)
+Installing camera_recorder script to /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/lib/sim_robot
+Installing compare_runs script to /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/lib/sim_robot
+Installing flight_recorder script to /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/lib/sim_robot
+Installing kinematic_gait script to /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/lib/sim_robot
+Installing rl_action script to /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/lib/sim_robot
+Installing rl_obs script to /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/lib/sim_robot
+Installing rl_policy script to /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/lib/sim_robot
+Installing teleop script to /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/lib/sim_robot
+Installing torque_peaks script to /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/lib/sim_robot
+
+Installed /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/build/sim_robot
+running symlink_data
+symbolically linking /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/build/sim_robot/resource/sim_robot -> /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/share/ament_index/resource_index/packages
+symbolically linking /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/build/sim_robot/package.xml -> /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/share/sim_robot
+symbolically linking /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/build/sim_robot/launch/rl_walking.launch.py -> /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/share/sim_robot/launch

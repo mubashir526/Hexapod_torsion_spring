@@ -1,0 +1,63 @@
+running egg_info
+creating ../../../build/perception/perception.egg-info
+writing ../../../build/perception/perception.egg-info/PKG-INFO
+writing dependency_links to ../../../build/perception/perception.egg-info/dependency_links.txt
+writing entry points to ../../../build/perception/perception.egg-info/entry_points.txt
+writing requirements to ../../../build/perception/perception.egg-info/requires.txt
+writing top-level names to ../../../build/perception/perception.egg-info/top_level.txt
+writing manifest file '../../../build/perception/perception.egg-info/SOURCES.txt'
+reading manifest file '../../../build/perception/perception.egg-info/SOURCES.txt'
+writing manifest file '../../../build/perception/perception.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/perception/build
+creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/perception/build/lib
+creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/perception/build/lib/perception
+copying perception/ceiling_filter_node.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/perception/build/lib/perception
+copying perception/ceiling_flipper_node.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/perception/build/lib/perception
+copying perception/__init__.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/perception/build/lib/perception
+copying perception/map2apf_node.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/perception/build/lib/perception
+copying perception/map_flipper_node.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/perception/build/lib/perception
+running install
+running install_lib
+creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/lib/python3.10/site-packages/perception
+copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/perception/build/lib/perception/ceiling_filter_node.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/lib/python3.10/site-packages/perception
+copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/perception/build/lib/perception/ceiling_flipper_node.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/lib/python3.10/site-packages/perception
+copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/perception/build/lib/perception/__init__.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/lib/python3.10/site-packages/perception
+copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/perception/build/lib/perception/map2apf_node.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/lib/python3.10/site-packages/perception
+copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/perception/build/lib/perception/map_flipper_node.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/lib/python3.10/site-packages/perception
+byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/lib/python3.10/site-packages/perception/ceiling_filter_node.py to ceiling_filter_node.cpython-310.pyc
+byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/lib/python3.10/site-packages/perception/ceiling_flipper_node.py to ceiling_flipper_node.cpython-310.pyc
+byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/lib/python3.10/site-packages/perception/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/lib/python3.10/site-packages/perception/map2apf_node.py to map2apf_node.cpython-310.pyc
+byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/lib/python3.10/site-packages/perception/map_flipper_node.py to map_flipper_node.cpython-310.pyc
+running install_data
+creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/share/ament_index
+creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/share/ament_index/resource_index
+creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/share/ament_index/resource_index/packages
+copying resource/perception -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/share/ament_index/resource_index/packages
+copying package.xml -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/share/perception
+creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/share/perception/launch
+copying launch/perception.launch.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/share/perception/launch
+creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/share/perception/config
+copying config/ceiling_elev_map.yaml -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/share/perception/config
+copying config/floor_elev_map.yaml -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/share/perception/config
+creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/share/perception/worlds
+copying worlds/ControlTube.sdf -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/share/perception/worlds
+creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/share/perception/worlds/my_cave_model
+copying worlds/my_cave_model/model.config -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/share/perception/worlds/my_cave_model
+copying worlds/my_cave_model/model.sdf -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/share/perception/worlds/my_cave_model
+creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/share/perception/worlds/my_cave_model/meshes
+copying worlds/my_cave_model/meshes/color_texture_Underground.png -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/share/perception/worlds/my_cave_model/meshes
+copying worlds/my_cave_model/meshes/mesh.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/share/perception/worlds/my_cave_model/meshes
+copying worlds/my_cave_model/meshes/roughness_texture_Underground.png -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/share/perception/worlds/my_cave_model/meshes
+copying worlds/my_cave_model/meshes/mesh.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/share/perception/worlds/my_cave_model/meshes
+copying worlds/my_cave_model/meshes/normal_texture_Underground.png -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/share/perception/worlds/my_cave_model/meshes
+running install_egg_info
+Copying ../../../build/perception/perception.egg-info to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/lib/python3.10/site-packages/perception-0.0.0-py3.10.egg-info
+running install_scripts
+Installing ceiling_filter script to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/lib/perception
+Installing ceiling_flipper script to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/lib/perception
+Installing map2apf script to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/lib/perception
+Installing map_flipper script to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/perception/lib/perception
+writing list of installed files to '/home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/perception/install.log'

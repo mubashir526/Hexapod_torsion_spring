@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -m py_compile /home/mubashir/Documents/FYP-Legged-Robot-main/Code/gait_cycle_viewer.py)",
+      "Bash(mkdir -p /tmp/claude-1000/-home-mubashir-Documents-FYP-Legged-Robot-main-Code/73721f2c-d17c-4e29-9e9f-6d12c0aaf63f/scratchpad/gcv_test2)",
+      "Bash(python3 /tmp/claude-1000/-home-mubashir-Documents-FYP-Legged-Robot-main-Code/73721f2c-d17c-4e29-9e9f-6d12c0aaf63f/scratchpad/gen_test_csvs.py)",
+      "Bash(python3 gen_test_csvs.py)",
+      "Bash(python3 drive_test2.py)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:classic.gazebosim.org)",
+      "Bash(gh auth *)",
+      "Bash(curl -s \"https://api.github.com/search/code?q=setCommand+repo:dartsim/dart+filename:GenericJoint.hpp\")",
+      "Bash(curl -s \"https://api.github.com/repos/dartsim/dart/contents/dart/dynamics/detail\")",
+      "Bash(curl -s \"https://api.github.com/repos/dartsim/dart/contents/dart/dynamics\")",
+      "Bash(curl -sv \"https://api.github.com\")",
+      "Bash(curl -s -i \"https://api.github.com/repos/dartsim/dart/contents/dart/dynamics\")",
+      "Bash(python3 -c ' *)",
+      "Bash(curl -s \"https://raw.githubusercontent.com/dartsim/dart/main/dart/dynamics/detail/generic_joint.hpp\")",
+      "Bash(python3 gen_sat_csvs.py)",
+      "Bash(python3 drive_sat_test.py)",
+      "Bash(curl -s \"https://api.github.com/repos/gazebosim/gz-sim/pulls/1159\")",
+      "Bash(curl -s \"https://raw.githubusercontent.com/gazebosim/gz-sensors/main/src/Sensor.cc\")",
+      "Bash(python3 -m py_compile /home/mubashir/Documents/FYP-Legged-Robot-main/Code/ROS/src/sim_robot/sim_robot/kinematic_gait.py)",
+      "Bash(cd *)",
+      "Bash(pdfinfo Paper.pdf)",
+      "Bash(pdftotext Paper.pdf -)",
+      "Read(//home/mubashir/gz_control_ws/**)",
+      "Read(//home/mubashir/gz_control_ws/install/**)",
+      "Read(//home/mubashir/gz_control_ws/install/gz_ros2_control/lib/**)",
+      "Bash(ldd ~/gz_control_ws/install/gz_ros2_control/lib/libgz_ros2_control-system.so)",
+      "Bash(nm -D ~/gz_control_ws/install/gz_ros2_control/lib/libgz_ros2_control-system.so)"
+    ]
+  }
+}

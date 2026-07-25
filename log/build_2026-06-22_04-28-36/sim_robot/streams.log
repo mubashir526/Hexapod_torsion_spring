@@ -1,0 +1,29 @@
+[2.220s] Invoking command in '/home/mubashir/Documents/FYP-Legged-Robot-main/Code/ROS/src/sim_robot': PYTHONPATH=/home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/sim_robot/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/sim_robot/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../../build/sim_robot build --build-base /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/sim_robot/build install --record /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/sim_robot/install.log --single-version-externally-managed install_data
+[3.088s] running egg_info
+[3.092s] writing ../../../build/sim_robot/sim_robot.egg-info/PKG-INFO
+[3.093s] writing dependency_links to ../../../build/sim_robot/sim_robot.egg-info/dependency_links.txt
+[3.094s] writing entry points to ../../../build/sim_robot/sim_robot.egg-info/entry_points.txt
+[3.094s] writing requirements to ../../../build/sim_robot/sim_robot.egg-info/requires.txt
+[3.094s] writing top-level names to ../../../build/sim_robot/sim_robot.egg-info/top_level.txt
+[3.100s] reading manifest file '../../../build/sim_robot/sim_robot.egg-info/SOURCES.txt'
+[3.105s] writing manifest file '../../../build/sim_robot/sim_robot.egg-info/SOURCES.txt'
+[3.106s] running build
+[3.106s] running build_py
+[3.107s] copying sim_robot/rl_policy.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/sim_robot/build/lib/sim_robot
+[3.108s] running install
+[3.109s] running install_lib
+[3.114s] copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/sim_robot/build/lib/sim_robot/rl_policy.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/sim_robot/lib/python3.10/site-packages/sim_robot
+[3.114s] byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/sim_robot/lib/python3.10/site-packages/sim_robot/rl_policy.py to rl_policy.cpython-310.pyc
+[3.116s] running install_data
+[3.120s] running install_egg_info
+[3.126s] removing '/home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/sim_robot/lib/python3.10/site-packages/sim_robot-0.0.0-py3.10.egg-info' (and everything under it)
+[3.126s] Copying ../../../build/sim_robot/sim_robot.egg-info to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/sim_robot/lib/python3.10/site-packages/sim_robot-0.0.0-py3.10.egg-info
+[3.129s] running install_scripts
+[3.203s] Installing flight_recorder script to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/sim_robot/lib/sim_robot
+[3.207s] Installing kinematic_gait script to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/sim_robot/lib/sim_robot
+[3.208s] Installing rl_action script to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/sim_robot/lib/sim_robot
+[3.208s] Installing rl_obs script to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/sim_robot/lib/sim_robot
+[3.208s] Installing rl_policy script to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/sim_robot/lib/sim_robot
+[3.208s] Installing teleop script to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/sim_robot/lib/sim_robot
+[3.209s] writing list of installed files to '/home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/sim_robot/install.log'
+[3.281s] Invoked command in '/home/mubashir/Documents/FYP-Legged-Robot-main/Code/ROS/src/sim_robot' returned '0': PYTHONPATH=/home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/sim_robot/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/sim_robot/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../../build/sim_robot build --build-base /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/sim_robot/build install --record /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/sim_robot/install.log --single-version-externally-managed install_data

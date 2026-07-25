@@ -1,0 +1,1 @@
+Invoking command in '/home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/gz_ros2_control': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/mubashir/Documents/FYP-Legged-Robot-main/Code/gz_ros2_control/gz_ros2_control -DCMAKE_INSTALL_PREFIX=/home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/gz_ros2_control

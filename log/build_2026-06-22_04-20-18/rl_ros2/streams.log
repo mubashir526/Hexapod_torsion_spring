@@ -1,0 +1,130 @@
+[1.491s] Invoking command in '/home/mubashir/Documents/FYP-Legged-Robot-main/Code/ROS/src/rl_ros2': PYTHONPATH=/home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/rl_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../../build/rl_ros2 build --build-base /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/rl_ros2/build install --record /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/rl_ros2/install.log --single-version-externally-managed install_data
+[2.000s] running egg_info
+[2.002s] creating ../../../build/rl_ros2/rl_ros2.egg-info
+[2.002s] writing ../../../build/rl_ros2/rl_ros2.egg-info/PKG-INFO
+[2.003s] writing dependency_links to ../../../build/rl_ros2/rl_ros2.egg-info/dependency_links.txt
+[2.003s] writing entry points to ../../../build/rl_ros2/rl_ros2.egg-info/entry_points.txt
+[2.003s] writing requirements to ../../../build/rl_ros2/rl_ros2.egg-info/requires.txt
+[2.004s] writing top-level names to ../../../build/rl_ros2/rl_ros2.egg-info/top_level.txt
+[2.004s] writing manifest file '../../../build/rl_ros2/rl_ros2.egg-info/SOURCES.txt'
+[2.010s] reading manifest file '../../../build/rl_ros2/rl_ros2.egg-info/SOURCES.txt'
+[2.012s] writing manifest file '../../../build/rl_ros2/rl_ros2.egg-info/SOURCES.txt'
+[2.012s] running build
+[2.013s] running build_py
+[2.013s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/rl_ros2/build
+[2.013s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/rl_ros2/build/lib
+[2.013s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/rl_ros2/build/lib/rl_ros2
+[2.014s] copying rl_ros2/rl_obs.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/rl_ros2/build/lib/rl_ros2
+[2.014s] copying rl_ros2/teleop.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/rl_ros2/build/lib/rl_ros2
+[2.014s] copying rl_ros2/rl_action.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/rl_ros2/build/lib/rl_ros2
+[2.014s] copying rl_ros2/flight_recorder.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/rl_ros2/build/lib/rl_ros2
+[2.015s] copying rl_ros2/__init__.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/rl_ros2/build/lib/rl_ros2
+[2.015s] copying rl_ros2/rl_policy.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/rl_ros2/build/lib/rl_ros2
+[2.015s] running install
+[2.018s] running install_lib
+[2.019s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/lib/python3.10/site-packages/rl_ros2
+[2.019s] copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/rl_ros2/build/lib/rl_ros2/rl_obs.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/lib/python3.10/site-packages/rl_ros2
+[2.019s] copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/rl_ros2/build/lib/rl_ros2/teleop.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/lib/python3.10/site-packages/rl_ros2
+[2.021s] copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/rl_ros2/build/lib/rl_ros2/rl_action.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/lib/python3.10/site-packages/rl_ros2
+[2.021s] copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/rl_ros2/build/lib/rl_ros2/flight_recorder.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/lib/python3.10/site-packages/rl_ros2
+[2.022s] copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/rl_ros2/build/lib/rl_ros2/__init__.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/lib/python3.10/site-packages/rl_ros2
+[2.022s] copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/rl_ros2/build/lib/rl_ros2/rl_policy.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/lib/python3.10/site-packages/rl_ros2
+[2.022s] byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/lib/python3.10/site-packages/rl_ros2/rl_obs.py to rl_obs.cpython-310.pyc
+[2.027s] byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/lib/python3.10/site-packages/rl_ros2/teleop.py to teleop.cpython-310.pyc
+[2.029s] byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/lib/python3.10/site-packages/rl_ros2/rl_action.py to rl_action.cpython-310.pyc
+[2.031s] byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/lib/python3.10/site-packages/rl_ros2/flight_recorder.py to flight_recorder.cpython-310.pyc
+[2.033s] byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/lib/python3.10/site-packages/rl_ros2/__init__.py to __init__.cpython-310.pyc
+[2.034s] byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/lib/python3.10/site-packages/rl_ros2/rl_policy.py to rl_policy.cpython-310.pyc
+[2.036s] running install_data
+[2.037s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/ament_index
+[2.037s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/ament_index/resource_index
+[2.037s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/ament_index/resource_index/packages
+[2.037s] copying resource/rl_ros2 -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/ament_index/resource_index/packages
+[2.037s] copying package.xml -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2
+[2.038s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/launch
+[2.038s] copying launch/launch_flat_cave.launch.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/launch
+[2.038s] copying launch/rl_walking.launch.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/launch
+[2.039s] copying launch/rl_hw.launch.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/launch
+[2.039s] copying launch/launch_rough_floor_medium.launch.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/launch
+[2.039s] copying launch/launch_rough_floor_hard.launch.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/launch
+[2.039s] copying launch/launch_rough_floor_easy.launch.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/launch
+[2.039s] copying launch/rl_cave.launch.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/launch
+[2.039s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/config
+[2.040s] copying config/controllers.yaml -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/config
+[2.040s] copying config/ros_gz_bridge.yaml -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/config
+[2.041s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds
+[2.041s] copying worlds/rough_floor_easy.sdf -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds
+[2.041s] copying worlds/rough_floor_medium.sdf -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds
+[2.041s] copying worlds/friction_world.sdf -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds
+[2.042s] copying worlds/rough_floor_hard.sdf -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds
+[2.042s] copying worlds/flat_cave.sdf -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds
+[2.043s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/my_cave_model
+[2.043s] copying worlds/my_cave_model/model.config -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/my_cave_model
+[2.043s] copying worlds/my_cave_model/model.sdf -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/my_cave_model
+[2.044s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/my_cave_model/meshes
+[2.046s] copying worlds/my_cave_model/meshes/color_texture_Underground.png -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/my_cave_model/meshes
+[2.048s] copying worlds/my_cave_model/meshes/mesh.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/my_cave_model/meshes
+[2.056s] copying worlds/my_cave_model/meshes/roughness_texture_Underground.png -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/my_cave_model/meshes
+[2.059s] copying worlds/my_cave_model/meshes/mesh.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/my_cave_model/meshes
+[2.059s] copying worlds/my_cave_model/meshes/normal_texture_Underground.png -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/my_cave_model/meshes
+[2.065s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/floors
+[2.065s] copying worlds/floors/hard3.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/floors
+[2.070s] copying worlds/floors/medium4.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/floors
+[2.071s] copying worlds/floors/death2.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/floors
+[2.080s] copying worlds/floors/hard4.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/floors
+[2.085s] copying worlds/floors/medium2.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/floors
+[2.085s] copying worlds/floors/hard2.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/floors
+[2.208s] copying worlds/floors/hard2.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/floors
+[2.208s] copying worlds/floors/medium2.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/floors
+[2.332s] copying worlds/floors/medium4.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/floors
+[2.338s] copying worlds/floors/hard3.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/floors
+[2.339s] copying worlds/floors/cave.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/floors
+[2.340s] copying worlds/floors/easy4.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/floors
+[2.344s] copying worlds/floors/death2.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/floors
+[2.346s] copying worlds/floors/easy2.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/floors
+[2.346s] copying worlds/floors/easy2.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/floors
+[2.459s] copying worlds/floors/cave.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/floors
+[2.470s] copying worlds/floors/easy4.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/floors
+[2.474s] copying worlds/floors/hard4.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/worlds/floors
+[2.474s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models
+[2.474s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped
+[2.474s] copying models/THex_Quadruped/model_hw.urdf -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped
+[2.474s] copying models/THex_Quadruped/model_sim.urdf -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped
+[2.475s] copying models/THex_Quadruped/model.config -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped
+[2.475s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.475s] copying models/THex_Quadruped/meshes/bl_knee.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.477s] copying models/THex_Quadruped/meshes/br_foot.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.480s] copying models/THex_Quadruped/meshes/bl_foot_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.481s] copying models/THex_Quadruped/meshes/fr_hip.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.487s] copying models/THex_Quadruped/meshes/bl_hip.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.493s] copying models/THex_Quadruped/meshes/base_link.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.509s] copying models/THex_Quadruped/meshes/fr_knee.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.514s] copying models/THex_Quadruped/meshes/fl_hip_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.514s] copying models/THex_Quadruped/meshes/br_foot_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.514s] copying models/THex_Quadruped/meshes/br_hip_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.515s] copying models/THex_Quadruped/meshes/fr_foot_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.516s] copying models/THex_Quadruped/meshes/fr_foot.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.520s] copying models/THex_Quadruped/meshes/fl_foot.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.524s] copying models/THex_Quadruped/meshes/base_link_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.524s] copying models/THex_Quadruped/meshes/fl_hip.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.530s] copying models/THex_Quadruped/meshes/fl_knee.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.535s] copying models/THex_Quadruped/meshes/fr_knee_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.536s] copying models/THex_Quadruped/meshes/bl_hip_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.536s] copying models/THex_Quadruped/meshes/fl_foot_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.537s] copying models/THex_Quadruped/meshes/bl_foot.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.542s] copying models/THex_Quadruped/meshes/br_knee.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.545s] copying models/THex_Quadruped/meshes/fl_knee_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.546s] copying models/THex_Quadruped/meshes/fr_hip_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.546s] copying models/THex_Quadruped/meshes/br_knee_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.547s] copying models/THex_Quadruped/meshes/br_hip.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.553s] copying models/THex_Quadruped/meshes/bl_knee_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/share/rl_ros2/models/THex_Quadruped/meshes
+[2.554s] running install_egg_info
+[2.558s] Copying ../../../build/rl_ros2/rl_ros2.egg-info to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/lib/python3.10/site-packages/rl_ros2-0.0.0-py3.10.egg-info
+[2.562s] running install_scripts
+[2.606s] Installing flight_recorder script to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/lib/rl_ros2
+[2.607s] Installing rl_action script to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/lib/rl_ros2
+[2.607s] Installing rl_obs script to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/lib/rl_ros2
+[2.607s] Installing rl_policy script to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/lib/rl_ros2
+[2.608s] Installing teleop script to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/lib/rl_ros2
+[2.608s] writing list of installed files to '/home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/rl_ros2/install.log'
+[2.659s] Invoked command in '/home/mubashir/Documents/FYP-Legged-Robot-main/Code/ROS/src/rl_ros2' returned '0': PYTHONPATH=/home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/rl_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/rl_ros2/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../../build/rl_ros2 build --build-base /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/rl_ros2/build install --record /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/rl_ros2/install.log --single-version-externally-managed install_data

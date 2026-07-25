@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!--
+  Drop this <gazebo> block anywhere inside your <robot> element.
+
+  Note the difference from classic Gazebo: filename is the plain library
+  name (no "lib" prefix, no ".so"), and name is the fully-qualified C++
+  class including its namespace.
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="example">
+
+  <gazebo>
+    <plugin filename="gz_joint_torsional_spring"
+            name="gz_joint_torsional_spring::TorsionalSpringSystem">
+
+      <!-- Linear spring, four femur pitch joints. -->
+      <spring>
+        <joint>LF_femur_joint</joint>
+        <kx>12.5</kx>          <!-- N*m/rad -->
+        <set_point>0.0</set_point>   <!-- rad, zero-torque angle -->
+        <damping>0.05</damping>      <!-- N*m*s/rad, optional -->
+        <max_torque>30.0</max_torque><!-- N*m, optional saturation -->
+      </spring>
+
+      <spring>
+        <joint>RF_femur_joint</joint>
+        <kx>12.5</kx>
+        <set_point>0.0</set_point>
+      </spring>
+
+      <spring>
+        <joint>LH_femur_joint</joint>
+        <kx>12.5</kx>
+        <set_point>0.0</set_point>
+      </spring>
+
+      <!--
+        Nonlinear spiral torsion spring: supply the measured or FEA-derived
+        torque-angle curve directly. When curve_angles/curve_torques are
+        present they override kx and set_point entirely. Angles in radians
+        (strictly increasing), torques in N*m. Values outside the range are
+        clamped to the end points.
+
+        The example below is a stiffening curve, roughly what a flat spiral
+        spring does once coils begin to close up.
+      -->
+      <spring>
+        <joint>RH_femur_joint</joint>
+        <curve_angles>-1.57 -0.79 0.0 0.79 1.57 2.36 3.14</curve_angles>
+        <curve_torques>19.6 9.9 0.0 -9.9 -19.6 -32.0 -50.0</curve_torques>
+        <damping>0.05</damping>
+      </spring>
+
+    </plugin>
+  </gazebo>
+
+</robot>

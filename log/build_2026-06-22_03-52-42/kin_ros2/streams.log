@@ -1,0 +1,114 @@
+[6.523s] Invoking command in '/home/mubashir/Documents/FYP-Legged-Robot-main/Code/ROS/src/kin_ros2': PYTHONPATH=/home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/kin_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../../build/kin_ros2 build --build-base /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/kin_ros2/build install --record /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/kin_ros2/install.log --single-version-externally-managed install_data
+[8.614s] running egg_info
+[8.619s] creating ../../../build/kin_ros2/kin_ros2.egg-info
+[8.619s] writing ../../../build/kin_ros2/kin_ros2.egg-info/PKG-INFO
+[8.619s] writing dependency_links to ../../../build/kin_ros2/kin_ros2.egg-info/dependency_links.txt
+[8.619s] writing entry points to ../../../build/kin_ros2/kin_ros2.egg-info/entry_points.txt
+[8.619s] writing requirements to ../../../build/kin_ros2/kin_ros2.egg-info/requires.txt
+[8.620s] writing top-level names to ../../../build/kin_ros2/kin_ros2.egg-info/top_level.txt
+[8.620s] writing manifest file '../../../build/kin_ros2/kin_ros2.egg-info/SOURCES.txt'
+[8.671s] reading manifest file '../../../build/kin_ros2/kin_ros2.egg-info/SOURCES.txt'
+[8.672s] writing manifest file '../../../build/kin_ros2/kin_ros2.egg-info/SOURCES.txt'
+[8.672s] running build
+[8.672s] running build_py
+[8.672s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/kin_ros2/build
+[8.672s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/kin_ros2/build/lib
+[8.672s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/kin_ros2/build/lib/kin_ros2
+[8.673s] copying kin_ros2/kin_node.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/kin_ros2/build/lib/kin_ros2
+[8.673s] copying kin_ros2/kinematics.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/kin_ros2/build/lib/kin_ros2
+[8.673s] copying kin_ros2/__init__.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/kin_ros2/build/lib/kin_ros2
+[8.673s] running install
+[8.678s] running install_lib
+[8.678s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/lib/python3.10/site-packages/kin_ros2
+[8.678s] copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/kin_ros2/build/lib/kin_ros2/kin_node.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/lib/python3.10/site-packages/kin_ros2
+[8.678s] copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/kin_ros2/build/lib/kin_ros2/kinematics.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/lib/python3.10/site-packages/kin_ros2
+[8.679s] copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/kin_ros2/build/lib/kin_ros2/__init__.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/lib/python3.10/site-packages/kin_ros2
+[8.683s] byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/lib/python3.10/site-packages/kin_ros2/kin_node.py to kin_node.cpython-310.pyc
+[8.683s] byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/lib/python3.10/site-packages/kin_ros2/kinematics.py to kinematics.cpython-310.pyc
+[8.684s] byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/lib/python3.10/site-packages/kin_ros2/__init__.py to __init__.cpython-310.pyc
+[8.684s] running install_data
+[8.684s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/ament_index
+[8.684s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/ament_index/resource_index
+[8.684s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/ament_index/resource_index/packages
+[8.684s] copying resource/kin_ros2 -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/ament_index/resource_index/packages
+[8.685s] copying package.xml -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2
+[8.685s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/launch
+[8.685s] copying launch/kin_sim.launch.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/launch
+[8.685s] copying launch/kin_cave.launch.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/launch
+[8.686s] copying launch/launch_rough_floor_medium.launch.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/launch
+[8.686s] copying launch/launch_rough_floor_hard.launch.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/launch
+[8.692s] copying launch/kin_hw.launch.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/launch
+[8.692s] copying launch/launch_rough_floor_easy.launch.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/launch
+[8.693s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/config
+[8.693s] copying config/controllers.yaml -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/config
+[8.695s] copying config/ros_gz_bridge.yaml -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/config
+[8.696s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds
+[8.697s] copying worlds/rough_floor_easy.sdf -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds
+[8.697s] copying worlds/rough_floor_medium.sdf -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds
+[8.697s] copying worlds/friction_world.sdf -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds
+[8.711s] copying worlds/rough_floor_hard.sdf -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds
+[8.711s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/my_cave_model
+[8.711s] copying worlds/my_cave_model/model.config -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/my_cave_model
+[8.711s] copying worlds/my_cave_model/model.sdf -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/my_cave_model
+[8.712s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/my_cave_model/meshes
+[8.712s] copying worlds/my_cave_model/meshes/color_texture_Underground.png -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/my_cave_model/meshes
+[8.720s] copying worlds/my_cave_model/meshes/mesh.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/my_cave_model/meshes
+[8.762s] copying worlds/my_cave_model/meshes/roughness_texture_Underground.png -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/my_cave_model/meshes
+[8.781s] copying worlds/my_cave_model/meshes/mesh.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/my_cave_model/meshes
+[8.784s] copying worlds/my_cave_model/meshes/normal_texture_Underground.png -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/my_cave_model/meshes
+[8.855s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/floors
+[8.856s] copying worlds/floors/hard3.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/floors
+[8.921s] copying worlds/floors/medium4.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/floors
+[8.922s] copying worlds/floors/death2.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/floors
+[8.961s] copying worlds/floors/hard4.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/floors
+[8.983s] copying worlds/floors/medium2.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/floors
+[8.985s] copying worlds/floors/hard2.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/floors
+[9.948s] copying worlds/floors/hard2.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/floors
+[9.961s] copying worlds/floors/medium2.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/floors
+[10.567s] copying worlds/floors/medium4.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/floors
+[10.648s] copying worlds/floors/hard3.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/floors
+[10.654s] copying worlds/floors/cave.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/floors
+[10.663s] copying worlds/floors/easy4.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/floors
+[10.684s] copying worlds/floors/death2.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/floors
+[10.684s] copying worlds/floors/easy2.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/floors
+[10.685s] copying worlds/floors/easy2.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/floors
+[10.993s] copying worlds/floors/cave.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/floors
+[11.009s] copying worlds/floors/easy4.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/floors
+[11.010s] copying worlds/floors/hard4.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/worlds/floors
+[11.010s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models
+[11.011s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped
+[11.011s] copying models/THex_Quadruped/model_hw.urdf -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped
+[11.012s] copying models/THex_Quadruped/model_sim.urdf -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped
+[11.012s] copying models/THex_Quadruped/model.config -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped
+[11.013s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.013s] copying models/THex_Quadruped/meshes/bl_knee.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.019s] copying models/THex_Quadruped/meshes/br_foot.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.036s] copying models/THex_Quadruped/meshes/bl_foot_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.038s] copying models/THex_Quadruped/meshes/fr_hip.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.045s] copying models/THex_Quadruped/meshes/bl_hip.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.055s] copying models/THex_Quadruped/meshes/base_link.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.084s] copying models/THex_Quadruped/meshes/fr_knee.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.094s] copying models/THex_Quadruped/meshes/fl_hip_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.094s] copying models/THex_Quadruped/meshes/br_foot_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.096s] copying models/THex_Quadruped/meshes/br_hip_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.096s] copying models/THex_Quadruped/meshes/fr_foot_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.097s] copying models/THex_Quadruped/meshes/fr_foot.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.111s] copying models/THex_Quadruped/meshes/fl_foot.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.114s] copying models/THex_Quadruped/meshes/base_link_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.114s] copying models/THex_Quadruped/meshes/fl_hip.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.130s] copying models/THex_Quadruped/meshes/fl_knee.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.140s] copying models/THex_Quadruped/meshes/fr_knee_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.141s] copying models/THex_Quadruped/meshes/bl_hip_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.146s] copying models/THex_Quadruped/meshes/fl_foot_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.146s] copying models/THex_Quadruped/meshes/bl_foot.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.159s] copying models/THex_Quadruped/meshes/br_knee.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.217s] copying models/THex_Quadruped/meshes/fl_knee_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.224s] copying models/THex_Quadruped/meshes/fr_hip_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.225s] copying models/THex_Quadruped/meshes/br_knee_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.228s] copying models/THex_Quadruped/meshes/br_hip.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.242s] copying models/THex_Quadruped/meshes/bl_knee_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/share/kin_ros2/models/THex_Quadruped/meshes
+[11.244s] running install_egg_info
+[11.249s] Copying ../../../build/kin_ros2/kin_ros2.egg-info to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/lib/python3.10/site-packages/kin_ros2-0.0.0-py3.10.egg-info
+[11.252s] running install_scripts
+[11.321s] Installing kin_node script to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/kin_ros2/lib/kin_ros2
+[11.322s] writing list of installed files to '/home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/kin_ros2/install.log'

@@ -1,0 +1,18 @@
+run_dir:          experiment/run2
+timestamp:        2026-07-23T09:57:19
+gait_cycles:      5 (target 5)
+steps_per_cycle:  16
+gait_rate_Hz:     10
+torque_rate_Hz:   50
+command_rows:     80   (10Hz gait/command loop)
+torque_samples:   400   (50Hz torque + angle stream)
+
+files:
+  joint_commands_vs_states.png / .csv   (10Hz command vs state)
+  joint_torques.png / .csv              (50Hz torque magnitude)
+  joint_torque_vs_angle.csv             (50Hz paired torque+angle)
+  {fr,br,bl,fl}_torque_vs_angle.png     (per-leg, 50Hz angle+torque)
+  joint_commanded_effort.png / .csv     (50Hz signed motor effort)
+  joint_effort_vs_angle.csv             (50Hz paired applied-effort+angle)
+  {fr,br,bl,fl}_effort_vs_angle.png     (per-leg, signed applied effort vs angle)
+effort_recorded:  True

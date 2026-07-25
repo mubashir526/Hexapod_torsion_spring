@@ -1,0 +1,10 @@
+/home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/quad_interface/CMakeFiles/uninstall.dir
+/home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/quad_interface/CMakeFiles/quad_interface_uninstall.dir
+/home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/quad_interface/CMakeFiles/quad_interface.dir
+/home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/quad_interface/CMakeFiles/test.dir
+/home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/quad_interface/CMakeFiles/edit_cache.dir
+/home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/quad_interface/CMakeFiles/rebuild_cache.dir
+/home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/quad_interface/CMakeFiles/list_install_components.dir
+/home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/quad_interface/CMakeFiles/install.dir
+/home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/quad_interface/CMakeFiles/install/local.dir
+/home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/quad_interface/CMakeFiles/install/strip.dir

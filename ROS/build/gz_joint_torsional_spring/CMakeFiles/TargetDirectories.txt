@@ -1,0 +1,11 @@
+/home/mubashir/Pictures/FYP-Legged-Robot-main/Code/ROS/build/gz_joint_torsional_spring/CMakeFiles/uninstall.dir
+/home/mubashir/Pictures/FYP-Legged-Robot-main/Code/ROS/build/gz_joint_torsional_spring/CMakeFiles/gz_joint_torsional_spring_uninstall.dir
+/home/mubashir/Pictures/FYP-Legged-Robot-main/Code/ROS/build/gz_joint_torsional_spring/CMakeFiles/gz_joint_torsional_spring.dir
+/home/mubashir/Pictures/FYP-Legged-Robot-main/Code/ROS/build/gz_joint_torsional_spring/CMakeFiles/commanded_effort_publisher.dir
+/home/mubashir/Pictures/FYP-Legged-Robot-main/Code/ROS/build/gz_joint_torsional_spring/CMakeFiles/test.dir
+/home/mubashir/Pictures/FYP-Legged-Robot-main/Code/ROS/build/gz_joint_torsional_spring/CMakeFiles/edit_cache.dir
+/home/mubashir/Pictures/FYP-Legged-Robot-main/Code/ROS/build/gz_joint_torsional_spring/CMakeFiles/rebuild_cache.dir
+/home/mubashir/Pictures/FYP-Legged-Robot-main/Code/ROS/build/gz_joint_torsional_spring/CMakeFiles/list_install_components.dir
+/home/mubashir/Pictures/FYP-Legged-Robot-main/Code/ROS/build/gz_joint_torsional_spring/CMakeFiles/install.dir
+/home/mubashir/Pictures/FYP-Legged-Robot-main/Code/ROS/build/gz_joint_torsional_spring/CMakeFiles/install/local.dir
+/home/mubashir/Pictures/FYP-Legged-Robot-main/Code/ROS/build/gz_joint_torsional_spring/CMakeFiles/install/strip.dir

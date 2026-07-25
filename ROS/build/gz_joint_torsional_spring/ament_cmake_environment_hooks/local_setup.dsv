@@ -1,0 +1,3 @@
+source;share/gz_joint_torsional_spring/environment/ament_prefix_path.sh
+source;share/gz_joint_torsional_spring/environment/path.sh
+source;share/gz_joint_torsional_spring/environment/gz_joint_torsional_spring.dsv

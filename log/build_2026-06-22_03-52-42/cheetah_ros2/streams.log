@@ -1,0 +1,147 @@
+[5.767s] Invoking command in '/home/mubashir/Documents/FYP-Legged-Robot-main/Code/ROS/src/cheetah_ros2': PYTHONPATH=/home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../../build/cheetah_ros2 build --build-base /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build install --record /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/install.log --single-version-externally-managed install_data
+[7.675s] running egg_info
+[7.675s] creating ../../../build/cheetah_ros2/cheetah_ros2.egg-info
+[7.675s] writing ../../../build/cheetah_ros2/cheetah_ros2.egg-info/PKG-INFO
+[7.676s] writing dependency_links to ../../../build/cheetah_ros2/cheetah_ros2.egg-info/dependency_links.txt
+[7.676s] writing entry points to ../../../build/cheetah_ros2/cheetah_ros2.egg-info/entry_points.txt
+[7.676s] writing requirements to ../../../build/cheetah_ros2/cheetah_ros2.egg-info/requires.txt
+[7.676s] writing top-level names to ../../../build/cheetah_ros2/cheetah_ros2.egg-info/top_level.txt
+[7.696s] writing manifest file '../../../build/cheetah_ros2/cheetah_ros2.egg-info/SOURCES.txt'
+[7.696s] reading manifest file '../../../build/cheetah_ros2/cheetah_ros2.egg-info/SOURCES.txt'
+[7.697s] writing manifest file '../../../build/cheetah_ros2/cheetah_ros2.egg-info/SOURCES.txt'
+[7.697s] running build
+[7.697s] running build_py
+[7.697s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build
+[7.698s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build/lib
+[7.698s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build/lib/cheetah_ros2
+[7.698s] copying cheetah_ros2/gait_node.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build/lib/cheetah_ros2
+[7.698s] copying cheetah_ros2/swing_controller_node.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build/lib/cheetah_ros2
+[7.698s] copying cheetah_ros2/teleop_node.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build/lib/cheetah_ros2
+[7.702s] copying cheetah_ros2/effort_controller.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build/lib/cheetah_ros2
+[7.702s] copying cheetah_ros2/robot_configs.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build/lib/cheetah_ros2
+[7.702s] copying cheetah_ros2/stance_controller_node.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build/lib/cheetah_ros2
+[7.702s] copying cheetah_ros2/kinematics.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build/lib/cheetah_ros2
+[7.703s] copying cheetah_ros2/estimator_node.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build/lib/cheetah_ros2
+[7.703s] copying cheetah_ros2/__init__.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build/lib/cheetah_ros2
+[7.703s] copying cheetah_ros2/fsm_node.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build/lib/cheetah_ros2
+[7.707s] copying cheetah_ros2/linear_mpc_configs.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build/lib/cheetah_ros2
+[7.707s] running install
+[7.707s] running install_lib
+[7.711s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/python3.10/site-packages/cheetah_ros2
+[7.712s] copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build/lib/cheetah_ros2/gait_node.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/python3.10/site-packages/cheetah_ros2
+[7.712s] copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build/lib/cheetah_ros2/swing_controller_node.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/python3.10/site-packages/cheetah_ros2
+[7.713s] copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build/lib/cheetah_ros2/teleop_node.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/python3.10/site-packages/cheetah_ros2
+[7.713s] copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build/lib/cheetah_ros2/effort_controller.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/python3.10/site-packages/cheetah_ros2
+[7.713s] copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build/lib/cheetah_ros2/robot_configs.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/python3.10/site-packages/cheetah_ros2
+[7.714s] copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build/lib/cheetah_ros2/stance_controller_node.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/python3.10/site-packages/cheetah_ros2
+[7.726s] copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build/lib/cheetah_ros2/kinematics.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/python3.10/site-packages/cheetah_ros2
+[7.726s] copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build/lib/cheetah_ros2/estimator_node.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/python3.10/site-packages/cheetah_ros2
+[7.727s] copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build/lib/cheetah_ros2/__init__.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/python3.10/site-packages/cheetah_ros2
+[7.727s] copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build/lib/cheetah_ros2/fsm_node.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/python3.10/site-packages/cheetah_ros2
+[7.727s] copying /home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/build/lib/cheetah_ros2/linear_mpc_configs.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/python3.10/site-packages/cheetah_ros2
+[7.735s] byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/python3.10/site-packages/cheetah_ros2/gait_node.py to gait_node.cpython-310.pyc
+[7.747s] byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/python3.10/site-packages/cheetah_ros2/swing_controller_node.py to swing_controller_node.cpython-310.pyc
+[7.807s] byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/python3.10/site-packages/cheetah_ros2/teleop_node.py to teleop_node.cpython-310.pyc
+[7.819s] byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/python3.10/site-packages/cheetah_ros2/effort_controller.py to effort_controller.cpython-310.pyc
+[7.820s] byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/python3.10/site-packages/cheetah_ros2/robot_configs.py to robot_configs.cpython-310.pyc
+[7.821s] byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/python3.10/site-packages/cheetah_ros2/stance_controller_node.py to stance_controller_node.cpython-310.pyc
+[7.877s] byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/python3.10/site-packages/cheetah_ros2/kinematics.py to kinematics.cpython-310.pyc
+[7.877s] byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/python3.10/site-packages/cheetah_ros2/estimator_node.py to estimator_node.cpython-310.pyc
+[7.885s] byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/python3.10/site-packages/cheetah_ros2/__init__.py to __init__.cpython-310.pyc
+[7.885s] byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/python3.10/site-packages/cheetah_ros2/fsm_node.py to fsm_node.cpython-310.pyc
+[7.912s] byte-compiling /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/python3.10/site-packages/cheetah_ros2/linear_mpc_configs.py to linear_mpc_configs.cpython-310.pyc
+[7.912s] running install_data
+[7.915s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/ament_index
+[7.915s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/ament_index/resource_index
+[7.915s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/ament_index/resource_index/packages
+[7.915s] copying resource/cheetah_ros2 -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/ament_index/resource_index/packages
+[7.917s] copying package.xml -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2
+[7.922s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/launch
+[7.922s] copying launch/cheetah_sim.launch.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/launch
+[7.923s] copying launch/cheetah_cave.launch.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/launch
+[7.924s] copying launch/launch_rough_floor_medium.launch.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/launch
+[7.925s] copying launch/launch_rough_floor_hard.launch.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/launch
+[7.926s] copying launch/cheetah_cube.launch.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/launch
+[7.927s] copying launch/launch_rough_floor_easy.launch.py -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/launch
+[7.927s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/config
+[7.927s] copying config/cheetah_controllers.yaml -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/config
+[7.930s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/rviz
+[7.931s] copying rviz/rviz_config.rviz -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/rviz
+[7.932s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds
+[7.932s] copying worlds/rough_floor_easy.sdf -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds
+[7.933s] copying worlds/rough_floor_medium.sdf -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds
+[7.933s] copying worlds/friction_world.sdf -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds
+[7.935s] copying worlds/rough_floor_hard.sdf -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds
+[7.936s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/my_cave_model
+[7.936s] copying worlds/my_cave_model/model.config -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/my_cave_model
+[7.936s] copying worlds/my_cave_model/model.sdf -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/my_cave_model
+[7.936s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/my_cave_model/meshes
+[7.936s] copying worlds/my_cave_model/meshes/color_texture_Underground.png -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/my_cave_model/meshes
+[7.952s] copying worlds/my_cave_model/meshes/mesh.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/my_cave_model/meshes
+[7.987s] copying worlds/my_cave_model/meshes/roughness_texture_Underground.png -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/my_cave_model/meshes
+[8.001s] copying worlds/my_cave_model/meshes/mesh.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/my_cave_model/meshes
+[8.001s] copying worlds/my_cave_model/meshes/normal_texture_Underground.png -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/my_cave_model/meshes
+[8.031s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/floors
+[8.032s] copying worlds/floors/hard3.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/floors
+[8.066s] copying worlds/floors/medium4.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/floors
+[8.066s] copying worlds/floors/death2.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/floors
+[8.139s] copying worlds/floors/hard4.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/floors
+[8.159s] copying worlds/floors/medium2.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/floors
+[8.162s] copying worlds/floors/hard2.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/floors
+[8.562s] copying worlds/floors/hard2.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/floors
+[8.564s] copying worlds/floors/medium2.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/floors
+[9.182s] copying worlds/floors/medium4.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/floors
+[9.224s] copying worlds/floors/hard3.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/floors
+[9.236s] copying worlds/floors/cave.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/floors
+[9.251s] copying worlds/floors/easy4.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/floors
+[9.304s] copying worlds/floors/death2.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/floors
+[9.316s] copying worlds/floors/easy2.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/floors
+[9.327s] copying worlds/floors/easy2.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/floors
+[10.148s] copying worlds/floors/cave.obj -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/floors
+[10.243s] copying worlds/floors/easy4.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/floors
+[10.246s] copying worlds/floors/hard4.mtl -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/worlds/floors
+[10.247s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models
+[10.247s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped
+[10.247s] copying models/THex_Quadruped/model.urdf -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped
+[10.250s] copying models/THex_Quadruped/model.config -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped
+[10.251s] copying models/THex_Quadruped/model.sdf -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped
+[10.252s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.252s] copying models/THex_Quadruped/meshes/bl_knee.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.261s] copying models/THex_Quadruped/meshes/br_foot.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.270s] copying models/THex_Quadruped/meshes/bl_foot_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.272s] copying models/THex_Quadruped/meshes/fr_hip.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.289s] copying models/THex_Quadruped/meshes/bl_hip.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.321s] copying models/THex_Quadruped/meshes/base_link.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.488s] copying models/THex_Quadruped/meshes/fr_knee.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.500s] copying models/THex_Quadruped/meshes/fl_hip_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.500s] copying models/THex_Quadruped/meshes/br_foot_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.502s] copying models/THex_Quadruped/meshes/br_hip_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.505s] copying models/THex_Quadruped/meshes/fr_foot_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.506s] copying models/THex_Quadruped/meshes/fr_foot.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.515s] copying models/THex_Quadruped/meshes/fl_foot.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.527s] copying models/THex_Quadruped/meshes/base_link_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.532s] copying models/THex_Quadruped/meshes/fl_hip.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.547s] copying models/THex_Quadruped/meshes/fl_knee.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.557s] copying models/THex_Quadruped/meshes/fr_knee_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.558s] copying models/THex_Quadruped/meshes/bl_hip_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.560s] copying models/THex_Quadruped/meshes/fl_foot_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.563s] copying models/THex_Quadruped/meshes/bl_foot.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.618s] copying models/THex_Quadruped/meshes/br_knee.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.688s] copying models/THex_Quadruped/meshes/fl_knee_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.694s] copying models/THex_Quadruped/meshes/fr_hip_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.703s] copying models/THex_Quadruped/meshes/br_knee_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.708s] copying models/THex_Quadruped/meshes/br_hip.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.726s] copying models/THex_Quadruped/meshes/bl_knee_collision.STL -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/THex_Quadruped/meshes
+[10.726s] creating /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/Cube
+[10.728s] copying models/Cube/model.sdf -> /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/share/cheetah_ros2/models/Cube
+[10.728s] running install_egg_info
+[10.737s] Copying ../../../build/cheetah_ros2/cheetah_ros2.egg-info to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/python3.10/site-packages/cheetah_ros2-0.0.0-py3.10.egg-info
+[10.741s] running install_scripts
+[10.805s] Installing effort_controller script to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/cheetah_ros2
+[10.805s] Installing estimator_node script to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/cheetah_ros2
+[10.807s] Installing fsm_node script to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/cheetah_ros2
+[10.808s] Installing gait_node script to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/cheetah_ros2
+[10.808s] Installing stance_controller script to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/cheetah_ros2
+[10.808s] Installing swing_controller script to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/cheetah_ros2
+[10.808s] Installing teleop_node script to /home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/cheetah_ros2/lib/cheetah_ros2
+[10.808s] writing list of installed files to '/home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/cheetah_ros2/install.log'

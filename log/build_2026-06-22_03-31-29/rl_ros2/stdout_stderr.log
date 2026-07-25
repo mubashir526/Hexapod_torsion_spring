@@ -1,0 +1,27 @@
+running egg_info
+writing ../../../build/rl_ros2/rl_ros2.egg-info/PKG-INFO
+writing dependency_links to ../../../build/rl_ros2/rl_ros2.egg-info/dependency_links.txt
+writing entry points to ../../../build/rl_ros2/rl_ros2.egg-info/entry_points.txt
+writing requirements to ../../../build/rl_ros2/rl_ros2.egg-info/requires.txt
+writing top-level names to ../../../build/rl_ros2/rl_ros2.egg-info/top_level.txt
+reading manifest file '../../../build/rl_ros2/rl_ros2.egg-info/SOURCES.txt'
+writing manifest file '../../../build/rl_ros2/rl_ros2.egg-info/SOURCES.txt'
+running build
+running build_py
+copying rl_ros2/rl_policy.py -> /home/ros/ws/build/rl_ros2/build/lib/rl_ros2
+running install
+running install_lib
+copying /home/ros/ws/build/rl_ros2/build/lib/rl_ros2/rl_policy.py -> /home/ros/ws/install/rl_ros2/lib/python3.10/site-packages/rl_ros2
+byte-compiling /home/ros/ws/install/rl_ros2/lib/python3.10/site-packages/rl_ros2/rl_policy.py to rl_policy.cpython-310.pyc
+running install_data
+copying launch/rl_walking.launch.py -> /home/ros/ws/install/rl_ros2/share/rl_ros2/launch
+running install_egg_info
+removing '/home/ros/ws/install/rl_ros2/lib/python3.10/site-packages/rl_ros2-0.0.0-py3.10.egg-info' (and everything under it)
+Copying ../../../build/rl_ros2/rl_ros2.egg-info to /home/ros/ws/install/rl_ros2/lib/python3.10/site-packages/rl_ros2-0.0.0-py3.10.egg-info
+running install_scripts
+Installing flight_recorder script to /home/ros/ws/install/rl_ros2/lib/rl_ros2
+Installing rl_action script to /home/ros/ws/install/rl_ros2/lib/rl_ros2
+Installing rl_obs script to /home/ros/ws/install/rl_ros2/lib/rl_ros2
+Installing rl_policy script to /home/ros/ws/install/rl_ros2/lib/rl_ros2
+Installing teleop script to /home/ros/ws/install/rl_ros2/lib/rl_ros2
+writing list of installed files to '/home/ros/ws/build/rl_ros2/install.log'

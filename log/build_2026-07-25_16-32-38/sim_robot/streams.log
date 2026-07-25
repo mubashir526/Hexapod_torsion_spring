@@ -1,0 +1,29 @@
+[2.239s] Invoking command in '/home/mubashir/Pictures/FYP-Legged-Robot-main/Code/build/sim_robot': PYTHONPATH=/home/mubashir/Pictures/FYP-Legged-Robot-main/Code/build/sim_robot/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/build/sim_robot/build --no-deps symlink_data --force
+[2.895s] running develop
+[3.329s] running egg_info
+[3.330s] writing sim_robot.egg-info/PKG-INFO
+[3.330s] writing dependency_links to sim_robot.egg-info/dependency_links.txt
+[3.331s] writing entry points to sim_robot.egg-info/entry_points.txt
+[3.331s] writing requirements to sim_robot.egg-info/requires.txt
+[3.332s] writing top-level names to sim_robot.egg-info/top_level.txt
+[3.337s] reading manifest file 'sim_robot.egg-info/SOURCES.txt'
+[3.341s] writing manifest file 'sim_robot.egg-info/SOURCES.txt'
+[3.345s] running build_ext
+[3.346s] Creating /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/lib/python3.10/site-packages/sim-robot.egg-link (link to .)
+[3.347s] Installing camera_recorder script to /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/lib/sim_robot
+[3.348s] Installing compare_runs script to /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/lib/sim_robot
+[3.349s] Installing flight_recorder script to /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/lib/sim_robot
+[3.349s] Installing kinematic_gait script to /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/lib/sim_robot
+[3.349s] Installing rl_action script to /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/lib/sim_robot
+[3.349s] Installing rl_obs script to /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/lib/sim_robot
+[3.350s] Installing rl_policy script to /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/lib/sim_robot
+[3.350s] Installing teleop script to /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/lib/sim_robot
+[3.350s] Installing torque_peaks script to /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/lib/sim_robot
+[3.351s] 
+[3.351s] Installed /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/build/sim_robot
+[3.351s] running symlink_data
+[3.351s] symbolically linking /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/build/sim_robot/resource/sim_robot -> /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/share/ament_index/resource_index/packages
+[3.351s] symbolically linking /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/build/sim_robot/package.xml -> /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/share/sim_robot
+[3.352s] symbolically linking /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/build/sim_robot/launch/rl_walking.launch.py -> /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/share/sim_robot/launch
+[3.352s] error: [Errno 2] No such file or directory: '/home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/share/sim_robot/launch/spring_experiment.launch.py'
+[3.414s] Invoked command in '/home/mubashir/Pictures/FYP-Legged-Robot-main/Code/build/sim_robot' returned '1': PYTHONPATH=/home/mubashir/Pictures/FYP-Legged-Robot-main/Code/build/sim_robot/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/mubashir/Pictures/FYP-Legged-Robot-main/Code/install/sim_robot/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/mubashir/Pictures/FYP-Legged-Robot-main/Code/build/sim_robot/build --no-deps symlink_data --force

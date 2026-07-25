@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>gz_joint_torsional_spring</name>
+  <version>0.1.0</version>
+  <description>
+    Parallel torsion spring (parallel elastic actuator) system plugin for
+    gz-sim / ROS 2. Port of aminsung/gazebo_joint_torsional_spring_plugin
+    with multi-joint support, torque accumulation, damping, saturation and
+    an optional nonlinear torque-angle lookup table.
+  </description>
+
+  <maintainer email="you@example.com">Your Name</maintainer>
+  <license>BSD-3-Clause</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>gz_sim_vendor</depend>
+  <depend>gz_plugin_vendor</depend>
+  <depend>gz_common_vendor</depend>
+  <depend>sdformat_vendor</depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

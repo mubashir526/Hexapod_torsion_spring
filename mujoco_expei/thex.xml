@@ -1,0 +1,110 @@
+<?xml version="1.0" ?>
+<mujoco model="THex_Quadruped">
+  <compiler angle="radian" meshdir="meshes/"/>
+  <option timestep="0.001" gravity="0 0 -9.81"/>
+  <asset>
+    <mesh file="base_link.STL"/>
+    <mesh file="bl_hip.STL"/>
+    <mesh file="bl_knee.STL"/>
+    <mesh file="bl_foot.STL"/>
+    <mesh file="br_hip.STL"/>
+    <mesh file="br_knee.STL"/>
+    <mesh file="br_foot.STL"/>
+    <mesh file="fl_hip.STL"/>
+    <mesh file="fl_knee.STL"/>
+    <mesh file="fl_foot.STL"/>
+    <mesh file="fr_hip.STL"/>
+    <mesh file="fr_knee.STL"/>
+    <mesh file="fr_foot.STL"/>
+  </asset>
+  <worldbody>
+    <light diffuse=".5 .5 .5" pos="0 0 3" dir="0 0 -1"/>
+    <geom type="plane" size="5 5 0.1" rgba=".9 .9 .9 1"/>
+    <body name="floating_base" pos="0 0 0.3">
+      <freejoint/>
+      <body name="base_link" pos="0 0 0" euler="0 0 0">
+        <inertial pos="-1.0171e-10 -0.0086065 0.03608" euler="0.0 0.0 0.0" mass="0.30423" diaginertia="0.00232 0.00064 0.00225"/>
+        <geom type="mesh" mesh="base_link" contype="0" conaffinity="0" group="1"/>
+        <geom type="box" size="0.1 0.05 0.03" pos="0 0 0.05" rgba="1 0 0 0"/>
+        <body name="bl_hip" pos="-0.053162000000000001 -0.12711 0" euler="0 0 -2.3719999999999999">
+          <joint name="bl_hip_joint" type="hinge" pos="0 0 0" axis="0 0 1" range="-0.7853 0.7853"/>
+          <inertial pos="0.015013 -0.0039618 0.012299" euler="0.0 0.0 0.0" mass="0.14763" diaginertia="0.00005 0.00005 0.00006"/>
+          <geom type="mesh" mesh="bl_hip" contype="0" conaffinity="0" group="1"/>
+          <body name="bl_knee" pos="0.028451000000000001 0 0" euler="-1.5602 0 -7.8500057236944626e-17">
+            <joint name="bl_knee_joint" type="hinge" pos="0 0 0" axis="0 0 1" range="-1.5707 1.5707"/>
+            <inertial pos="0.045291 0.0044813 -0.0012523" euler="0.0 0.0 0.0" mass="0.03468" diaginertia="0.00002 0.00003 0.00002"/>
+            <geom type="mesh" mesh="bl_knee" contype="0" conaffinity="0" group="1"/>
+            <body name="bl_foot" pos="0.073068999999999995 0.018655999999999999 -0.00019751" euler="3.1339999999999999 0.0073895000000000054 0.7853">
+              <joint name="bl_foot_joint" type="hinge" pos="0 0 0" axis="0 0 1" range="-1.5707 1.5707"/>
+              <inertial pos="0.021142 0.0035788 -0.0013921" euler="0.0 0.0 0.0" mass="0.09125" diaginertia="0.00001 0.00004 0.00004"/>
+              <geom type="mesh" mesh="bl_foot" contype="0" conaffinity="0" group="1"/>
+              <geom type="sphere" size="0.02" pos="0 0 -0.01" friction="1 0.005 0.0001" solref="0.02 1" solimp="0.9 0.95 0.001"/>
+            </body>
+          </body>
+        </body>
+        <body name="br_hip" pos="0.053162000000000001 -0.12711 0.00053339999999999995" euler="0 0 -0.77529000000000003">
+          <joint name="br_hip_joint" type="hinge" pos="0 0 0" axis="0 0 1" range="-0.7853 0.7853"/>
+          <inertial pos="0.014987 0.0036918 0.011971" euler="0.0 0.0 0.0" mass="0.14763" diaginertia="0.00005 0.00005 0.00006"/>
+          <geom type="mesh" mesh="br_hip" contype="0" conaffinity="0" group="1"/>
+          <body name="br_knee" pos="0.028448999999999999 0 0" euler="1.5643 0 0">
+            <joint name="br_knee_joint" type="hinge" pos="0 0 0" axis="0 0 1" range="-1.5707 1.5707"/>
+            <inertial pos="0.045283 -0.0044813 -0.0010646" euler="0.0 0.0 0.0" mass="0.03468" diaginertia="0.00002 0.00003 0.00002"/>
+            <geom type="mesh" mesh="br_knee" contype="0" conaffinity="0" group="1"/>
+            <body name="br_foot" pos="0.073065000000000005 -0.018655999999999999 -0.00012210000000000001" euler="-3.1368999999999998 0.0045678000000000021 -0.7853">
+              <joint name="br_foot_joint" type="hinge" pos="0 0 0" axis="0 0 1" range="-1.5707 1.5707"/>
+              <inertial pos="0.020857 -0.003581 -0.0013921" euler="0.0 0.0 0.0" mass="0.09125" diaginertia="0.00001 0.00004 0.00004"/>
+              <geom type="mesh" mesh="br_foot" contype="0" conaffinity="0" group="1"/>
+              <geom type="sphere" size="0.02" pos="0 0 -0.01" friction="1 0.005 0.0001" solref="0.02 1" solimp="0.9 0.95 0.001"/>
+            </body>
+          </body>
+        </body>
+        <body name="fl_hip" pos="-0.059512000000000002 0.078853999999999994 0" euler="0 0 2.3666">
+          <joint name="fl_hip_joint" type="hinge" pos="0 0 0" axis="0 0 1" range="-0.7853 0.7853"/>
+          <inertial pos="0.015006 0.0056423 0.012299" euler="0.0 0.0 0.0" mass="0.14763" diaginertia="0.00005 0.00005 0.00006"/>
+          <geom type="mesh" mesh="fl_hip" contype="0" conaffinity="0" group="1"/>
+          <body name="fl_knee" pos="0.028448999999999999 0 0" euler="-1.5774999999999999 0 -7.8503197062369069e-17">
+            <joint name="fl_knee_joint" type="hinge" pos="0 0 0" axis="0 0 1" range="-1.5707 1.5707"/>
+            <inertial pos="0.045273 0.0044813 -0.00044769" euler="0.0 0.0 0.0" mass="0.034680999999999997" diaginertia="0.00002 0.00003 0.00002"/>
+            <geom type="mesh" mesh="fl_knee" contype="0" conaffinity="0" group="1"/>
+            <body name="fl_foot" pos="0.073066000000000006 0.018655999999999999 0.00012569" euler="-3.1368 -0.0047025000000000001 0.7853">
+              <joint name="fl_foot_joint" type="hinge" pos="0 0 0" axis="0 0 1" range="-1.5707 1.5707"/>
+              <inertial pos="0.021142 0.0035788 -0.0013921" euler="0.0 0.0 0.0" mass="0.09125" diaginertia="0.00001 0.00004 0.00004"/>
+              <geom type="mesh" mesh="fl_foot" contype="0" conaffinity="0" group="1"/>
+              <geom type="sphere" size="0.02" pos="0 0 -0.01" friction="1 0.005 0.0001" solref="0.02 1" solimp="0.9 0.95 0.001"/>
+            </body>
+          </body>
+        </body>
+        <body name="fr_hip" pos="0.059512000000000002 0.078853999999999994 0.00053339999999999995" euler="0 0 0.76931000000000005">
+          <joint name="fr_hip_joint" type="hinge" pos="0 0 0" axis="0 0 1" range="-0.7853 0.7853"/>
+          <inertial pos="0.015044 -0.0059121 0.011971" euler="0.0 0.0 0.0" mass="0.14763" diaginertia="0.00005 0.00005 0.00006"/>
+          <geom type="mesh" mesh="fr_hip" contype="0" conaffinity="0" group="1"/>
+          <body name="fr_knee" pos="0.028451000000000001 0 0" euler="1.5816000000000001 0 0">
+            <joint name="fr_knee_joint" type="hinge" pos="0 0 0" axis="0 0 1" range="-1.5707 1.5707"/>
+            <inertial pos="0.045275 -0.0044813 -0.00025994" euler="0.0 0.0 0.0" mass="0.03468" diaginertia="0.00002 0.00003 0.00002"/>
+            <geom type="mesh" mesh="fr_knee" contype="0" conaffinity="0" group="1"/>
+            <body name="fr_foot" pos="0.073069999999999996 -0.018655999999999999 0.00020110000000000001" euler="3.1339000000000001 -0.0075232000000000007 -0.7853">
+              <joint name="fr_foot_joint" type="hinge" pos="0 0 0" axis="0 0 1" range="-1.5707 1.5707"/>
+              <inertial pos="0.020857 -0.003581 -0.0013921" euler="0.0 0.0 0.0" mass="0.09125" diaginertia="0.00001 0.00004 0.00004"/>
+              <geom type="mesh" mesh="fr_foot" contype="0" conaffinity="0" group="1"/>
+              <geom type="sphere" size="0.02" pos="0 0 -0.01" friction="1 0.005 0.0001" solref="0.02 1" solimp="0.9 0.95 0.001"/>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+  <actuator>
+    <position name="bl_hip_joint_pos" joint="bl_hip_joint" kp="20" kv="5" forcelimited="true" forcerange="-3.0 3.0"/>
+    <position name="bl_knee_joint_pos" joint="bl_knee_joint" kp="30" kv="3" forcelimited="true" forcerange="-3.0 3.0"/>
+    <position name="bl_foot_joint_pos" joint="bl_foot_joint" kp="50" kv="2" forcelimited="true" forcerange="-3.0 3.0"/>
+    <position name="br_hip_joint_pos" joint="br_hip_joint" kp="20" kv="5" forcelimited="true" forcerange="-3.0 3.0"/>
+    <position name="br_knee_joint_pos" joint="br_knee_joint" kp="30" kv="3" forcelimited="true" forcerange="-3.0 3.0"/>
+    <position name="br_foot_joint_pos" joint="br_foot_joint" kp="50" kv="2" forcelimited="true" forcerange="-3.0 3.0"/>
+    <position name="fl_hip_joint_pos" joint="fl_hip_joint" kp="20" kv="5" forcelimited="true" forcerange="-3.0 3.0"/>
+    <position name="fl_knee_joint_pos" joint="fl_knee_joint" kp="30" kv="3" forcelimited="true" forcerange="-3.0 3.0"/>
+    <position name="fl_foot_joint_pos" joint="fl_foot_joint" kp="50" kv="2" forcelimited="true" forcerange="-3.0 3.0"/>
+    <position name="fr_hip_joint_pos" joint="fr_hip_joint" kp="20" kv="5" forcelimited="true" forcerange="-3.0 3.0"/>
+    <position name="fr_knee_joint_pos" joint="fr_knee_joint" kp="30" kv="3" forcelimited="true" forcerange="-3.0 3.0"/>
+    <position name="fr_foot_joint_pos" joint="fr_foot_joint" kp="50" kv="2" forcelimited="true" forcerange="-3.0 3.0"/>
+  </actuator>
+</mujoco>
