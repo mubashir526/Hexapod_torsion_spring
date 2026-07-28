@@ -1,0 +1,16 @@
+# Experiment folders
+experiment/
+ROS/experiment/
+
+# Python cache & bytecode
+__pycache__/
+*.pyc
+*.pyo
+
+# Build, install, and log directories
+build/
+install/
+log/
+ROS/build/
+ROS/install/
+ROS/log/

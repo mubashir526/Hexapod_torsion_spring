@@ -18,11 +18,14 @@ Then, in a second terminal:  ros2 run sim_robot kinematic_gait
 """
 
 import os
+import json
+import sys
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import (DeclareLaunchArgument, IncludeLaunchDescription,
-                            SetEnvironmentVariable, OpaqueFunction, LogInfo)
+                            SetEnvironmentVariable, OpaqueFunction, LogInfo,
+                            ExecuteProcess)
 from launch.substitutions import LaunchConfiguration
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
@@ -51,11 +54,14 @@ def launch_setup(context, *args, **kwargs):
     world_name = 'friction_world_cam.sdf' if record else 'friction_world.sdf'
     world_file = os.path.join(pkg_share, 'worlds', world_name)
 
+    headless = LaunchConfiguration('headless').perform(context).lower() in ('1', 'true', 'yes')
+    gz_flags = f"-r -v 4 {'-s ' if headless else ''}{world_file}"
+
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory('ros_gz_sim'),
                          'launch', 'gz_sim.launch.py')),
-        launch_arguments={'gz_args': f'-r -v 4 {world_file}'}.items(),
+        launch_arguments={'gz_args': gz_flags}.items(),
     )
 
     # Spawn just above the ground (z=0.08; the robot stands with its base at
@@ -77,7 +83,6 @@ def launch_setup(context, *args, **kwargs):
         parameters=[{
             'config_file': os.path.join(pkg_share, 'config',
                                         'ros_gz_bridge_spring.yaml'),
-            'expand_gz_topic_names': True,
         }],
         output='screen',
     )
@@ -87,6 +92,36 @@ def launch_setup(context, *args, **kwargs):
                     f"record={record}"),
         gazebo, spawn_robot, bridge,
     ]
+
+    # --- Publish spring config as a latched topic for kinematic_gait ---
+    # Read SPRING_CONFIG from make_spring_models.py (same package, installed
+    # under models/). This is exec'd, not imported, because it's a standalone
+    # script, not a Python package module.
+    spring_cfg = {}
+    make_models_py = os.path.join(
+        pkg_share, 'models', 'THex_Quadruped', 'make_spring_models.py')
+    if os.path.isfile(make_models_py):
+        ns = {'__file__': make_models_py}
+        try:
+            with open(make_models_py) as f:
+                code = f.read()
+            exec(compile(code, make_models_py, 'exec'), ns)  # noqa: S102
+            spring_cfg = ns.get('SPRING_CONFIG', {})
+        except Exception as exc:
+            print(f"[spring_experiment] WARNING: could not read SPRING_CONFIG "
+                  f"from {make_models_py}: {exc}")
+    config_json = json.dumps({'mode': spring, 'config': spring_cfg})
+    # Use ros2 topic pub --once with transient_local QoS so kinematic_gait
+    # (started later in a separate terminal) still receives the message.
+    nodes.append(ExecuteProcess(
+        cmd=['ros2', 'topic', 'pub', '--once',
+             '--qos-durability', 'transient_local',
+             '--qos-reliability', 'reliable',
+             '/gait/spring_config', 'std_msgs/msg/String',
+             json.dumps({'data': config_json})],
+        output='log',
+    ))
+
     if record:
         nodes.append(Node(
             package='sim_robot', executable='camera_recorder', output='screen',
@@ -118,5 +153,8 @@ def generate_launch_description():
             'record', default_value='false',
             description="true = camera world + camera_recorder (timestamped, "
                         "torque-overlaid MP4s into experiment/runN)"),
+        DeclareLaunchArgument(
+            'headless', default_value='false',
+            description="true = run Gazebo in headless mode (-s, no GUI window)"),
         OpaqueFunction(function=launch_setup),
     ])

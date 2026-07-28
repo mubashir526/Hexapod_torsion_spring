@@ -1,3 +1,0 @@
-[console_scripts]
-cpg_node = cpg_ros2.cpg_node:main
-

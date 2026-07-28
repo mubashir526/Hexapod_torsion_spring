@@ -1,1 +1,0 @@
-/home/mubashir/Pictures/FYP-Legged-Robot-main/Code/ROS/build/sim_robot/launch/rl_walking.launch.py

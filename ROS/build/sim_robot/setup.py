@@ -1,1 +1,0 @@
-/home/mubashir/Pictures/FYP-Legged-Robot-main/Code/ROS/src/sim_robot/setup.py

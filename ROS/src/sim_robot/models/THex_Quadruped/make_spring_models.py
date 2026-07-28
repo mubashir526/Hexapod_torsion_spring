@@ -65,9 +65,9 @@ TYPES = ["hip", "knee", "foot"]
 #   No spring on feet:
 #     "foot": {"enabled": False, "kx": 0.35, "ref_mode": "data"}
 SPRING_CONFIG = {
-    "hip":  {"enabled": False, "kx": 0.20, "ref_mode": "data"},
-    "knee": {"enabled": True,  "kx": 0.40, "ref_mode": "fixed", "ref_deg": -30.0},
-    "foot": {"enabled": False, "kx": 0.35, "ref_mode": "data"},
+    "hip":  {"enabled": False,  "kx": 0.20, "ref_mode": "data"},
+    "knee": {"enabled": True,  "kx": 0.50, "ref_mode": "fixed", "ref_deg": -50.0},
+    "foot": {"enabled": False,  "kx": 0.35, "ref_mode": "data"},
 }
 
 # Fraction of measured DC holding torque to cancel (for ref_mode='data').

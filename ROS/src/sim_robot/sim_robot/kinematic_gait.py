@@ -7,6 +7,7 @@ from sensor_msgs.msg import JointState
 from geometry_msgs.msg import WrenchStamped
 import math
 import os
+import json
 from datetime import datetime
 import matplotlib.pyplot as plt
 import numpy as np
@@ -45,6 +46,13 @@ class KinematicGait(Node):
         _latched = QoSProfile(depth=1)
         _latched.durability = DurabilityPolicy.TRANSIENT_LOCAL
         self.run_dir_pub = self.create_publisher(String, '/gait/run_dir', _latched)
+
+        # Subscribe to spring config published by the launch file (latched).
+        # Contains JSON: {"mode": "none"|"native", "config": {SPRING_CONFIG}}.
+        self.spring_mode = 'unknown'
+        self.spring_config = {}
+        self.create_subscription(
+            String, '/gait/spring_config', self._spring_config_cb, _latched)
         
         # --- 2. DATA STORAGE ---
         # Structure matches your original lists but accessible via self
@@ -188,39 +196,16 @@ class KinematicGait(Node):
         self.cycle_count = 0
         self.get_logger().info(f"Generated {self.steps_len} steps per cycle.")
 
-        # --- 4b. HOMING / SETTLE BEFORE RECORDING ---
-        # The robot spawns above the ground with joints at 0 deg and then falls,
-        # so starting the gait immediately means step 0 is a large "slam" from a
-        # random landed pose. Instead we first drive all joints to the gait's
-        # FIRST waypoint (the home pose) and hold until the robot has settled
-        # onto its feet; only then do we start stepping the gait AND recording.
-        # This keeps the free-fall / slam transient out of the logged data.
+        # --- 4b. PRE-RECORDED WARM-UP GAIT EXECUTION ---
+        # The robot executes warmup_target_cycles of the gait trajectory before
+        # recording begins. This ensures the robot is actively walking in
+        # steady-state before data logging and video recording start, eliminating
+        # initial standing-to-walking transients and angle errors.
         self.recording = False
-        self.home = [
-            {
-                "hip":  self.theta_targets[leg][0][0],
-                "knee": self.theta_targets[leg][1][0],
-                "foot": self.theta_targets[leg][2][0],
-            }
-            for leg in range(4)
-        ]
-        # Settle is declared done when the robot has STOPPED MOVING (all joints
-        # nearly still for a short continuous dwell), or a hard timeout is hit.
-        # We do NOT gate on position: this is an open-loop position-PID robot
-        # with no gravity compensation, so the load-bearing joints droop and
-        # never sit within a tight tolerance of the home pose at the same time
-        # (requiring that just made the phase always run to the full timeout).
-        self.settle_vel_tol  = 0.10  # rad/s, a joint slower than this is "still"
-        self.settle_min_s    = 1.0   # s, ignore stillness before this (pre-fall)
-        self.settle_still_s  = 0.4   # s, required continuous still-dwell
-        self.settle_max_s    = 4.0   # s (sim time) hard timeout backstop
-        self.settle_pos_tol  = 0.20  # rad, informational only (logged, not gating)
-        self.settle_start      = None  # set on the first timer tick (needs /clock)
-        self.settle_still_since = None # sim time the still-dwell started (or None)
-        self.prev_state_pos    = None  # last tick's positions, for Δpos/Δt speed
-        self._settle_log_tick  = 0     # throttle counter for settle diagnostics
+        self.warmup_target_cycles = 1   # 1 full gait cycle (16 steps) before recording
+        self.warmup_cycle_count   = 0
 
-        # Latest joint feedback, cached for the settle check.
+        # Latest joint feedback, cached to verify topic connection.
         self.latest_state_pos = [{"hip": 0.0, "knee": 0.0, "foot": 0.0} for _ in range(4)]
         self.latest_state_vel = [{"hip": 0.0, "knee": 0.0, "foot": 0.0} for _ in range(4)]
         self.state_ready      = [{"hip": False, "knee": False, "foot": False} for _ in range(4)]
@@ -236,9 +221,10 @@ class KinematicGait(Node):
 
     def timer_callback(self):
 
-        # During the homing/settle phase, hold the home pose and record nothing.
+        # During the pre-recorded warm-up phase, run the gait steps to get the
+        # robot walking in steady state before starting data logging.
         if not self.recording:
-            self._settle_step()
+            self._warmup_step()
             return
 
         # Log cycle start
@@ -288,81 +274,49 @@ class KinematicGait(Node):
                 )
                 raise KeyboardInterrupt
 
-    def _settle_step(self):
-        # Hold the gait's first waypoint (home pose) and wait for the robot to
-        # STOP MOVING before recording. No command/torque data is appended here.
-        if self.settle_start is None:
-            self.settle_start = self.get_clock().now()
-
-        for leg_idx, leg_name in enumerate(self.legs):
-            self.publish_command(leg_name, 'hip',  self.home[leg_idx]['hip'])
-            self.publish_command(leg_name, 'knee', self.home[leg_idx]['knee'])
-            self.publish_command(leg_name, 'foot', self.home[leg_idx]['foot'])
-
-        now = self.get_clock().now()
-        elapsed = (now - self.settle_start).nanoseconds / 1e9
-
+    def _warmup_step(self):
+        # Wait until all joint states report once before starting warm-up gait
         all_ready = all(self.state_ready[i][j] for i in range(4) for j in self.joint_types)
+        if not all_ready:
+            self.get_logger().info("[warmup] Waiting for ROS joint state feedback...", throttle_duration_sec=1.0)
+            return
 
-        # Estimate each joint's speed from the change in measured position
-        # between ticks (bridge-independent: doesn't rely on /joint_states
-        # publishing velocity). First tick has no previous sample.
-        max_speed = None
-        if all_ready and self.prev_state_pos is not None:
-            max_speed = max(
-                abs(self.latest_state_pos[i][j] - self.prev_state_pos[i][j]) / self.dt
-                for i in range(4) for j in self.joint_types
-            )
-        if all_ready:
-            self.prev_state_pos = [dict(self.latest_state_pos[i]) for i in range(4)]
+        if self.current_step == 0:
+            self.get_logger().info(f"[warmup] === Warm-up Gait Cycle {self.warmup_cycle_count + 1}/{self.warmup_target_cycles} Started ===")
 
-        # Worst position error vs the home pose — informational only.
-        worst_pos_err = max(
-            abs(self.latest_state_pos[i][j] - self.home[i][j])
-            for i in range(4) for j in self.joint_types
-        ) if all_ready else float('nan')
+        # Publish gait step commands without storing in dataset lists
+        for leg_idx, leg_name in enumerate(self.legs):
+            t_hip = self.theta_targets[leg_idx][0][self.current_step]
+            t_knee = self.theta_targets[leg_idx][1][self.current_step]
+            t_foot = self.theta_targets[leg_idx][2][self.current_step]
 
-        # "Still" once every joint is slower than the tolerance; the dwell must
-        # be continuous, so reset the timer whenever motion resumes.
-        still = max_speed is not None and max_speed < self.settle_vel_tol
-        if still and elapsed >= self.settle_min_s:
-            if self.settle_still_since is None:
-                self.settle_still_since = now
-        else:
-            self.settle_still_since = None
-        dwell = ((now - self.settle_still_since).nanoseconds / 1e9
-                 if self.settle_still_since is not None else 0.0)
+            self.publish_command(leg_name, 'hip', t_hip)
+            self.publish_command(leg_name, 'knee', t_knee)
+            self.publish_command(leg_name, 'foot', t_foot)
 
-        # Throttled diagnostics (~every 0.5 s at 10 Hz) so settle is visible.
-        self._settle_log_tick += 1
-        if self._settle_log_tick % 5 == 1:
-            self.get_logger().info(
-                f"[settle] t={elapsed:4.1f}s  worst|pos-home|="
-                f"{math.degrees(worst_pos_err):5.1f}deg  "
-                f"max_speed={('%.3f' % max_speed) if max_speed is not None else '   ?  '} rad/s  "
-                f"still_dwell={dwell:.1f}/{self.settle_still_s:.1f}s"
-            )
+        self.get_logger().info(
+            f"[warmup] Step {self.current_step}/{self.steps_len}: FR Hip={math.degrees(self.theta_targets[0][0][self.current_step]):.1f}°"
+        )
 
-        settled = dwell >= self.settle_still_s
-        if settled or elapsed >= self.settle_max_s:
-            reason = "stopped moving" if settled else "timeout"
-            self.get_logger().info(
-                f"=== Settled in home pose ({reason}, {elapsed:.2f}s, "
-                f"worst|pos-home|={math.degrees(worst_pos_err):.1f}deg) "
-                f"— starting gait + recording ==="
-            )
-            # Reset the clock so logged timestamps start at 0 at gait-start.
-            self.start_time = self.get_clock().now()
+        self.current_step += 1
+        if self.current_step >= self.steps_len:
             self.current_step = 0
-            self.cycle_count = 0
-            self.recording = True
-            # Create the run folder now (not lazily at save time) and announce
-            # it, so a camera_recorder records into the same experiment/runN.
-            if self.run_dir is None:
-                self.run_dir = self._make_run_dir()
-                msg = String(); msg.data = os.path.abspath(self.run_dir)
-                self.run_dir_pub.publish(msg)
-                self.get_logger().info(f"run folder: {self.run_dir} (announced on /gait/run_dir)")
+            self.warmup_cycle_count += 1
+
+            if self.warmup_cycle_count >= self.warmup_target_cycles:
+                self.get_logger().info(
+                    f"=== Warm-up gait complete ({self.warmup_target_cycles} cycle(s)) "
+                    f"— starting recorded gait + video recording ==="
+                )
+                self.start_time = self.get_clock().now()
+                self.current_step = 0
+                self.cycle_count = 0
+                self.recording = True
+                if self.run_dir is None:
+                    self.run_dir = self._make_run_dir()
+                    msg = String(); msg.data = os.path.abspath(self.run_dir)
+                    self.run_dir_pub.publish(msg)
+                    self.get_logger().info(f"run folder: {self.run_dir} (announced on /gait/run_dir)")
 
     def publish_command(self, leg, joint, value):
         msg = Float64()
@@ -429,6 +383,63 @@ class KinematicGait(Node):
                 # if the effort publisher is absent; effort_available gates output.
                 self.commanded_effort[leg_idx][joint_type].append(self.latest_effort[leg_idx][joint_type])
 
+    def _spring_config_cb(self, msg):
+        """Cache the spring config JSON from the launch file."""
+        try:
+            data = json.loads(msg.data)
+            self.spring_mode = data.get('mode', 'unknown')
+            self.spring_config = data.get('config', {})
+            self.get_logger().info(
+                f"Spring config received: mode={self.spring_mode}, "
+                f"config={self.spring_config}")
+        except (json.JSONDecodeError, AttributeError) as exc:
+            self.get_logger().warn(f"Bad spring config message: {exc}")
+
+    def _spring_title_str(self):
+        """Build a human-readable string describing the spring configuration
+        for use in graph titles and run_info.txt."""
+        mode = self.spring_mode
+        cfg = self.spring_config
+        if not cfg:
+            # Fallback: load SPRING_CONFIG directly from installed make_spring_models.py
+            try:
+                from ament_index_python.packages import get_package_share_directory
+                pkg_share = get_package_share_directory('sim_robot')
+                make_models_py = os.path.join(
+                    pkg_share, 'models', 'THex_Quadruped', 'make_spring_models.py')
+                if os.path.isfile(make_models_py):
+                    ns = {'__file__': make_models_py}
+                    with open(make_models_py) as f:
+                        code = f.read()
+                    exec(compile(code, make_models_py, 'exec'), ns)
+                    cfg = ns.get('SPRING_CONFIG', {})
+                    self.spring_config = cfg
+            except Exception as exc:
+                self.get_logger().warn(f"Could not load fallback spring config: {exc}")
+
+        if mode == 'none':
+            return 'Baseline (no spring)'
+        if (mode == 'native' or mode == 'unknown') and cfg:
+            parts = []
+            for jtype in ('hip', 'knee', 'foot'):
+                jcfg = cfg.get(jtype, {})
+                if jcfg.get('enabled'):
+                    kx = jcfg.get('kx', '?')
+                    ref_mode = jcfg.get('ref_mode', '?')
+                    if ref_mode == 'fixed':
+                        ref_deg = jcfg.get('ref_deg', '?')
+                        parts.append(f"{jtype}: kx={kx} N\u00b7m/rad, "
+                                     f"\u03b8\u2080={ref_deg}\u00b0")
+                    else:
+                        parts.append(f"{jtype}: kx={kx} N\u00b7m/rad, "
+                                     f"ref=data-driven")
+            if parts:
+                return f"Spring (native) \u2014 {'; '.join(parts)}"
+            return 'Spring (native) \u2014 all joints disabled'
+        if mode == 'native':
+            return 'Spring (native)'
+        return f'Spring mode: {mode}'
+
     # --- PLOTTING & CSV LOGIC (Replicated from Original) ---
     def _make_run_dir(self):
         # Create experiment/ (relative to the launch cwd) and the next free
@@ -470,6 +481,10 @@ class KinematicGait(Node):
             lines.append(
                 "  {fr,br,bl,fl}_effort_vs_angle.png     (per-leg, signed applied effort vs angle)")
         lines.append(f"effort_recorded:  {self.effort_available}")
+        lines.append("")
+        lines.append(f"spring_mode:      {self.spring_mode}")
+        lines.append(f"spring_config:    {json.dumps(self.spring_config)}")
+        lines.append(f"spring_summary:   {self._spring_title_str()}")
         with open(os.path.join(self.run_dir, "run_info.txt"), "w") as f:
             f.write("\n".join(lines) + "\n")
         print(f"Wrote {os.path.join(self.run_dir, 'run_info.txt')}")
@@ -490,7 +505,8 @@ class KinematicGait(Node):
         
         # 1. Plot Commands vs States
         fig, axes = plt.subplots(4, 3, figsize=(15, 12))
-        fig.suptitle("All Joints: Command vs State", fontsize=16)
+        fig.suptitle(f"All Joints: Command vs State — {self._spring_title_str()}",
+                     fontsize=14)
 
         for leg_ind, leg in enumerate(self.legs):
             for joint_ind, joint_type in enumerate(self.joint_types):
@@ -515,7 +531,8 @@ class KinematicGait(Node):
 
         # 2. Plot Torques
         fig2, axes2 = plt.subplots(4, 3, figsize=(15, 12))
-        fig2.suptitle("All Joints: Torque Magnitude", fontsize=16)
+        fig2.suptitle(f"All Joints: Torque Magnitude — {self._spring_title_str()}",
+                      fontsize=14)
 
         # Calculate Y limits
         all_vals = []
@@ -563,9 +580,9 @@ class KinematicGait(Node):
         if self.effort_available:
             LIM = 0.9414
             fig3, axes3 = plt.subplots(4, 3, figsize=(15, 12))
-            fig3.suptitle("All Joints: Applied Motor Effort  "
+            fig3.suptitle(f"All Joints: Applied Motor Effort — {self._spring_title_str()}\n"
                           "(bold = clipped to ±effort limit; faint = raw PID demand)",
-                          fontsize=15)
+                          fontsize=13)
             for leg_ind, leg in enumerate(self.legs):
                 for joint_ind, joint_type in enumerate(self.joint_types):
                     ax = axes3[leg_ind, joint_ind]
@@ -662,9 +679,9 @@ class KinematicGait(Node):
         for leg_idx, leg in enumerate(self.legs):
             fig, axes = plt.subplots(1, 3, figsize=(18, 6))
             fig.suptitle(
-                f"{leg} Leg — Joint Torque vs Angle "
+                f"{leg} Leg — Joint Torque vs Angle — {self._spring_title_str()}\n"
                 f"(sample-averaged over {len(cyc_idx)} full cycles, "
-                f"{L} samples, 50Hz)", fontsize=15)
+                f"{L} samples, 50Hz)", fontsize=13)
 
             for j_ind, joint_type in enumerate(self.joint_types):
                 ax = axes[j_ind]
@@ -791,10 +808,10 @@ class KinematicGait(Node):
         for leg_idx, leg in enumerate(self.legs):
             fig, axes = plt.subplots(1, 3, figsize=(18, 6))
             fig.suptitle(
-                f"{leg} Leg — Applied Motor Effort vs Angle "
+                f"{leg} Leg — Applied Motor Effort vs Angle — {self._spring_title_str()}\n"
                 f"(signed, clipped to ±{LIM} N*m; sample-averaged over "
                 f"{len(cyc_idx)} mid cycles {mid}, {L} samples, "
-                f"{self.torque_freq}Hz)", fontsize=14)
+                f"{self.torque_freq}Hz)", fontsize=12)
 
             for j_ind, joint_type in enumerate(self.joint_types):
                 ax = axes[j_ind]
@@ -1034,6 +1051,15 @@ def main(args=None):
 
         if rclpy.ok():
             rclpy.shutdown()
+
+        # --- Auto-shutdown Gazebo ---
+        # Send SIGINT to Gazebo simulation processes and bridge so the launch
+        # system in Terminal 1 exits cleanly (Gazebo is a 'required' process,
+        # so its exit cascades to bridge, camera_recorder, etc.).
+        import subprocess
+        print("\nShutting down Gazebo simulation...")
+        for target in ['gz sim', 'parameter_bridge']:
+            subprocess.run(['pkill', '-SIGINT', '-f', target], check=False)
 
 if __name__ == '__main__':
     main()

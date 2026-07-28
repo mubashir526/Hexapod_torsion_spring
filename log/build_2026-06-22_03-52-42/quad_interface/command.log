@@ -1,1 +1,0 @@
-Invoking command in '/home/mubashir/Documents/FYP-Legged-Robot-main/Code/build/quad_interface': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/mubashir/Documents/FYP-Legged-Robot-main/Code/ROS/src/quad_interface -DCMAKE_INSTALL_PREFIX=/home/mubashir/Documents/FYP-Legged-Robot-main/Code/install/quad_interface

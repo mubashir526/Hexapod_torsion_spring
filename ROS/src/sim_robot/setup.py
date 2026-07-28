@@ -53,6 +53,7 @@ setup(
             'compare_runs = sim_robot.compare_runs:main',
             'camera_recorder = sim_robot.camera_recorder:main',
             'torque_peaks = sim_robot.torque_peaks:main',
+            'run_parameter_sweep = sim_robot.run_parameter_sweep:main',
         ],
     },
 )

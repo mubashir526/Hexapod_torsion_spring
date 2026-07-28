@@ -66,6 +66,8 @@ The script will:
 6. Resolve workspace dependencies via `rosdep`
 7. Build the workspace packages (`sim_robot`, `cheetah_ros2`)
 
+> **Note on `elevation_mapping`:** The `elevation_mapping` package is ignored by default (via `ROS/src/elevation_mapping/COLCON_IGNORE`) because it relies on external packages (`grid_map_core` and `kindr_ros`) that lack standard `rosdep` keys on ROS 2 Humble. Since `elevation_mapping` is not required for the torsion spring torque-reduction experiment, skipping it prevents build failures out of the box. If you need to build it, clone `kindr` into `ROS/src/` and remove `ROS/src/elevation_mapping/COLCON_IGNORE` (or use `colcon build --packages-skip elevation_mapping`).
+
 After the script finishes, source the workspace:
 
 ```bash
