@@ -2,9 +2,13 @@
 """Interactive gait-cycle viewer: position + torque, phase-shaded, one cycle at a time.
 
 Usage:
+    python3 gait_cycle_viewer.py <run_number> [--layout grid|per-leg]
     python3 gait_cycle_viewer.py [commands_csv] [torques_csv] [--layout grid|per-leg]
 
-Defaults: joint_commands_vs_states.csv, joint_torques.csv (in cwd), --layout grid.
+Examples:
+    python3 gait_cycle_viewer.py 111 --layout per-leg
+    python3 gait_cycle_viewer.py run111
+    python3 gait_cycle_viewer.py ROS/experiment/run111
 """
 import argparse
 import csv
@@ -41,9 +45,9 @@ if os.path.abspath(kin.__file__) != os.path.abspath(_EXPECTED_KINEMATICS):
 LEGS = ["FR", "BR", "BL", "FL"]
 JOINT_TYPES = ["hip", "knee", "foot"]
 
-STEPS_PER_CYCLE = int(kin.NUM_DATA_POINTS + 2 * kin.T_STALL)
+STEPS_PER_CYCLE = int(kin.NUM_DATA_POINTS + 2 * getattr(kin, 'T_STALL', 0))
 SWING_LEN = int(kin.NUM_DATA_POINTS * kin.SWING_FACTOR)
-STALL_LEN = int(kin.T_STALL)
+STALL_LEN = int(getattr(kin, 'T_STALL', 0))
 STANCE_LEN = STEPS_PER_CYCLE - SWING_LEN - 2 * STALL_LEN
 
 SWING_RANGE = (0, SWING_LEN)
@@ -116,7 +120,12 @@ def load_commands(path):
 
 
 def load_torques(path):
-    required = {'Time_s'} | {f'{leg}_{j}_torque' for leg in LEGS for j in JOINT_TYPES}
+    with open(path, newline='') as f:
+        reader = csv.DictReader(f)
+        fieldnames = set(reader.fieldnames or [])
+    suffix = 'effort' if any(fn.endswith('_effort') for fn in fieldnames) else 'torque'
+
+    required = {'Time_s'} | {f'{leg}_{j}_{suffix}' for leg in LEGS for j in JOINT_TYPES}
     rows = _read_csv_column_set(path, required)
 
     times = [float(r['Time_s']) for r in rows]
@@ -124,7 +133,7 @@ def load_torques(path):
     for r in rows:
         for leg in LEGS:
             for j in JOINT_TYPES:
-                v = r[f'{leg}_{j}_torque']
+                v = r[f'{leg}_{j}_{suffix}']
                 data[leg][j].append(float(v) if v != '' else float('nan'))
     return times, data
 
@@ -173,17 +182,23 @@ def torque_window(torque_times, start_t, end_t):
 
 
 def saturated_segments(t_trq, trq_vals, cycle_end_rel):
-    """Contiguous (t_start, t_end) spans where torque >= EFFORT_LIMIT.
+    """Contiguous (t_start, t_end) spans where |torque| >= EFFORT_LIMIT.
 
     Each saturated sample spans forward to the next sample's time (or to
     cycle_end_rel for the last one), so a single sample still renders as a
     visible band rather than an invisible zero-width line.
+
+    NOTE the abs(): joint_commanded_effort.csv (which resolve_run_paths prefers)
+    stores SIGNED, UNCLIPPED motor effort, so a joint saturating in the negative
+    direction sits at e.g. -1.02 N*m. Testing `val >= EFFORT_LIMIT` silently
+    missed every negative-direction saturation - about half of all saturated
+    samples in a typical run.
     """
     segs = []
     n = len(t_trq)
     open_start = None
     for i in range(n):
-        is_sat = (not math.isnan(trq_vals[i])) and trq_vals[i] >= EFFORT_LIMIT
+        is_sat = (not math.isnan(trq_vals[i])) and abs(trq_vals[i]) >= EFFORT_LIMIT
         sample_end = t_trq[i + 1] if i + 1 < n else cycle_end_rel
         if is_sat and open_start is None:
             open_start = t_trq[i]
@@ -247,7 +262,10 @@ def build_viewer(cmd_times, cmd_data, torque_times, torque_data, initial_layout)
         ax_pos.tick_params(labelsize=6, labelbottom=False)
         ax_pos.grid(True, alpha=0.25)
 
+        # Both limits: the effort trace is signed, so a single +limit line left
+        # negative-direction saturation with no visible reference.
         ax_trq.axhline(EFFORT_LIMIT, color='darkred', linestyle=':', linewidth=1, alpha=0.8, zorder=2)
+        ax_trq.axhline(-EFFORT_LIMIT, color='darkred', linestyle=':', linewidth=1, alpha=0.8, zorder=2)
         ax_trq.plot(t_trq, trq_vals, '-', color='crimson', linewidth=1.2, zorder=3)
         ax_trq.set_ylabel('N·m', fontsize=7)
         ax_trq.set_xlabel('t (s)', fontsize=7)
@@ -256,9 +274,13 @@ def build_viewer(cmd_times, cmd_data, torque_times, torque_data, initial_layout)
 
         finite_vals = [(t, v) for t, v in zip(t_trq, trq_vals) if not math.isnan(v)]
         if finite_vals:
-            peak_t, peak_v = max(finite_vals, key=lambda tv: tv[1])
+            # Peak by MAGNITUDE, not by signed value. The effort trace is signed,
+            # so keying on tv[1] picked the least-negative sample for any joint
+            # loaded mostly negative - reporting e.g. +0.72 as the "peak" when the
+            # real peak load was -0.95 (and missing its [SAT] tag).
+            peak_t, peak_v = max(finite_vals, key=lambda tv: abs(tv[1]))
             peak_phase = phase_at_time(segs, peak_t)
-            sat_tag = " [SAT]" if peak_v >= EFFORT_LIMIT else ""
+            sat_tag = " [SAT]" if abs(peak_v) >= EFFORT_LIMIT else ""
             ax_trq.plot([peak_t], [peak_v], 'o', color='black', markersize=4)
             ax_trq.annotate(
                 f"{peak_v:.3f}\n{PHASE_LABELS[peak_phase]}{sat_tag}",
@@ -375,19 +397,98 @@ def build_viewer(cmd_times, cmd_data, torque_times, torque_data, initial_layout)
     return fig
 
 
+def resolve_run_paths(run_arg):
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    candidates = []
+
+    if os.path.isabs(run_arg):
+        candidates.append(run_arg)
+    else:
+        candidates.append(run_arg)
+        if run_arg.isdigit():
+            run_name = f"run{run_arg}"
+        elif run_arg.startswith("run") and run_arg[3:].isdigit():
+            run_name = run_arg
+        else:
+            run_name = run_arg
+
+        candidates.append(os.path.join(script_dir, "ROS", "experiment", run_name))
+        candidates.append(os.path.join("ROS", "experiment", run_name))
+        candidates.append(os.path.join("experiment", run_name))
+
+    run_dir = None
+    for cand in candidates:
+        if os.path.isdir(cand):
+            run_dir = cand
+            break
+
+    if not run_dir:
+        sys.exit(f"Run directory not found for '{run_arg}'.")
+
+    cmd_csv = os.path.join(run_dir, "joint_commands_vs_states.csv")
+    effort_csv = os.path.join(run_dir, "joint_commanded_effort.csv")
+    torques_csv = os.path.join(run_dir, "joint_torques.csv")
+
+    if not os.path.isfile(cmd_csv):
+        sys.exit(f"Commands CSV not found in run directory: {cmd_csv}")
+
+    if os.path.isfile(effort_csv):
+        trq_csv = effort_csv
+    elif os.path.isfile(torques_csv):
+        trq_csv = torques_csv
+    else:
+        sys.exit(f"Neither joint_commanded_effort.csv nor joint_torques.csv found in: {run_dir}")
+
+    return cmd_csv, trq_csv
+
+
 def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('commands_csv', nargs='?', default='joint_commands_vs_states.csv')
-    parser.add_argument('torques_csv', nargs='?', default='joint_torques.csv')
-    parser.add_argument('--layout', choices=['grid', 'per-leg'], default='grid')
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    parser.add_argument(
+        'target_or_commands', nargs='?', default=None,
+        help="Run number (e.g., 111, run111), directory path, or commands CSV file"
+    )
+    parser.add_argument(
+        'torques_csv', nargs='?', default=None,
+        help="Torques/Effort CSV file (optional if run number or dir specified)"
+    )
+    parser.add_argument(
+        '-r', '--run', type=str, default=None,
+        help="Run number or directory (e.g. 111, run111)"
+    )
+    parser.add_argument(
+        '--layout', choices=['grid', 'per-leg'], default='grid',
+        help="Layout mode (default: grid)"
+    )
     args = parser.parse_args()
 
-    for path in (args.commands_csv, args.torques_csv):
+    run_target = args.run or args.target_or_commands
+
+    if run_target is not None and (
+        args.run is not None or
+        run_target.isdigit() or
+        (run_target.startswith('run') and run_target[3:].isdigit()) or
+        os.path.isdir(run_target) or
+        os.path.isdir(os.path.join('ROS', 'experiment', run_target)) or
+        os.path.isdir(os.path.join('ROS', 'experiment', f"run{run_target}"))
+    ):
+        commands_csv, torques_csv = resolve_run_paths(run_target)
+    else:
+        commands_csv = run_target or 'joint_commands_vs_states.csv'
+        torques_csv = args.torques_csv or ('joint_commanded_effort.csv' if os.path.isfile('joint_commanded_effort.csv') else 'joint_torques.csv')
+
+    for path in (commands_csv, torques_csv):
         if not os.path.isfile(path):
             sys.exit(f"File not found: {path}")
 
-    cmd_times, cmd_data = load_commands(args.commands_csv)
-    torque_times, torque_data = load_torques(args.torques_csv)
+    print(f"Loading commands: {commands_csv}")
+    print(f"Loading torques/effort: {torques_csv}")
+
+    cmd_times, cmd_data = load_commands(commands_csv)
+    torque_times, torque_data = load_torques(torques_csv)
 
     build_viewer(cmd_times, cmd_data, torque_times, torque_data, args.layout)
     plt.show()

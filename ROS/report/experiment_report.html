@@ -1,0 +1,2585 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<title>Passive Knee-Spring Assist — Simulation Study</title>
+<style>
+@page {
+  size: A4;
+  margin: 17mm 14mm 16mm 14mm;
+  @bottom-center { content: counter(page); font: 8pt "DejaVu Sans"; color: #777; }
+  @top-right { content: "Passive Knee-Spring Assist — Simulation Study";
+               font: 7pt "DejaVu Sans"; color: #999; }
+}
+@page :first { @bottom-center { content: none; } @top-right { content: none; } }
+
+body { font-family: "DejaVu Serif", serif; font-size: 9.6pt; line-height: 1.42;
+       color: #1a1a1a; text-align: justify; hyphens: auto; }
+
+h1, h2, h3, h4 { font-family: "DejaVu Sans", sans-serif; color: #0b2545;
+                 line-height: 1.22; text-align: left; }
+h1 { font-size: 20pt; margin: 0 0 4pt 0; }
+h2 { font-size: 13.5pt; margin: 0 0 8pt 0; padding-bottom: 3pt;
+     border-bottom: 1.1pt solid #0b2545; page-break-before: always; }
+h2.nobreak { page-break-before: avoid; }
+h3 { font-size: 11pt; margin: 13pt 0 4pt 0; }
+h4 { font-size: 9.8pt; margin: 10pt 0 3pt 0; }
+p { margin: 0 0 6pt 0; }
+strong { color: #0b2545; }
+
+/* ---- title page ---- */
+.title-page { page-break-after: always; text-align: center; padding-top: 42mm; }
+.title-page .t { font-family: "DejaVu Sans", sans-serif; font-size: 25pt;
+                 font-weight: bold; color: #0b2545; line-height: 1.2; }
+.title-page .s { font-family: "DejaVu Sans", sans-serif; font-size: 12.5pt;
+                 color: #444; margin-top: 8mm; }
+.title-page .m { font-size: 10pt; color: #555; margin-top: 26mm; line-height: 1.8; }
+.title-page hr { width: 45%; margin: 7mm auto; border: none;
+                 border-top: 0.9pt solid #b8c4d4; }
+
+/* ---- table of contents ---- */
+.toc { page-break-after: always; }
+.toc h2 { page-break-before: avoid; }
+.toc ul { list-style: none; padding-left: 0; margin: 0; }
+.toc ul ul { padding-left: 5.5mm; }
+.toc li { font-family: "DejaVu Sans", sans-serif; font-size: 8.3pt; margin: 0.7pt 0;
+          line-height: 1.25; }
+.toc > ul > li { font-weight: bold; font-size: 9pt; margin-top: 2.6pt; }
+.toc a { color: #0b2545; text-decoration: none; }
+
+/* ---- tables ---- */
+table { border-collapse: collapse; width: 100%; font-family: "DejaVu Sans", sans-serif;
+        font-size: 7.4pt; margin: 3pt 0 9pt 0; }
+th { background: #0b2545; color: #fff; font-weight: bold; text-align: left;
+     padding: 2.6pt 3pt; border: 0.4pt solid #0b2545; }
+td { padding: 2.2pt 3pt; border: 0.4pt solid #ccd4e0; vertical-align: top; }
+tbody tr:nth-child(even) { background: #f2f5fa; }
+thead { display: table-header-group; }
+tr { page-break-inside: avoid; }
+
+/* ---- figures ---- */
+img { max-width: 100%; height: auto; display: block; margin: 4pt auto 2pt auto;
+      page-break-inside: avoid; }
+p { orphans: 2; widows: 2; }
+em strong, strong em { font-family: "DejaVu Sans", sans-serif; }
+
+/* figure captions: '***Figure N.*** ...' becomes <em><strong>..</strong></em> */
+p > em:first-child > strong { color: #0b2545; }
+
+code { font-family: "DejaVu Sans Mono", monospace; font-size: 7.9pt;
+       background: #f0f2f6; padding: 0 1.5pt; }
+pre { background: #f5f6f9; border-left: 2.2pt solid #b8c4d4; padding: 5pt 7pt;
+      font-size: 8.2pt; page-break-inside: avoid; }
+pre code { background: none; font-size: 8.2pt; }
+
+hr { border: none; border-top: 0.5pt solid #d5dbe5; margin: 8pt 0; }
+.math { font-family: "DejaVu Serif", serif; font-style: italic; }
+.math sub, .math sup { font-style: normal; font-size: 0.72em; }
+ol, ul { margin: 0 0 6pt 0; padding-left: 6mm; }
+li { margin: 0 0 2.5pt 0; }
+</style></head><body>
+
+<div class="title-page">
+  <div class="t">Passive Knee-Spring Assist<br>on a Quadruped</div>
+  <hr>
+  <div class="s">A Simulation Study across Five Experiment Phases</div>
+  <div class="m"><p><strong>Platform</strong> THex Quadruped · 1.39847 kg · 12 joints (4 legs × 3) ·
+<strong>Simulator</strong> Gazebo Harmonic 8.14 (DART) · ROS 2 Humble
+<strong>Campaign</strong> 12–30 July 2026 · 212 simulation runs across 5 phases</p></div>
+</div>
+
+<div class="toc"><h2 class="nobreak">Contents</h2><div class="toc">
+<ul>
+<li><a href="#1-system-and-method">1 System and method</a><ul>
+<li><a href="#11-platform">1.1 Platform</a></li>
+<li><a href="#12-spring-model">1.2 Spring model</a></li>
+<li><a href="#13-assist-ratio-and-the-two-ways-a-spring-can-fail">1.3 Assist ratio, and the two ways a spring can fail</a></li>
+<li><a href="#14-metric-definitions">1.4 Metric definitions</a></li>
+</ul>
+</li>
+<li><a href="#2-data-provenance">2 Data provenance</a></li>
+<li><a href="#3-phase-1-harness-development-4-runs">3 Phase 1 — Harness development (4 runs)</a><ul>
+<li><a href="#31-what-was-done">3.1 What was done</a></li>
+<li><a href="#32-results">3.2 Results</a></li>
+<li><a href="#33-analysis">3.3 Analysis</a></li>
+</ul>
+</li>
+<li><a href="#4-phase-2a-shared-angle-sweep-111-runs">4 Phase 2a — Shared-angle sweep (111 runs)</a><ul>
+<li><a href="#41-what-was-done">4.1 What was done</a></li>
+<li><a href="#42-results">4.2 Results</a></li>
+<li><a href="#43-analysis-the-symmetry-conflict">4.3 Analysis — the symmetry conflict</a></li>
+<li><a href="#44-analysis-the-ridge-is-predictable">4.4 Analysis — the ridge is predictable</a></li>
+</ul>
+</li>
+<li><a href="#5-phase-2b-mirrored-angle-sweep-91-runs">5 Phase 2b — Mirrored-angle sweep (91 runs)</a><ul>
+<li><a href="#51-what-was-done">5.1 What was done</a></li>
+<li><a href="#52-results-the-ridge">5.2 Results — the ridge</a></li>
+<li><a href="#53-analysis-one-effective-degree-of-freedom">5.3 Analysis — one effective degree of freedom</a></li>
+<li><a href="#54-results-per-knee-symmetry">5.4 Results — per-knee symmetry</a></li>
+<li><a href="#55-results-cost-of-transport">5.5 Results — cost of transport</a></li>
+<li><a href="#56-analysis-why-the-three-cot-numbers-disagree">5.6 Analysis — why the three CoT numbers disagree</a></li>
+<li><a href="#57-analysis-the-cot-denominator-is-outside-its-own-validity-range">5.7 Analysis — the CoT denominator is outside its own validity range</a></li>
+<li><a href="#58-results-metric-independence-and-a-conflict-of-objectives">5.8 Results — metric independence, and a conflict of objectives</a></li>
+<li><a href="#59-choosing-a-configuration">5.9 Choosing a configuration</a></li>
+<li><a href="#510-results-control-artifacts">5.10 Results — control artifacts</a></li>
+<li><a href="#511-what-the-spring-does-to-the-effortangle-relationship">5.11 What the spring does to the effort–angle relationship</a></li>
+</ul>
+</li>
+<li><a href="#6-phase-2a-vs-2b-what-mirroring-bought">6 Phase 2a vs 2b — what mirroring bought</a></li>
+<li><a href="#7-phase-3a-replay-frequency-3-runs">7 Phase 3a — Replay frequency (3 runs)</a><ul>
+<li><a href="#71-what-was-done">7.1 What was done</a></li>
+<li><a href="#72-results">7.2 Results</a></li>
+<li><a href="#73-analysis">7.3 Analysis</a></li>
+</ul>
+</li>
+<li><a href="#8-phase-3b-trajectory-resolution-3-runs">8 Phase 3b — Trajectory resolution (3 runs)</a><ul>
+<li><a href="#81-what-was-done">8.1 What was done</a></li>
+<li><a href="#82-a-degenerate-case-that-must-be-excluded-first">8.2 A degenerate case that must be excluded first</a></li>
+<li><a href="#83-a-metadata-contradiction-resolved-from-the-data">8.3 A metadata contradiction, resolved from the data</a></li>
+<li><a href="#84-results">8.4 Results</a></li>
+<li><a href="#85-analysis">8.5 Analysis</a></li>
+<li><a href="#86-the-two-levers-at-matched-cycle-time">8.6 The two levers at matched cycle time</a></li>
+</ul>
+</li>
+<li><a href="#9-synthesis">9 Synthesis</a><ul>
+<li><a href="#91-findings">9.1 Findings</a></li>
+<li><a href="#92-recommended-configuration">9.2 Recommended configuration</a></li>
+<li><a href="#93-literature-context">9.3 Literature context</a></li>
+<li><a href="#94-supportable-and-unsupportable-claims">9.4 Supportable and unsupportable claims</a></li>
+</ul>
+</li>
+<li><a href="#10-limitations">10 Limitations</a><ul>
+<li><a href="#next-steps">Next steps</a></li>
+</ul>
+</li>
+<li><a href="#appendix-a-reproducing-this-report">Appendix A — Reproducing this report</a></li>
+<li><a href="#appendix-b-figure-and-table-index">Appendix B — Figure and table index</a></li>
+</ul>
+</div>
+</div>
+
+<h2 class="nobreak">Abstract</h2>
+<p>A linear torsion spring was placed in parallel with each knee actuator of a 1.4 kg
+quadruped and its two parameters — stiffness <span class="math">k<sub>x</sub></span> and rest angle <span class="math">θ<sub>0</sub></span> — were swept
+exhaustively in simulation. With the rest angle mirrored per leg, the spring removes
+<strong>34.39%</strong> of mean knee motor torque (0.2352 → 0.1543 N·m) and <strong>34.7%</strong> of the
+electrical (copper-loss) cost of transport. Mechanical cost of transport falls only
+<strong>7.4%</strong>; the gap is not a contradiction but a measurement property, because the spring
+cancels <em>static holding</em> torque, which performs almost no mechanical work.</p>
+<p>The optimum is a hyperbolic ridge rather than a peak: the design has one effective
+degree of freedom, and a locus of very different <span class="math">(k<sub>x</sub>, θ<sub>0</sub>)</span> pairs all deliver
+33.6–34.4%. Mirroring the rest angle eliminated all wrong-sign assist (0 of 360
+knee-cells, against 50 of 440 in the shared-angle sweep) and tightened bilateral
+asymmetry from 3.96 to <strong>1.15</strong> percentage points. The recommended configuration,
+<span class="math">k<sub>x</sub></span> = 0.20 N·m/rad with <span class="math">|θ<sub>0</sub>|</span> = ±15°, gives 34.12% reduction and is the tightest
+bilaterally symmetric cell in the sweep.</p>
+<p>Two results are independent of the spring. Peak knee demand is limited by the 10 Hz
+stepped set-point, not by the actuator or the spring: refining the trajectory from 16 to
+32 waypoints cuts peak demand <strong>48.7%</strong> with no spring fitted, roughly twice the benefit
+of halving the replay rate at the same cycle time. And baseline peak demand
+(0.9831 N·m) already exceeds the 0.9414 N·m actuator rating, so the spring improves
+motor sizing margin but does not resolve it.</p>
+<hr />
+
+<h2 id="1-system-and-method">1 System and method</h2>
+<h3 id="11-platform">1.1 Platform</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Platform</td>
+<td>THex Quadruped, 4 legs × 3 joints = 12 DoF</td>
+<td><code>model.sdf</code></td>
+</tr>
+<tr>
+<td>Total mass <span class="math">m</span></td>
+<td>1.39847 kg (13 links)</td>
+<td>summed from <code>model.sdf</code></td>
+</tr>
+<tr>
+<td>Actuator limit</td>
+<td>±0.9414 N·m per joint</td>
+<td><code>&lt;effort&gt;</code> in <code>model.sdf</code></td>
+</tr>
+<tr>
+<td>Control</td>
+<td>position PID, 10 Hz gait loop</td>
+<td><code>kinematic_gait.py</code></td>
+</tr>
+<tr>
+<td>Logging</td>
+<td>50 Hz, all 12 joints</td>
+<td><code>kinematic_gait.py</code></td>
+</tr>
+<tr>
+<td>Gait</td>
+<td>open-loop kinematic; quadratic Bézier swing + linear stance</td>
+<td><code>kinematics.py</code></td>
+</tr>
+<tr>
+<td>Physics</td>
+<td>DART via Gazebo Harmonic 8.14</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Gravity (CoT)</td>
+<td>9.8 m/s² → <span class="math">mg</span> = 13.7050 N</td>
+<td>Gazebo default</td>
+</tr>
+<tr>
+<td>Gravity (measured)</td>
+<td>9.7811 m/s²</td>
+<td>IMU accelerometer mean</td>
+</tr>
+</tbody>
+</table>
+<p>The two gravity values differ and are used for different purposes. The
+cost-of-transport denominator uses Gazebo's nominal 9.8 m/s²; the 9.7811 figure is the
+measured IMU mean and serves only as a cross-check that the simulator's gravity is what
+we think it is. Earlier drafts of this work quoted 9.78 in the CoT normalisation, which
+was wrong — <span class="math">mg</span> = 13.7050 N recovers exactly from the logged data.</p>
+<h3 id="12-spring-model">1.2 Spring model</h3>
+<p>The spring acts in parallel with the actuator, so whatever holding torque it supplies is
+torque the motor no longer has to:</p>
+<pre><code>τ_total(θ) = τ_motor(θ) + τ_spring(θ)
+τ_spring(θ) = k_x · (θ₀ − θ)
+⇒  τ_motor(θ) = τ_required(θ) − k_x · (θ₀ − θ)
+</code></pre>
+<p>Springs were fitted to the <strong>knees only</strong>; hips and feet carry no spring but still
+consume energy, so they are included in every whole-robot energy figure.</p>
+<p>In <strong>mirrored</strong> mode (Phase 2b) each knee receives a sign-matched rest angle,
+<span class="math">θ<sub>0</sub> = sign(HOLD) · |θ<sub>0</sub>|</span> — negative for the right knees,
+positive for the left. Section 4.3 explains why this is necessary.</p>
+<h3 id="13-assist-ratio-and-the-two-ways-a-spring-can-fail">1.3 Assist ratio, and the two ways a spring can fail</h3>
+<p>The fraction of the required holding torque that the spring supplies at the stance
+operating point is</p>
+<pre><code>ratio = τ_spring(q_op) / HOLD = k_x · (θ₀ − q_op) / HOLD
+</code></pre>
+<p>where <span class="math">q<sub>op</sub></span> is the measured mean stance angle and HOLD the measured signed mean
+motor effort in a baseline run. This single quantity separates two failure modes that
+are easily confused because both appear as a negative reduction:</p>
+<table>
+<thead>
+<tr>
+<th>Assist ratio</th>
+<th>What the spring does</th>
+<th>What the motor must do</th>
+<th>Outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0 – 100%</td>
+<td>lifts part of the load</td>
+<td>carries the rest</td>
+<td>helpful</td>
+</tr>
+<tr>
+<td>≈ 100%</td>
+<td>lifts exactly right</td>
+<td>carries almost nothing</td>
+<td>best case</td>
+</tr>
+<tr>
+<td>&gt; 200%</td>
+<td>lifts too hard</td>
+<td>pushes back down</td>
+<td><strong>over-assist</strong></td>
+</tr>
+<tr>
+<td>&lt; 0%</td>
+<td>pulls the wrong way</td>
+<td>carries load <em>and</em> fights spring</td>
+<td><strong>wrong sign</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Over-assist is a tuning error — the direction is right, the magnitude too large.
+Wrong-sign assist cannot be tuned away: no stiffness helps when the spring pulls the
+wrong way.</p>
+<h3 id="14-metric-definitions">1.4 Metric definitions</h3>
+<p>These are used throughout and are easy to misread, so they are defined once here. All
+are computed over the four knees and then averaged.</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Definition</th>
+<th>Why it exists</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Mean applied effort</strong></td>
+<td>mean of <span class="math">min(</td>
+<td>τ</td>
+</tr>
+<tr>
+<td><strong>RMS applied effort</strong></td>
+<td><span class="math">sqrt{mean(τ<sup>2</sup>)}</span> on the same rectified signal</td>
+<td>thermally relevant load</td>
+</tr>
+<tr>
+<td><strong>Peak demand</strong></td>
+<td><span class="math">max</td>
+<td>τ</td>
+</tr>
+<tr>
+<td><strong>p99 demand</strong></td>
+<td>99th percentile of the same unclipped signal</td>
+<td>sizing without single-sample outliers</td>
+</tr>
+<tr>
+<td><strong>Saturation %</strong></td>
+<td>fraction of applied samples at <span class="math">≥ 0.9414 - 10<sup>-4</sup></span></td>
+<td>how often the actuator lost authority</td>
+</tr>
+<tr>
+<td><strong>Torque variance</strong></td>
+<td>variance of the <strong>rectified</strong> effort</td>
+<td>load smoothness (note: not of the signed signal)</td>
+</tr>
+<tr>
+<td><strong>Mechanical work</strong></td>
+<td><span class="math">Σ</td>
+<td>τ · dθ</td>
+</tr>
+</tbody>
+</table>
+<p>Two subtleties matter. First, applied effort is clipped by the physics engine, so
+<span class="math">max(applied)</span> reads exactly the limit in most runs and carries no
+information — which is why peak and p99 are taken from the <em>commanded</em> stream instead.
+Second, a 10 Hz stepped set-point produces occasional single-sample derivative kicks, so
+peak alone is unreliable; a large peak/p99 ratio flags a cell as a control artifact
+rather than real demand (Section 5.8).</p>
+<hr />
+<h2 id="2-data-provenance">2 Data provenance</h2>
+<p><strong><em>Table 1.</em></strong> Campaign overview. Each phase fixed a measurement limitation found in the previous one; the effort columns only exist from Phase 2a onward.</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th style="text-align: right;">Runs</th>
+<th style="text-align: right;">Mean knee effort (N·m)</th>
+<th style="text-align: right;">Best reduction</th>
+<th style="text-align: right;">RMS change</th>
+<th style="text-align: right;">Saturation range</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 — Harness</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">torque magnitude only</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td>no commanded-effort logging</td>
+</tr>
+<tr>
+<td>2a — Shared sweep</td>
+<td style="text-align: right;">111</td>
+<td style="text-align: right;">0.2345</td>
+<td style="text-align: right;">33.97%</td>
+<td style="text-align: right;">-25.3%</td>
+<td style="text-align: right;">0.00–2.56%</td>
+<td>50/440 wrong-sign knee-cells</td>
+</tr>
+<tr>
+<td>2b — Mirrored sweep</td>
+<td style="text-align: right;">91</td>
+<td style="text-align: right;">0.2352</td>
+<td style="text-align: right;"><strong>34.39%</strong></td>
+<td style="text-align: right;">-25.7%</td>
+<td style="text-align: right;">0.00–2.12%</td>
+<td>0/360 wrong-sign; CoT available</td>
+</tr>
+<tr>
+<td>3a — Frequency</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.2101–0.2424</td>
+<td style="text-align: right;">no spring</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">0.19–4.88%</td>
+<td>peak +27%, saturation 6.5× at 20 Hz</td>
+</tr>
+<tr>
+<td>3b — Resolution</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.1994–0.2246</td>
+<td style="text-align: right;">no spring</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">0.00–0.62%</td>
+<td>peak −49% at 32 pts; N=8 degenerate</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="Experiment sequence. Run counts are globbed from disk rather than asserted." src="figures/timeline.png" /></p>
+<p><strong><em>Figure 1.</em></strong> Experiment sequence. Run counts are globbed from disk rather than asserted.</p>
+<p>Four provenance facts constrain what this report can compare, and each has caused an
+error in earlier drafts of this analysis:</p>
+<p><strong>Phase 1 cannot enter any effort comparison.</strong> It logs only unsigned joint torque
+magnitude and position command-vs-state. There is no commanded-effort column of any
+kind, so no reduction percentage, no RMS effort and no energy figure can be computed
+for it. Phase 1 is reported as a harness change log with torque-magnitude evidence.</p>
+<p><strong>Cost of transport exists only for Phase 2b.</strong> The CoT denominator needs forward
+displacement, which comes from <code>body_state.csv</code> — present in 91 of 91 Phase-2b runs and
+in zero runs of every other phase.</p>
+<p><strong>The two sweeps share no interior grid point.</strong> Phase 2a spans <span class="math">k<sub>x</sub></span> 0.05–0.50 with
+<span class="math">θ<sub>0</sub></span> 0…−50°; Phase 2b spans <span class="math">k<sub>x</sub></span> 0.05–0.45 with <span class="math">|θ<sub>0</sub>|</span> 0…45°. Only the <span class="math">θ<sub>0</sub></span> = 0°
+line is common to both, and the two baselines were re-simulated rather than reused
+(0.2345 vs 0.2352 N·m mean knee effort, +0.31%). Every cross-sweep claim in Section 6
+rests on that single shared column.</p>
+<p><strong>The <code>run_dir</code> column in all 202 sweep rows is stale.</strong> It points at
+<code>ROS/experiment/runN</code>, a scratch directory renamed after each sweep and no longer
+present. Runs are therefore resolved by <code>run_index</code> → <code>&lt;phase_dir&gt;/run&lt;N&gt;</code>, a mapping
+verified 1:1 and gapless for both sweeps. Note also that <code>run_dir</code> cannot identify which
+phase a row belongs to: rows in two different CSVs claim identical paths.</p>
+<p>Two smaller items. Phase 1 has a <strong>numbering gap</strong> — <code>run1</code>, <code>run2</code>, <code>run3</code>, <code>run6</code>
+exist; runs 4 and 5 were not kept. And Phase 1's <code>joint_commands_vs_states.csv</code> carries
+one NaN row (the last) in every <code>_state</code> column, so all Phase-1 statistics here are
+NaN-aware.</p>
+<p>Recording in Phases 2–3 begins only after a one-gait-cycle warm-up, so the spawn
+transient is excluded by construction. The first <em>recorded</em> cycle still runs measurably
+hot; Section 10 quantifies the consequence.</p>
+<hr />
+<h2 id="3-phase-1-harness-development-4-runs">3 Phase 1 — Harness development (4 runs)</h2>
+<h3 id="31-what-was-done">3.1 What was done</h3>
+<p>Four exploratory runs established that the gait produces measurable, cyclic knee
+torques, and progressively removed artifacts that made the early data unusable for
+spring optimisation. This is a change log, not a controlled experiment: the runs differ
+in more than one variable.</p>
+<p><strong><em>Table 2.</em></strong> Phase 1 run-by-run change log and start-up transient magnitude. Notes are quoted from each <code>run_info.txt</code>; torque statistics are over all 12 joints.</p>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th style="text-align: right;">Waypoints/cycle</th>
+<th style="text-align: right;">Log start (s)</th>
+<th style="text-align: right;">Peak |τ|, first 0.5 s</th>
+<th style="text-align: right;">Peak |τ|, rest</th>
+<th style="text-align: right;">Early/rest</th>
+<th style="text-align: right;">Mean |τ|</th>
+<th style="text-align: right;">Mean err</th>
+<th>Change recorded in <code>run_info.txt</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>run1</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">7.420</td>
+<td style="text-align: right;">1.9558</td>
+<td style="text-align: right;">0.9414</td>
+<td style="text-align: right;">2.08×</td>
+<td style="text-align: right;">0.1894</td>
+<td style="text-align: right;">4.62°</td>
+<td>A simple run with all the basic configuration no changes (Baseline)</td>
+</tr>
+<tr>
+<td>run2</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">5.888</td>
+<td style="text-align: right;">0.9611</td>
+<td style="text-align: right;">0.9490</td>
+<td style="text-align: right;">1.01×</td>
+<td style="text-align: right;">0.1758</td>
+<td style="text-align: right;">4.66°</td>
+<td>this is run basically with the dynamics attach in sdf (so friction and dampning</td>
+</tr>
+<tr>
+<td>run3</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">2.740</td>
+<td style="text-align: right;">1.4784</td>
+<td style="text-align: right;">0.9548</td>
+<td style="text-align: right;">1.55×</td>
+<td style="text-align: right;">0.1966</td>
+<td style="text-align: right;">5.25°</td>
+<td>Removed the two stall phases from the walking trajectory</td>
+</tr>
+<tr>
+<td>run6</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">0.4631</td>
+<td style="text-align: right;">0.4570</td>
+<td style="text-align: right;">1.01×</td>
+<td style="text-align: right;">0.1104</td>
+<td style="text-align: right;">3.52°</td>
+<td>so this is no stall and start from home position or gait starting position rather than lating flat on ground</td>
+</tr>
+</tbody>
+</table>
+<h3 id="32-results">3.2 Results</h3>
+<p><img alt="Start-up transient. Left and centre: envelope of peak absolute torque across all 12 joints for run1 (spawned lying flat) and run6 (started in the gait pose). Right: ratio of the first-0.5 s peak to the peak over the remainder, for all four runs." src="figures/p1_transient.png" /></p>
+<p><strong><em>Figure 2.</em></strong> Start-up transient. Left and centre: envelope of peak absolute torque across all 12 joints for run1 (spawned lying flat) and run6 (started in the gait pose). Right: ratio of the first-0.5 s peak to the peak over the remainder, for all four runs.</p>
+<p><img alt="Knee torque magnitude and FR-knee command-vs-state tracking for run1 (top) and run6 (bottom)." src="figures/p1_traces.png" /></p>
+<p><strong><em>Figure 3.</em></strong> Knee torque magnitude and FR-knee command-vs-state tracking for run1 (top) and run6 (bottom).</p>
+<h3 id="33-analysis">3.3 Analysis</h3>
+<p>The start-up artifact is real and large. In run1 the logger begins 7.420 s into the
+simulation and the first 0.5 s still contains a 1.9558 N·m spike — <strong>2.08×</strong> the peak
+over the remaining 9.3 s, and more than twice the actuator's own 0.9414 N·m rating. By
+run6 the transient is gone: the early peak (0.4631 N·m) matches the steady-state peak
+(0.4570 N·m) to within 1.3%, giving a ratio of <strong>1.01×</strong>, and the log starts at
+<span class="math">t</span> = 0 because the robot is already in its gait pose.</p>
+<p>Figure 1 shows the transient is not confined to the first half second — run1's envelope
+decays over roughly four seconds, so any metric averaged over a short run was
+contaminated well beyond the window usually inspected. Mean tracking error also improves
+from 4.62° to 3.52°, consistent with a controller that no longer starts behind.</p>
+<p><strong>What cannot be concluded.</strong> Overall peak torque falls 4.22× and mean torque 42% from
+run1 to run6, but three things changed across those runs — SDF joint damping and
+friction were added (run2), the two stall phases were removed (run3), and the start pose
+changed (run6). The transient removal is attributable to the start-pose change because
+the early/rest ratio isolates it; the amplitude reduction is not attributable to any
+single change. Run3 is also a caution against reading these as monotone progress: it has
+the <em>highest</em> mean torque of the four.</p>
+<p>The decisive limitation is what Phase 1 does not record. Without commanded effort there
+is no way to separate controller demand from spring assist from gravity, which is
+exactly the decomposition a spring study needs. That gap motivated the Phase 2a harness.</p>
+<hr />
+<h2 id="4-phase-2a-shared-angle-sweep-111-runs">4 Phase 2a — Shared-angle sweep (111 runs)</h2>
+<h3 id="41-what-was-done">4.1 What was done</h3>
+<p>Commanded-effort logging, effort-vs-angle logging and a settle phase were added, and the
+waypoint count was fixed at 16. The spring was then swept over
+<span class="math">k<sub>x</sub> ∈ {0.05 … 0.50}</span> × <span class="math">θ<sub>0</sub> ∈ {0, −5, … , −50°}</span> — 110 spring cells plus
+one baseline. <strong>The same <span class="math">θ<sub>0</sub></span> was applied to all four knees.</strong></p>
+<h3 id="42-results">4.2 Results</h3>
+<p><strong><em>Table 3.</em></strong> Phase 2a best five configurations by mean knee effort. Baseline mean knee effort 0.2345 N·m. "Knee spread" is the best-minus-worst knee at that single cell.</p>
+<table>
+<thead>
+<tr>
+<th>Rank</th>
+<th style="text-align: right;"><span class="math">k<sub>x</sub></span></th>
+<th style="text-align: right;"><span class="math">θ<sub>0</sub></span></th>
+<th style="text-align: right;">Mean effort (N·m)</th>
+<th style="text-align: right;">Reduction</th>
+<th style="text-align: right;">RMS (N·m)</th>
+<th style="text-align: right;">p99 (N·m)</th>
+<th style="text-align: right;">Sat.</th>
+<th style="text-align: right;">Track err</th>
+<th style="text-align: right;">Knee spread (pts)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td style="text-align: right;">0.30</td>
+<td style="text-align: right;">0°</td>
+<td style="text-align: right;">0.1548</td>
+<td style="text-align: right;"><strong>33.97%</strong></td>
+<td style="text-align: right;">0.2133</td>
+<td style="text-align: right;">0.8611</td>
+<td style="text-align: right;">0.69%</td>
+<td style="text-align: right;">3.51°</td>
+<td style="text-align: right;">3.96</td>
+</tr>
+<tr>
+<td>2</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0°</td>
+<td style="text-align: right;">0.1556</td>
+<td style="text-align: right;"><strong>33.63%</strong></td>
+<td style="text-align: right;">0.2153</td>
+<td style="text-align: right;">0.8915</td>
+<td style="text-align: right;">0.88%</td>
+<td style="text-align: right;">3.50°</td>
+<td style="text-align: right;">6.19</td>
+</tr>
+<tr>
+<td>3</td>
+<td style="text-align: right;">0.30</td>
+<td style="text-align: right;">-5°</td>
+<td style="text-align: right;">0.1571</td>
+<td style="text-align: right;"><strong>33.01%</strong></td>
+<td style="text-align: right;">0.2146</td>
+<td style="text-align: right;">0.8660</td>
+<td style="text-align: right;">0.56%</td>
+<td style="text-align: right;">3.41°</td>
+<td style="text-align: right;">3.97</td>
+</tr>
+<tr>
+<td>4</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">-5°</td>
+<td style="text-align: right;">0.1595</td>
+<td style="text-align: right;"><strong>31.98%</strong></td>
+<td style="text-align: right;">0.2180</td>
+<td style="text-align: right;">0.9010</td>
+<td style="text-align: right;">0.56%</td>
+<td style="text-align: right;">3.48°</td>
+<td style="text-align: right;">6.10</td>
+</tr>
+<tr>
+<td>5</td>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">0°</td>
+<td style="text-align: right;">0.1599</td>
+<td style="text-align: right;"><strong>31.81%</strong></td>
+<td style="text-align: right;">0.2150</td>
+<td style="text-align: right;">0.8346</td>
+<td style="text-align: right;">0.25%</td>
+<td style="text-align: right;">3.53°</td>
+<td style="text-align: right;">3.43</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="Phase 2a torque reduction and mean tracking error over the shared-angle grid. Circles mark each row optimum." src="figures/p2a_grids.png" /></p>
+<p><strong><em>Figure 4.</em></strong> Phase 2a torque reduction and mean tracking error over the shared-angle grid. Circles mark each row optimum.</p>
+<p><strong><em>Table 4.</em></strong> Per-knee best achievable reduction. Each row is a <em>different</em> grid cell — these values cannot be compared as though they came from one configuration.</p>
+<table>
+<thead>
+<tr>
+<th>Knee</th>
+<th style="text-align: right;">Baseline effort (N·m)</th>
+<th style="text-align: right;">Best reduction</th>
+<th style="text-align: right;">at <span class="math">k<sub>x</sub></span></th>
+<th style="text-align: right;">at <span class="math">θ<sub>0</sub></span></th>
+<th style="text-align: right;">Stance <span class="math">q<sub>op</sub></span></th>
+<th style="text-align: right;">HOLD (N·m)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FR</td>
+<td style="text-align: right;">0.2387</td>
+<td style="text-align: right;">33.72%</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0°</td>
+<td style="text-align: right;">+37.2°</td>
+<td style="text-align: right;">-0.246</td>
+</tr>
+<tr>
+<td>BR</td>
+<td style="text-align: right;">0.2359</td>
+<td style="text-align: right;">35.21%</td>
+<td style="text-align: right;">0.30</td>
+<td style="text-align: right;">0°</td>
+<td style="text-align: right;">+42.9°</td>
+<td style="text-align: right;">-0.248</td>
+</tr>
+<tr>
+<td>BL</td>
+<td style="text-align: right;">0.2423</td>
+<td style="text-align: right;">37.58%</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">-15°</td>
+<td style="text-align: right;">-40.8°</td>
+<td style="text-align: right;">+0.264</td>
+</tr>
+<tr>
+<td>FL</td>
+<td style="text-align: right;">0.2210</td>
+<td style="text-align: right;">31.46%</td>
+<td style="text-align: right;">0.30</td>
+<td style="text-align: right;">0°</td>
+<td style="text-align: right;">-38.4°</td>
+<td style="text-align: right;">+0.258</td>
+</tr>
+</tbody>
+</table>
+<h3 id="43-analysis-the-symmetry-conflict">4.3 Analysis — the symmetry conflict</h3>
+<p>Every one of the top five configurations sits at <span class="math">θ<sub>0</sub></span> = 0° or −5°, and the far corner
+of the grid collapses to −80%. Both follow from one fact: <strong>the legs are mirrored.</strong> The
+right knees stand at <span class="math">q<sub>op</sub></span> = +37.2° and +42.9° with holding torques of −0.246 and
+−0.248 N·m; the left knees at −38.4° and −40.8° with <strong>+0.258 and +0.264 N·m</strong>. The
+required assist has opposite sign on the two sides.</p>
+<p>A single shared <span class="math">θ<sub>0</sub></span> can only serve both sides at <span class="math">θ<sub>0</sub></span> = 0°, where the lever arm is
+<span class="math">-q<sub>op</sub></span> and therefore already carries each side's sign. Move away from zero and the
+two sides fail in opposite ways.</p>
+<p><img alt="Predicted failure mode for each of the 440 knee-cells from the assist ratio of Section 1.3, with cells whose *measured* reduction is negative overlaid as crosses." src="figures/p2a_failure_map.png" /></p>
+<p><strong><em>Figure 5.</em></strong> Predicted failure mode for each of the 440 knee-cells from the assist ratio of Section 1.3, with cells whose <em>measured</em> reduction is negative overlaid as crosses.</p>
+<p><strong><em>Table 5.</em></strong> Failure modes by knee. Wrong-sign and over-assist occur on opposite sides and in opposite corners of the grid.</p>
+<table>
+<thead>
+<tr>
+<th>Knee</th>
+<th style="text-align: right;">HOLD (N·m)</th>
+<th style="text-align: right;">Wrong sign (ratio &lt; 0)</th>
+<th style="text-align: right;">Over-assist (ratio &gt; 200%)</th>
+<th style="text-align: right;">Predicted harmful</th>
+<th style="text-align: right;">Measured reduction &lt; 0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FR</td>
+<td style="text-align: right;">-0.246</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">30</td>
+</tr>
+<tr>
+<td>BR</td>
+<td style="text-align: right;">-0.248</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">28</td>
+</tr>
+<tr>
+<td>BL</td>
+<td style="text-align: right;">+0.264</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">21</td>
+</tr>
+<tr>
+<td>FL</td>
+<td style="text-align: right;">+0.258</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">43</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"><strong>50</strong></td>
+<td style="text-align: right;"><strong>40</strong></td>
+<td style="text-align: right;"><strong>90</strong></td>
+<td style="text-align: right;"><strong>122</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The prediction and the measurement agree on <strong>92.7%</strong> of the 440 knee-cells, and the
+agreement is one-directional in a useful way: all 90 cells predicted harmful do measure
+negative — there are no false positives — while 32 cells measure negative without being
+predicted so. The static model is therefore a reliable <em>sufficient</em> condition for harm
+and an optimistic one overall; dynamic effects harm cells the static model passes.</p>
+<p>The right knees never suffer wrong-sign assist (0 cells) but are over-assisted in 40
+cells at high stiffness. The left knees are never over-assisted but receive wrong-sign
+assist in 50 cells — 20 for BL, 30 for FL, the difference being simply that FL's stance
+angle is 2.5° shallower. <strong>50 of 440 knee-cells (11.4%) were therefore uninterpretable
+by construction</strong>, not by mis-tuning.</p>
+<h3 id="44-analysis-the-ridge-is-predictable">4.4 Analysis — the ridge is predictable</h3>
+<p>Effort is minimised when the assist cancels the holding torque, which gives a predicted
+optimal stiffness for every rest angle:</p>
+<pre><code>k_x* = |HOLD| / |θ₀ − q_op|
+</code></pre>
+<p>a hyperbola in the <span class="math">(k<sub>x</sub>, θ<sub>0</sub>)</span> plane — a ridge, not a peak.</p>
+<p><img alt="Predicted optimal stiffness against the measured column-wise argmax, per knee. Lines are the static model; markers are measurements." src="figures/p2a_kx_star.png" /></p>
+<p><strong><em>Figure 6.</em></strong> Predicted optimal stiffness against the measured column-wise argmax, per knee. Lines are the static model; markers are measurements.</p>
+<p>For the right knees the model is essentially exact. For the left knees the predicted
+<span class="math">k<sub>x</sub><sup>*</sup></span> runs off the top of the grid for <span class="math">θ<sub>0</sub> &lt; −10°</span>, so the measured argmax is pinned
+to the boundary or, inside the wrong-sign region, collapses to the smallest stiffness —
+where a harmful spring does least damage. The apparent model failure on the left is a
+grid-range and sign artifact, not a modelling error.</p>
+<p><strong>Consequence.</strong> Reporting "the optimum is <span class="math">k<sub>x</sub></span> = 0.30, <span class="math">θ<sub>0</sub></span> = 0°" overstates the
+result's specificity. The defensible statement is that an assist torque of ≈0.25 N·m
+removes about a third of knee effort, and that (0.30, 0°) is one convenient point on the
+locus delivering it.</p>
+<p>One further caution on Phase 2a: <strong>109 of its 111 runs saturate the actuator at least
+once</strong>, so no claim about staying inside the torque envelope is supportable from this
+sweep.</p>
+<hr />
+<h2 id="5-phase-2b-mirrored-angle-sweep-91-runs">5 Phase 2b — Mirrored-angle sweep (91 runs)</h2>
+<h3 id="51-what-was-done">5.1 What was done</h3>
+<p>Each knee now receives <span class="math">θ<sub>0</sub> = sign(HOLD) · |θ<sub>0</sub>|</span>, making the
+assist direction correct on all four knees by construction. The grid became
+<span class="math">k<sub>x</sub> ∈ {0.05 … 0.45}</span> × <span class="math">|θ<sub>0</sub>| ∈ {0 … 45°}</span> = 90 cells plus baseline.
+Body pose, odometry and IMU logging were added, enabling forward displacement and
+therefore cost of transport.</p>
+<h3 id="52-results-the-ridge">5.2 Results — the ridge</h3>
+<p><strong><em>Table 6.</em></strong> Phase 2b best five configurations by mean knee effort. Baseline 0.2352 N·m.</p>
+<table>
+<thead>
+<tr>
+<th>Rank</th>
+<th style="text-align: right;"><span class="math">k<sub>x</sub></span></th>
+<th style="text-align: right;">|<span class="math">θ<sub>0</sub></span>|</th>
+<th style="text-align: right;">Mean effort (N·m)</th>
+<th style="text-align: right;">Reduction</th>
+<th style="text-align: right;">RMS (N·m)</th>
+<th style="text-align: right;">p99 (N·m)</th>
+<th style="text-align: right;">Sat.</th>
+<th style="text-align: right;">Track err</th>
+<th style="text-align: right;">Knee spread (pts)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">±35°</td>
+<td style="text-align: right;">0.1543</td>
+<td style="text-align: right;"><strong>34.39%</strong></td>
+<td style="text-align: right;">0.2126</td>
+<td style="text-align: right;">0.8745</td>
+<td style="text-align: right;">0.75%</td>
+<td style="text-align: right;">3.40°</td>
+<td style="text-align: right;">2.71</td>
+</tr>
+<tr>
+<td>2</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">±20°</td>
+<td style="text-align: right;">0.1546</td>
+<td style="text-align: right;"><strong>34.28%</strong></td>
+<td style="text-align: right;">0.2125</td>
+<td style="text-align: right;">0.8753</td>
+<td style="text-align: right;">0.69%</td>
+<td style="text-align: right;">3.51°</td>
+<td style="text-align: right;">3.49</td>
+</tr>
+<tr>
+<td>3</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">±15°</td>
+<td style="text-align: right;">0.1549</td>
+<td style="text-align: right;"><strong>34.12%</strong></td>
+<td style="text-align: right;">0.2121</td>
+<td style="text-align: right;">0.8636</td>
+<td style="text-align: right;">0.31%</td>
+<td style="text-align: right;">3.54°</td>
+<td style="text-align: right;">1.15</td>
+</tr>
+<tr>
+<td>4</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">±40°</td>
+<td style="text-align: right;">0.1550</td>
+<td style="text-align: right;"><strong>34.10%</strong></td>
+<td style="text-align: right;">0.2130</td>
+<td style="text-align: right;">0.8884</td>
+<td style="text-align: right;">0.75%</td>
+<td style="text-align: right;">3.46°</td>
+<td style="text-align: right;">4.92</td>
+</tr>
+<tr>
+<td>5</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">±30°</td>
+<td style="text-align: right;">0.1551</td>
+<td style="text-align: right;"><strong>34.04%</strong></td>
+<td style="text-align: right;">0.2127</td>
+<td style="text-align: right;">0.8695</td>
+<td style="text-align: right;">0.31%</td>
+<td style="text-align: right;">3.47°</td>
+<td style="text-align: right;">1.83</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="Phase 2b torque reduction over the mirrored grid, full colour range. Circles mark row optima, which trace the ridge." src="figures/p2b_ridge.png" /></p>
+<p><strong><em>Figure 7.</em></strong> Phase 2b torque reduction over the mirrored grid, full colour range. Circles mark row optima, which trace the ridge.</p>
+<p><strong><em>Table 7.</em></strong> Complete Phase 2b reduction grid (%). Bold marks each row optimum; negative values are over-assist.</p>
+<table>
+<thead>
+<tr>
+<th><span class="math">k<sub>x</sub></span> \ |<span class="math">θ<sub>0</sub></span>|</th>
+<th style="text-align: right;">±0°</th>
+<th style="text-align: right;">±5°</th>
+<th style="text-align: right;">±10°</th>
+<th style="text-align: right;">±15°</th>
+<th style="text-align: right;">±20°</th>
+<th style="text-align: right;">±25°</th>
+<th style="text-align: right;">±30°</th>
+<th style="text-align: right;">±35°</th>
+<th style="text-align: right;">±40°</th>
+<th style="text-align: right;">±45°</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0.05</strong></td>
+<td style="text-align: right;">3.2</td>
+<td style="text-align: right;">8.9</td>
+<td style="text-align: right;">9.9</td>
+<td style="text-align: right;">10.9</td>
+<td style="text-align: right;">11.9</td>
+<td style="text-align: right;">12.8</td>
+<td style="text-align: right;">13.8</td>
+<td style="text-align: right;">15.1</td>
+<td style="text-align: right;">16.1</td>
+<td style="text-align: right;"><strong>16.6</strong></td>
+</tr>
+<tr>
+<td><strong>0.10</strong></td>
+<td style="text-align: right;">14.8</td>
+<td style="text-align: right;">17.1</td>
+<td style="text-align: right;">18.3</td>
+<td style="text-align: right;">20.6</td>
+<td style="text-align: right;">22.7</td>
+<td style="text-align: right;">24.9</td>
+<td style="text-align: right;">26.5</td>
+<td style="text-align: right;">28.4</td>
+<td style="text-align: right;">29.6</td>
+<td style="text-align: right;"><strong>31.2</strong></td>
+</tr>
+<tr>
+<td><strong>0.15</strong></td>
+<td style="text-align: right;">21.4</td>
+<td style="text-align: right;">24.4</td>
+<td style="text-align: right;">27.1</td>
+<td style="text-align: right;">29.7</td>
+<td style="text-align: right;">31.5</td>
+<td style="text-align: right;">33.0</td>
+<td style="text-align: right;">34.0</td>
+<td style="text-align: right;"><strong>34.4</strong></td>
+<td style="text-align: right;">34.1</td>
+<td style="text-align: right;">33.4</td>
+</tr>
+<tr>
+<td><strong>0.20</strong></td>
+<td style="text-align: right;">27.1</td>
+<td style="text-align: right;">30.8</td>
+<td style="text-align: right;">32.9</td>
+<td style="text-align: right;">34.1</td>
+<td style="text-align: right;"><strong>34.3</strong></td>
+<td style="text-align: right;">33.6</td>
+<td style="text-align: right;">28.6</td>
+<td style="text-align: right;">30.3</td>
+<td style="text-align: right;">28.0</td>
+<td style="text-align: right;">25.2</td>
+</tr>
+<tr>
+<td><strong>0.25</strong></td>
+<td style="text-align: right;">31.9</td>
+<td style="text-align: right;">33.8</td>
+<td style="text-align: right;"><strong>34.0</strong></td>
+<td style="text-align: right;">33.2</td>
+<td style="text-align: right;">31.1</td>
+<td style="text-align: right;">27.9</td>
+<td style="text-align: right;">25.0</td>
+<td style="text-align: right;">20.8</td>
+<td style="text-align: right;">14.8</td>
+<td style="text-align: right;">7.9</td>
+</tr>
+<tr>
+<td><strong>0.30</strong></td>
+<td style="text-align: right;">33.7</td>
+<td style="text-align: right;"><strong>33.7</strong></td>
+<td style="text-align: right;">31.5</td>
+<td style="text-align: right;">28.6</td>
+<td style="text-align: right;">24.5</td>
+<td style="text-align: right;">19.3</td>
+<td style="text-align: right;">12.2</td>
+<td style="text-align: right;">2.7</td>
+<td style="text-align: right;">-7.3</td>
+<td style="text-align: right;">-18.0</td>
+</tr>
+<tr>
+<td><strong>0.35</strong></td>
+<td style="text-align: right;"><strong>33.6</strong></td>
+<td style="text-align: right;">28.0</td>
+<td style="text-align: right;">26.8</td>
+<td style="text-align: right;">21.5</td>
+<td style="text-align: right;">14.5</td>
+<td style="text-align: right;">4.1</td>
+<td style="text-align: right;">-7.5</td>
+<td style="text-align: right;">-20.0</td>
+<td style="text-align: right;">-32.6</td>
+<td style="text-align: right;">-45.6</td>
+</tr>
+<tr>
+<td><strong>0.40</strong></td>
+<td style="text-align: right;"><strong>31.0</strong></td>
+<td style="text-align: right;">26.9</td>
+<td style="text-align: right;">20.3</td>
+<td style="text-align: right;">11.2</td>
+<td style="text-align: right;">-1.2</td>
+<td style="text-align: right;">-14.9</td>
+<td style="text-align: right;">-29.1</td>
+<td style="text-align: right;">-43.5</td>
+<td style="text-align: right;">-58.7</td>
+<td style="text-align: right;">-73.0</td>
+</tr>
+<tr>
+<td><strong>0.45</strong></td>
+<td style="text-align: right;"><strong>27.4</strong></td>
+<td style="text-align: right;">20.9</td>
+<td style="text-align: right;">6.2</td>
+<td style="text-align: right;">-2.9</td>
+<td style="text-align: right;">-18.6</td>
+<td style="text-align: right;">-34.7</td>
+<td style="text-align: right;">-51.1</td>
+<td style="text-align: right;">-67.8</td>
+<td style="text-align: right;">-83.8</td>
+<td style="text-align: right;">-100.7</td>
+</tr>
+</tbody>
+</table>
+<p><strong><em>Table 8.</em></strong> The ridge, read off row by row.</p>
+<table>
+<thead>
+<tr>
+<th><span class="math">k<sub>x</sub></span> (N·m/rad)</th>
+<th style="text-align: right;">Best |<span class="math">θ<sub>0</sub></span>|</th>
+<th style="text-align: right;">Reduction there</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.05</td>
+<td style="text-align: right;">±45°</td>
+<td style="text-align: right;">16.64%</td>
+</tr>
+<tr>
+<td>0.10</td>
+<td style="text-align: right;">±45°</td>
+<td style="text-align: right;">31.22%</td>
+</tr>
+<tr>
+<td>0.15</td>
+<td style="text-align: right;">±35°</td>
+<td style="text-align: right;">34.39%</td>
+</tr>
+<tr>
+<td>0.20</td>
+<td style="text-align: right;">±20°</td>
+<td style="text-align: right;">34.28%</td>
+</tr>
+<tr>
+<td>0.25</td>
+<td style="text-align: right;">±10°</td>
+<td style="text-align: right;">34.00%</td>
+</tr>
+<tr>
+<td>0.30</td>
+<td style="text-align: right;">±5°</td>
+<td style="text-align: right;">33.72%</td>
+</tr>
+<tr>
+<td>0.35</td>
+<td style="text-align: right;">±0°</td>
+<td style="text-align: right;">33.64%</td>
+</tr>
+<tr>
+<td>0.40</td>
+<td style="text-align: right;">±0°</td>
+<td style="text-align: right;">31.04%</td>
+</tr>
+<tr>
+<td>0.45</td>
+<td style="text-align: right;">±0°</td>
+<td style="text-align: right;">27.36%</td>
+</tr>
+</tbody>
+</table>
+<h3 id="53-analysis-one-effective-degree-of-freedom">5.3 Analysis — one effective degree of freedom</h3>
+<p>As stiffness rises the best rest angle falls monotonically, exactly as
+<span class="math">k<sub>x</sub>·(|θ<sub>0</sub>| + |q<sub>op</sub>|)</span> requires. Everything from <span class="math">k<sub>x</sub></span> = 0.15 to 0.35 delivers
+33.6–34.4% — a 0.8-point band across five very different parameter pairs. <strong>The design
+has one effective degree of freedom, not two.</strong> This is good news for manufacturing: the
+spring must deliver roughly the right assist <em>torque</em>, and how that is split between
+stiffness and preload is a convenience.</p>
+<p>Only <strong>23 of 90</strong> cells exceed 30% reduction and <strong>19 are actively harmful</strong>, so the
+useful region is a narrow band rather than most of the grid. The penalty is strongly
+asymmetric: moving along the ridge costs almost nothing, moving across it is severe —
+at <span class="math">k<sub>x</sub></span> = 0.45, going from ±0° to ±45° takes mean effort from 0.171 to 0.472 N·m,
+roughly double baseline. <strong>If the spring must be mis-sized, size it low.</strong></p>
+<p>Both ends of the ridge exit the grid: below <span class="math">k<sub>x</sub></span> = 0.10 the best <span class="math">|θ<sub>0</sub>|</span> is 45°, the
+grid edge, and at <span class="math">k<sub>x</sub> ≥ 0.35</span> the best is 0°, also an edge (mirroring forbids going
+further). The interior optimum near <span class="math">k<sub>x</sub></span> 0.15–0.25 is genuine; the low-stiffness branch
+is unmapped.</p>
+<h3 id="54-results-per-knee-symmetry">5.4 Results — per-knee symmetry</h3>
+<p><img alt="Per-knee reduction across the mirrored grid on a shared colour scale, so the four panels are directly comparable." src="figures/p2b_per_knee.png" /></p>
+<p><strong><em>Figure 8.</em></strong> Per-knee reduction across the mirrored grid on a shared colour scale, so the four panels are directly comparable.</p>
+<p>Across the grid the best-minus-worst knee spread runs from <strong>1.15</strong> to <strong>15.58</strong> points,
+median 8.85. The minimum occurs at <span class="math">k<sub>x</sub></span> = 0.20, <span class="math">|θ<sub>0</sub>|</span> = ±15°, which happens to sit
+near all four knees' individual optima simultaneously. FL is consistently the weakest
+knee and BL the strongest; that ordering follows the measured holding torques
+(0.246 → 0.264 N·m) and is not a mirroring defect. Only per-knee stiffness could remove
+the residue.</p>
+<h3 id="55-results-cost-of-transport">5.5 Results — cost of transport</h3>
+<p>Cost of transport is a property of the whole robot, so the numerator counts all 12
+joints even though only the knees carry springs:
+<span class="math">CoT = E / (m g d)</span> with <span class="math">mg</span> = 13.7050 N. The knees account for
+55.2% of total mechanical work, so a knee-only figure would understate the true
+cost by nearly half.</p>
+<p><strong><em>Table 9.</em></strong> The three cost-of-transport definitions. They differ only in how the numerator counts energy.</p>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>Definition</th>
+<th style="text-align: right;">Baseline</th>
+<th style="text-align: right;">Best value</th>
+<th style="text-align: right;">Best cell</th>
+<th style="text-align: right;">Change</th>
+<th style="text-align: right;">Cells beating baseline</th>
+<th style="text-align: right;">r vs reduction</th>
+<th>What it measures</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Mechanical</strong></td>
+<td>Σ|τ·dθ| / mgd</td>
+<td style="text-align: right;">2.7149</td>
+<td style="text-align: right;">2.3012</td>
+<td style="text-align: right;"><span class="math">k<sub>x</sub></span>=0.25, ±15°</td>
+<td style="text-align: right;"><strong>-15.24%</strong></td>
+<td style="text-align: right;">68</td>
+<td style="text-align: right;">-0.787</td>
+<td>total mechanical work</td>
+</tr>
+<tr>
+<td><strong>Positive work</strong></td>
+<td>Σmax(0, τ·dθ) / mgd</td>
+<td style="text-align: right;">2.1830</td>
+<td style="text-align: right;">1.8178</td>
+<td style="text-align: right;"><span class="math">k<sub>x</sub></span>=0.25, ±15°</td>
+<td style="text-align: right;"><strong>-16.73%</strong></td>
+<td style="text-align: right;">75</td>
+<td style="text-align: right;">-0.366</td>
+<td>driving work only (optimistic bound)</td>
+</tr>
+<tr>
+<td><strong>Electrical proxy</strong></td>
+<td>∫τ²dt / mgd</td>
+<td style="text-align: right;">0.8779</td>
+<td style="text-align: right;">0.5734</td>
+<td style="text-align: right;"><span class="math">k<sub>x</sub></span>=0.20, ±15°</td>
+<td style="text-align: right;"><strong>-34.68%</strong></td>
+<td style="text-align: right;">69</td>
+<td style="text-align: right;">-0.986</td>
+<td>motor copper loss (I²R)</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="Cost of transport at baseline and at the recommended configuration. All three bars come from that single configuration." src="figures/p2b_cot_bars.png" /></p>
+<p><strong><em>Figure 9.</em></strong> Cost of transport at baseline and at the recommended configuration. All three bars come from that single configuration.</p>
+<p><img alt="The three CoT surfaces across the grid. Each panel is independently scaled; the red box marks its minimum." src="figures/p2b_cot_grids.png" /></p>
+<p><strong><em>Figure 10.</em></strong> The three CoT surfaces across the grid. Each panel is independently scaled; the red box marks its minimum.</p>
+<p><strong><em>Table 10.</em></strong> Cost of transport at the three candidate configurations. Quoting a CoT number requires naming its cell: the three optima are three different cells.</p>
+<table>
+<thead>
+<tr>
+<th>Configuration</th>
+<th style="text-align: right;">Reduction</th>
+<th style="text-align: right;">Mechanical CoT</th>
+<th style="text-align: right;">Positive-work CoT</th>
+<th style="text-align: right;">Electrical CoT</th>
+<th style="text-align: right;">All-joint work</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Torque optimum<br><span class="math">k<sub>x</sub></span>=0.15, ±35°</td>
+<td style="text-align: right;">34.39%</td>
+<td style="text-align: right;">2.5147 (-7.4%)</td>
+<td style="text-align: right;">2.0625 (-5.5%)</td>
+<td style="text-align: right;">0.5796 (-34.0%)</td>
+<td style="text-align: right;">11.36 J (-6.2%)</td>
+</tr>
+<tr>
+<td>Recommended<br><span class="math">k<sub>x</sub></span>=0.20, ±15°</td>
+<td style="text-align: right;">34.12%</td>
+<td style="text-align: right;">2.4826 (-8.6%)</td>
+<td style="text-align: right;">2.0313 (-6.9%)</td>
+<td style="text-align: right;">0.5734 (-34.7%)</td>
+<td style="text-align: right;">11.26 J (-7.1%)</td>
+</tr>
+<tr>
+<td>Mechanical-CoT optimum<br><span class="math">k<sub>x</sub></span>=0.25, ±15°</td>
+<td style="text-align: right;">33.22%</td>
+<td style="text-align: right;">2.3012 (-15.2%)</td>
+<td style="text-align: right;">1.8178 (-16.7%)</td>
+<td style="text-align: right;">0.5808 (-33.8%)</td>
+<td style="text-align: right;">10.45 J (-13.8%)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="56-analysis-why-the-three-cot-numbers-disagree">5.6 Analysis — why the three CoT numbers disagree</h3>
+<p>Mechanical CoT improves only <strong>7.4%</strong> at the torque optimum while torque falls 34.4%.
+This looks like a failure and is not. Mechanical work is <span class="math">τ · dθ</span>, so a motor holding a
+static load registers <em>zero</em> work while still drawing current — and cancelling static
+holding torque is precisely what a gravity-compensating spring does. Mechanical work is
+blind to the very effect under test.</p>
+<p>The electrical proxy <span class="math">∫τ<sup>2</sup> dt</span> is the copper-loss surrogate (<span class="math">P = I<sup>2</sup>R</span>, <span class="math">I ∝ τ</span>), and
+it falls <strong>34.7%</strong> — tracking the torque reduction almost exactly at <span class="math">r</span> = −0.986,
+against −0.787 for mechanical CoT and −0.366 for the positive-work variant. If one
+efficiency number is quoted, it should be the electrical one.</p>
+<p>Two honest caveats. The proxy is <strong>not in joules</strong>: converting <span class="math">∫τ<sup>2</sup>dt</span> to energy needs
+the servo's torque constant <span class="math">k<sub>t</sub></span> and winding resistance <span class="math">R</span>, which we do not have, so
+only relative comparisons are valid. And the raw work figure (−6.2%) differs slightly
+from mechanical CoT (−7.4%) at the same cell purely because forward displacement rose
+1.3%; both are correct, and the distinction has been conflated in earlier drafts.</p>
+<h3 id="57-analysis-the-cot-denominator-is-outside-its-own-validity-range">5.7 Analysis — the CoT denominator is outside its own validity range</h3>
+<p><img alt="Denominator sensitivity. Left: heading error against the 5° threshold below which net forward displacement is a defensible denominator. Centre: path length against net displacement. Right: the mechanical CoT distribution under each denominator." src="figures/p2b_cot_denominator.png" /></p>
+<p><strong><em>Figure 11.</em></strong> Denominator sensitivity. Left: heading error against the 5° threshold below which net forward displacement is a defensible denominator. Centre: path length against net displacement. Right: the mechanical CoT distribution under each denominator.</p>
+<p>This is the weakest part of the CoT analysis and is stated plainly. Net forward
+displacement <span class="math">Δy</span> is a defensible denominator only when the robot walks roughly
+straight; the working threshold adopted when this logging was designed was ≲5° of
+heading error. <strong>The measured heading error is 14.20° at baseline and exceeds 5° in all
+91 runs</strong> (median 12.41°, straightness ratio ≈0.74).</p>
+<p>Using measured path length instead of net displacement changes baseline mechanical CoT
+from 2.7149 to <strong>1.9920 — a 26.6% shift.</strong> Every absolute CoT number in this report
+should therefore be read as carrying roughly a ±27% systematic band, and CoT should not
+be compared against literature values without stating the convention.</p>
+<p>What survives is the comparison between configurations: the two denominators rank the
+90 cells almost identically (<span class="math">r</span> = 0.996), because path length varies little across the
+grid. Configuration selection is unaffected; only the absolute level is uncertain. The
+report keeps <span class="math">Δy</span> as the headline convention for continuity with the logged data, and
+treats the path-length figure as a bound.</p>
+<p>Displacement itself is nearly invariant — coefficient of variation <strong>0.55%</strong> across the
+grid, against 10% variation in mechanical work — so CoT differences are genuine energy
+differences, not denominator artifacts (<span class="math">r</span> between CoT and work = 0.9986).</p>
+<h3 id="58-results-metric-independence-and-a-conflict-of-objectives">5.8 Results — metric independence, and a conflict of objectives</h3>
+<p><strong><em>Table 11.</em></strong> Every metric at baseline, at the torque optimum and at the recommended configuration, with each metric-to-reduction correlation across the 90 spring cells.</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th style="text-align: right;">Baseline</th>
+<th style="text-align: right;">Torque opt.<br>(0.15, ±35°)</th>
+<th style="text-align: right;">Δ</th>
+<th style="text-align: right;">Recommended<br>(0.20, ±15°)</th>
+<th style="text-align: right;">Δ</th>
+<th style="text-align: right;">r vs reduction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mean applied knee effort (N·m)</td>
+<td style="text-align: right;">0.2352</td>
+<td style="text-align: right;">0.1543</td>
+<td style="text-align: right;">-34.4%</td>
+<td style="text-align: right;">0.1549</td>
+<td style="text-align: right;">-34.1%</td>
+<td style="text-align: right;">— <em>by construction</em></td>
+</tr>
+<tr>
+<td>RMS applied knee effort (N·m)</td>
+<td style="text-align: right;">0.2863</td>
+<td style="text-align: right;">0.2126</td>
+<td style="text-align: right;">-25.7%</td>
+<td style="text-align: right;">0.2121</td>
+<td style="text-align: right;">-25.9%</td>
+<td style="text-align: right;">-0.996</td>
+</tr>
+<tr>
+<td>p99 knee demand (N·m)</td>
+<td style="text-align: right;">0.9311</td>
+<td style="text-align: right;">0.8745</td>
+<td style="text-align: right;">-6.1%</td>
+<td style="text-align: right;">0.8636</td>
+<td style="text-align: right;">-7.2%</td>
+<td style="text-align: right;">-0.852</td>
+</tr>
+<tr>
+<td>Peak knee demand (N·m)</td>
+<td style="text-align: right;">0.9831</td>
+<td style="text-align: right;">0.9502</td>
+<td style="text-align: right;">-3.3%</td>
+<td style="text-align: right;">0.9352</td>
+<td style="text-align: right;">-4.9%</td>
+<td style="text-align: right;">-0.016</td>
+</tr>
+<tr>
+<td>Torque variance (N²·m²)</td>
+<td style="text-align: right;">0.0266</td>
+<td style="text-align: right;">0.0214</td>
+<td style="text-align: right;">-19.7%</td>
+<td style="text-align: right;">0.0210</td>
+<td style="text-align: right;">-21.3%</td>
+<td style="text-align: right;">-0.596</td>
+</tr>
+<tr>
+<td>Actuator saturation (%)</td>
+<td style="text-align: right;">0.6875</td>
+<td style="text-align: right;">0.7500</td>
+<td style="text-align: right;">+9.1%</td>
+<td style="text-align: right;">0.3125</td>
+<td style="text-align: right;">-54.5%</td>
+<td style="text-align: right;">-0.457</td>
+</tr>
+<tr>
+<td>Mean tracking error (deg)</td>
+<td style="text-align: right;">4.299</td>
+<td style="text-align: right;">3.395</td>
+<td style="text-align: right;">-21.0%</td>
+<td style="text-align: right;">3.543</td>
+<td style="text-align: right;">-17.6%</td>
+<td style="text-align: right;">-0.996</td>
+</tr>
+<tr>
+<td>Forward displacement (m)</td>
+<td style="text-align: right;">0.3256</td>
+<td style="text-align: right;">0.3297</td>
+<td style="text-align: right;">+1.3%</td>
+<td style="text-align: right;">0.3309</td>
+<td style="text-align: right;">+1.6%</td>
+<td style="text-align: right;">+0.192</td>
+</tr>
+<tr>
+<td>Mechanical CoT</td>
+<td style="text-align: right;">2.7149</td>
+<td style="text-align: right;">2.5147</td>
+<td style="text-align: right;">-7.4%</td>
+<td style="text-align: right;">2.4826</td>
+<td style="text-align: right;">-8.6%</td>
+<td style="text-align: right;">-0.787</td>
+</tr>
+<tr>
+<td>Electrical-proxy CoT</td>
+<td style="text-align: right;">0.8779</td>
+<td style="text-align: right;">0.5796</td>
+<td style="text-align: right;">-34.0%</td>
+<td style="text-align: right;">0.5734</td>
+<td style="text-align: right;">-34.7%</td>
+<td style="text-align: right;">-0.986</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="How much independent information each metric carries, with and without the four control-artifact cells." src="figures/p2b_correlations.png" /></p>
+<p><strong><em>Figure 12.</em></strong> How much independent information each metric carries, with and without the four control-artifact cells.</p>
+<p>RMS effort falls <strong>25.7%</strong> where mean effort falls 34.4%. The spring cancels the DC
+gravity bias but not the AC dynamic component, so the thermally relevant saving is real
+but smaller than the headline. Quote 25.7%, not 34.4%, when discussing motor heating.</p>
+<p>Mean tracking error correlates with reduction at <span class="math">r</span> = −0.996. It is therefore <em>not</em>
+independent evidence that gait quality survived — it restates the effort result. It is
+additionally confounded: the metric samples joint state on the first <code>/joint_states</code>
+after each command, so most of its ~3° floor is waypoint spacing rather than controller
+error. Saturation and forward displacement are the only genuinely independent checks in
+the set, and both stay healthy.</p>
+<p>Peak demand correlates at only <span class="math">r</span> = −0.016 — apparently pure noise. Removing the four
+control-artifact cells raises this to −0.866, which is the more informative statement:
+peak demand <em>does</em> follow the spring, but four discretisation artifacts dominate the
+statistic entirely.</p>
+<p><img alt="Mean applied effort and p99 demand over the same grid. Their optima sit in opposite corners." src="figures/p2b_p99_vs_mean.png" /></p>
+<p><strong><em>Figure 13.</em></strong> Mean applied effort and p99 demand over the same grid. Their optima sit in opposite corners.</p>
+<p>Average-torque and peak-torque objectives genuinely conflict. For <span class="math">k<sub>x</sub> ≥ 0.15</span> the p99
+minimum always lies at <span class="math">|θ<sub>0</sub>|</span> = 0° and rises monotonically with rest angle. The best
+p99 cell is <span class="math">k<sub>x</sub></span> = 0.15, ±0° at <strong>0.8084 N·m</strong> — but it delivers only <strong>21.40%</strong>
+reduction. A configuration cannot maximise both.</p>
+<h3 id="59-choosing-a-configuration">5.9 Choosing a configuration</h3>
+<p>Ranking cells on a single metric hides this conflict, so the recommendation is made on a
+joint constraint instead: <strong>reduction &gt; 30% AND p99 demand ≤ baseline.</strong> Exactly <strong>20 of
+90</strong> cells qualify.</p>
+<p><img alt="Cells satisfying each constraint and both. Cell labels give reduction % over p99 demand." src="figures/p2b_safe_region.png" /></p>
+<p><strong><em>Figure 14.</em></strong> Cells satisfying each constraint and both. Cell labels give reduction % over p99 demand.</p>
+<p><strong><em>Table 12.</em></strong> The 20 cells meeting both constraints, ordered by reduction.</p>
+<table>
+<thead>
+<tr>
+<th><span class="math">k<sub>x</sub></span></th>
+<th style="text-align: right;">|<span class="math">θ<sub>0</sub></span>|</th>
+<th style="text-align: right;">Reduction</th>
+<th style="text-align: right;">p99 (N·m)</th>
+<th style="text-align: right;">Electrical CoT</th>
+<th style="text-align: right;">Spread (pts)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.15</td>
+<td style="text-align: right;">±35°</td>
+<td style="text-align: right;">34.39%</td>
+<td style="text-align: right;">0.8745</td>
+<td style="text-align: right;">0.5796</td>
+<td style="text-align: right;">2.71</td>
+</tr>
+<tr>
+<td>0.20</td>
+<td style="text-align: right;">±20°</td>
+<td style="text-align: right;">34.28%</td>
+<td style="text-align: right;">0.8753</td>
+<td style="text-align: right;">0.5785</td>
+<td style="text-align: right;">3.49</td>
+</tr>
+<tr>
+<td>0.20</td>
+<td style="text-align: right;">±15°</td>
+<td style="text-align: right;">34.12%</td>
+<td style="text-align: right;">0.8636</td>
+<td style="text-align: right;">0.5734</td>
+<td style="text-align: right;">1.15</td>
+</tr>
+<tr>
+<td>0.15</td>
+<td style="text-align: right;">±40°</td>
+<td style="text-align: right;">34.10%</td>
+<td style="text-align: right;">0.8884</td>
+<td style="text-align: right;">0.5830</td>
+<td style="text-align: right;">4.92</td>
+</tr>
+<tr>
+<td>0.15</td>
+<td style="text-align: right;">±30°</td>
+<td style="text-align: right;">34.04%</td>
+<td style="text-align: right;">0.8695</td>
+<td style="text-align: right;">0.5819</td>
+<td style="text-align: right;">1.83</td>
+</tr>
+<tr>
+<td>0.25</td>
+<td style="text-align: right;">±10°</td>
+<td style="text-align: right;">34.00%</td>
+<td style="text-align: right;">0.8882</td>
+<td style="text-align: right;">0.5812</td>
+<td style="text-align: right;">4.33</td>
+</tr>
+<tr>
+<td>0.25</td>
+<td style="text-align: right;">±5°</td>
+<td style="text-align: right;">33.79%</td>
+<td style="text-align: right;">0.8607</td>
+<td style="text-align: right;">0.5815</td>
+<td style="text-align: right;">2.38</td>
+</tr>
+<tr>
+<td>0.30</td>
+<td style="text-align: right;">±5°</td>
+<td style="text-align: right;">33.72%</td>
+<td style="text-align: right;">0.8954</td>
+<td style="text-align: right;">0.5833</td>
+<td style="text-align: right;">6.00</td>
+</tr>
+<tr>
+<td>0.30</td>
+<td style="text-align: right;">±0°</td>
+<td style="text-align: right;">33.66%</td>
+<td style="text-align: right;">0.8755</td>
+<td style="text-align: right;">0.5894</td>
+<td style="text-align: right;">4.88</td>
+</tr>
+<tr>
+<td>0.35</td>
+<td style="text-align: right;">±0°</td>
+<td style="text-align: right;">33.64%</td>
+<td style="text-align: right;">0.9120</td>
+<td style="text-align: right;">0.5846</td>
+<td style="text-align: right;">7.31</td>
+</tr>
+<tr>
+<td>0.20</td>
+<td style="text-align: right;">±25°</td>
+<td style="text-align: right;">33.56%</td>
+<td style="text-align: right;">0.8822</td>
+<td style="text-align: right;">0.5822</td>
+<td style="text-align: right;">6.30</td>
+</tr>
+<tr>
+<td>0.15</td>
+<td style="text-align: right;">±45°</td>
+<td style="text-align: right;">33.40%</td>
+<td style="text-align: right;">0.9027</td>
+<td style="text-align: right;">0.5859</td>
+<td style="text-align: right;">5.72</td>
+</tr>
+<tr>
+<td>0.25</td>
+<td style="text-align: right;">±15°</td>
+<td style="text-align: right;">33.22%</td>
+<td style="text-align: right;">0.9139</td>
+<td style="text-align: right;">0.5808</td>
+<td style="text-align: right;">7.27</td>
+</tr>
+<tr>
+<td>0.15</td>
+<td style="text-align: right;">±25°</td>
+<td style="text-align: right;">32.97%</td>
+<td style="text-align: right;">0.8588</td>
+<td style="text-align: right;">0.5840</td>
+<td style="text-align: right;">1.64</td>
+</tr>
+<tr>
+<td>0.20</td>
+<td style="text-align: right;">±10°</td>
+<td style="text-align: right;">32.87%</td>
+<td style="text-align: right;">0.8432</td>
+<td style="text-align: right;">0.5831</td>
+<td style="text-align: right;">2.49</td>
+</tr>
+<tr>
+<td>0.25</td>
+<td style="text-align: right;">±0°</td>
+<td style="text-align: right;">31.89%</td>
+<td style="text-align: right;">0.8392</td>
+<td style="text-align: right;">0.5890</td>
+<td style="text-align: right;">2.87</td>
+</tr>
+<tr>
+<td>0.30</td>
+<td style="text-align: right;">±10°</td>
+<td style="text-align: right;">31.53%</td>
+<td style="text-align: right;">0.9141</td>
+<td style="text-align: right;">0.5920</td>
+<td style="text-align: right;">8.68</td>
+</tr>
+<tr>
+<td>0.15</td>
+<td style="text-align: right;">±20°</td>
+<td style="text-align: right;">31.51%</td>
+<td style="text-align: right;">0.8452</td>
+<td style="text-align: right;">0.5923</td>
+<td style="text-align: right;">2.38</td>
+</tr>
+<tr>
+<td>0.10</td>
+<td style="text-align: right;">±45°</td>
+<td style="text-align: right;">31.22%</td>
+<td style="text-align: right;">0.8459</td>
+<td style="text-align: right;">0.5951</td>
+<td style="text-align: right;">2.81</td>
+</tr>
+<tr>
+<td>0.20</td>
+<td style="text-align: right;">±5°</td>
+<td style="text-align: right;">30.82%</td>
+<td style="text-align: right;">0.8406</td>
+<td style="text-align: right;">0.5877</td>
+<td style="text-align: right;">2.74</td>
+</tr>
+</tbody>
+</table>
+<p><strong><em>Table 13.</em></strong> Standing of the recommended configuration on every metric. Ranks are over the 90 spring cells, best first.</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th style="text-align: right;">Value</th>
+<th style="text-align: right;">Rank (best first)</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Knee torque reduction</td>
+<td style="text-align: right;">34.12%</td>
+<td style="text-align: right;">3 of 90</td>
+<td>0.27 pts off best</td>
+</tr>
+<tr>
+<td>Electrical-proxy CoT</td>
+<td style="text-align: right;">0.5734</td>
+<td style="text-align: right;">1 of 90</td>
+<td>-34.7% vs baseline</td>
+</tr>
+<tr>
+<td>RMS applied effort</td>
+<td style="text-align: right;">0.2121 N·m</td>
+<td style="text-align: right;">1 of 90</td>
+<td>-25.9% vs baseline</td>
+</tr>
+<tr>
+<td>Bilateral spread</td>
+<td style="text-align: right;">1.15 pts</td>
+<td style="text-align: right;">1 of 90</td>
+<td>tightest cell in the sweep</td>
+</tr>
+<tr>
+<td>p99 demand</td>
+<td style="text-align: right;">0.8636 N·m</td>
+<td style="text-align: right;">25 of 90</td>
+<td>8.3% below the 0.9414 N·m rating</td>
+</tr>
+<tr>
+<td>Actuator saturation</td>
+<td style="text-align: right;">0.3125%</td>
+<td style="text-align: right;">15–24 of 90</td>
+<td>tied with 9 other cells</td>
+</tr>
+<tr>
+<td>Mechanical CoT</td>
+<td style="text-align: right;">2.4826</td>
+<td style="text-align: right;">13 of 90</td>
+<td>-8.6% vs baseline</td>
+</tr>
+<tr>
+<td>Mean tracking error</td>
+<td style="text-align: right;">3.54°</td>
+<td style="text-align: right;">21 of 90</td>
+<td>-17.6% vs baseline</td>
+</tr>
+<tr>
+<td>Forward displacement</td>
+<td style="text-align: right;">0.3309 m</td>
+<td style="text-align: right;">—</td>
+<td>grid mean 0.3305 m</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math">k<sub>x</sub></span> = 0.20 N·m/rad, <span class="math">|θ<sub>0</sub>|</span> = ±15° is recommended. It is inside the safe region, first
+of 90 on electrical CoT, RMS effort and bilateral symmetry, third on torque reduction
+(0.27 points off the best), and its p99 demand sits 8.3% below the actuator rating.</p>
+<p>Its saturation of 0.3125% is <strong>not</strong> best-in-sweep, contrary to an earlier draft of this
+analysis: ten cells share that exact value and 14 are strictly lower, placing it 15th to
+24th of 90 depending on tie handling. The tie itself is informative — 0.3125% is exactly
+5 of 1600 samples, and saturation quantises so coarsely here that it stops discriminating
+between good cells.</p>
+<p><img alt="All 90 cells in the reduction–CoT plane with the true non-dominated front." src="figures/p2b_pareto.png" /></p>
+<p><strong><em>Figure 15.</em></strong> All 90 cells in the reduction–CoT plane with the true non-dominated front.</p>
+<p><strong><em>Table 14.</em></strong> The Pareto front for maximising reduction and minimising mechanical CoT.</p>
+<table>
+<thead>
+<tr>
+<th><span class="math">k<sub>x</sub></span></th>
+<th style="text-align: right;">|<span class="math">θ<sub>0</sub></span>|</th>
+<th style="text-align: right;">Reduction</th>
+<th style="text-align: right;">Mechanical CoT</th>
+<th style="text-align: right;">Electrical CoT</th>
+<th style="text-align: right;">p99 (N·m)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.15</td>
+<td style="text-align: right;">±35°</td>
+<td style="text-align: right;">34.39%</td>
+<td style="text-align: right;">2.5147</td>
+<td style="text-align: right;">0.5796</td>
+<td style="text-align: right;">0.8745</td>
+</tr>
+<tr>
+<td>0.20</td>
+<td style="text-align: right;">±20°</td>
+<td style="text-align: right;">34.28%</td>
+<td style="text-align: right;">2.4336</td>
+<td style="text-align: right;">0.5785</td>
+<td style="text-align: right;">0.8753</td>
+</tr>
+<tr>
+<td>0.20</td>
+<td style="text-align: right;">±25°</td>
+<td style="text-align: right;">33.56%</td>
+<td style="text-align: right;">2.4020</td>
+<td style="text-align: right;">0.5822</td>
+<td style="text-align: right;">0.8822</td>
+</tr>
+<tr>
+<td>0.15</td>
+<td style="text-align: right;">±45°</td>
+<td style="text-align: right;">33.40%</td>
+<td style="text-align: right;">2.3612</td>
+<td style="text-align: right;">0.5859</td>
+<td style="text-align: right;">0.9027</td>
+</tr>
+<tr>
+<td>0.25</td>
+<td style="text-align: right;">±15°</td>
+<td style="text-align: right;">33.22%</td>
+<td style="text-align: right;">2.3012</td>
+<td style="text-align: right;">0.5808</td>
+<td style="text-align: right;">0.9139</td>
+</tr>
+</tbody>
+</table>
+<p>The front contains only 5 of 90 cells and spans 1.17 points of reduction against 0.21 of
+CoT, so the trade-off is mild. Note that the recommended cell is <strong>not</strong> on this front —
+it is dominated by <span class="math">k<sub>x</sub></span> = 0.20, ±20°, which is better on both axes. It is preferred
+anyway because the front ignores bilateral symmetry and p99 demand, where ±15° is
+markedly better. This is a deliberate choice between objectives, not an oversight.</p>
+<h3 id="510-results-control-artifacts">5.10 Results — control artifacts</h3>
+<p><strong><em>Table 15.</em></strong> The four cells whose peak/p99 demand ratio exceeds 5. Displacement is normal in all four, so the inflation is entirely in the energy numerator.</p>
+<table>
+<thead>
+<tr>
+<th><span class="math">k<sub>x</sub></span></th>
+<th style="text-align: right;">|<span class="math">θ<sub>0</sub></span>|</th>
+<th style="text-align: right;">Peak demand (N·m)</th>
+<th style="text-align: right;">p99 (N·m)</th>
+<th style="text-align: right;">Peak/p99</th>
+<th style="text-align: right;">Mechanical CoT</th>
+<th style="text-align: right;">Displacement (m)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.05</td>
+<td style="text-align: right;">±0°</td>
+<td style="text-align: right;">11.03</td>
+<td style="text-align: right;">1.195</td>
+<td style="text-align: right;">9.2×</td>
+<td style="text-align: right;">3.6708</td>
+<td style="text-align: right;">0.3273</td>
+</tr>
+<tr>
+<td>0.20</td>
+<td style="text-align: right;">±30°</td>
+<td style="text-align: right;">11.31</td>
+<td style="text-align: right;">1.107</td>
+<td style="text-align: right;">10.2×</td>
+<td style="text-align: right;">3.2664</td>
+<td style="text-align: right;">0.3290</td>
+</tr>
+<tr>
+<td>0.35</td>
+<td style="text-align: right;">±5°</td>
+<td style="text-align: right;">11.08</td>
+<td style="text-align: right;">0.974</td>
+<td style="text-align: right;">11.4×</td>
+<td style="text-align: right;">3.1854</td>
+<td style="text-align: right;">0.3310</td>
+</tr>
+<tr>
+<td>0.45</td>
+<td style="text-align: right;">±10°</td>
+<td style="text-align: right;">20.90</td>
+<td style="text-align: right;">1.209</td>
+<td style="text-align: right;">17.3×</td>
+<td style="text-align: right;">3.4130</td>
+<td style="text-align: right;">0.3331</td>
+</tr>
+</tbody>
+</table>
+<p>Median all-joint work across the grid: 11.79 J; these four cells: 14.45–16.47 J.</p>
+<p>These four cells show peak demand of 11–21 N·m against a p99 near 1.2 — the signature of
+a single-sample derivative kick off the 10 Hz stepped set-point, which saturates the
+actuator for a few consecutive samples while the joint is moving. That produces real
+mechanical work in the simulation, but its cause is control discretisation, not the
+spring. All top-10 cells by CoT are artifact-free, so the optimum is unaffected.</p>
+<h3 id="511-what-the-spring-does-to-the-effortangle-relationship">5.11 What the spring does to the effort–angle relationship</h3>
+<p><img alt="Applied effort against knee angle for baseline and the recommended spring. Points are 50 Hz samples over five gait cycles; solid lines are binned medians; dashed lines are signed means." src="figures/p2b_effort_vs_angle.png" /></p>
+<p><strong><em>Figure 16.</em></strong> Applied effort against knee angle for baseline and the recommended spring. Points are 50 Hz samples over five gait cycles; solid lines are binned medians; dashed lines are signed means.</p>
+<p>The signed mean effort per knee moves toward zero under the spring — this is the DC
+gravity bias being cancelled, and it is the mechanism behind the whole result. The
+sample clouds show the spread is unchanged, which is the same AC/DC split that makes RMS
+improve less than the mean. Note that knee angle is not monotonic within a cycle (swing
+and stance revisit the same angles), so the binned median mixes phases and should be read
+as a summary rather than a trajectory.</p>
+<hr />
+<h2 id="6-phase-2a-vs-2b-what-mirroring-bought">6 Phase 2a vs 2b — what mirroring bought</h2>
+<p><strong><em>Table 16.</em></strong> Cross-sweep comparison. The two grids share only the <span class="math">θ<sub>0</sub></span> = 0° column, which serves as a regression check.</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th style="text-align: right;">Phase 2a (shared)</th>
+<th style="text-align: right;">Phase 2b (mirrored)</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Runs</td>
+<td style="text-align: right;">111</td>
+<td style="text-align: right;">91</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Spring cells</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: right;">90</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Grid</td>
+<td style="text-align: right;"><span class="math">k<sub>x</sub></span> 0.05–0.50 × <span class="math">θ<sub>0</sub></span> 0…−50°</td>
+<td style="text-align: right;"><span class="math">k<sub>x</sub></span> 0.05–0.45 × |<span class="math">θ<sub>0</sub></span>| 0…45°</td>
+<td>no shared interior</td>
+</tr>
+<tr>
+<td>Baseline mean effort (N·m)</td>
+<td style="text-align: right;">0.2345</td>
+<td style="text-align: right;">0.2352</td>
+<td>re-simulated, +0.31%</td>
+</tr>
+<tr>
+<td>Best reduction</td>
+<td style="text-align: right;">33.97%</td>
+<td style="text-align: right;"><strong>34.39%</strong></td>
+<td>+0.42 pts</td>
+</tr>
+<tr>
+<td>RMS at best cell</td>
+<td style="text-align: right;">-25.33%</td>
+<td style="text-align: right;">-25.73%</td>
+<td>comparable method</td>
+</tr>
+<tr>
+<td>Wrong-sign knee-cells</td>
+<td style="text-align: right;">50 / 440 (11.4%)</td>
+<td style="text-align: right;"><strong>0 / 360 (0%)</strong></td>
+<td>eliminated</td>
+</tr>
+<tr>
+<td>Bilateral spread at own optimum</td>
+<td style="text-align: right;">3.96 pts</td>
+<td style="text-align: right;"><strong>2.71 pts</strong></td>
+<td>1.46× tighter</td>
+</tr>
+<tr>
+<td>Bilateral spread at recommended</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;"><strong>1.15 pts</strong></td>
+<td>3.44× tighter than 2a</td>
+</tr>
+<tr>
+<td><span class="math">θ<sub>0</sub></span> = 0° regression check (<span class="math">k<sub>x</sub></span>=0.30)</td>
+<td style="text-align: right;">33.97%</td>
+<td style="text-align: right;">33.66%</td>
+<td>within run-to-run noise</td>
+</tr>
+<tr>
+<td>Saturation range</td>
+<td style="text-align: right;">0.00–2.56%</td>
+<td style="text-align: right;">0.00–2.12%</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="Both sweeps on a shared colour scale, so equal reductions render as equal colours." src="figures/cross_sweeps.png" /></p>
+<p><strong><em>Figure 17.</em></strong> Both sweeps on a shared colour scale, so equal reductions render as equal colours.</p>
+<p><img alt="Best achievable reduction at each stiffness." src="figures/cross_best_per_kx.png" /></p>
+<p><strong><em>Figure 18.</em></strong> Best achievable reduction at each stiffness.</p>
+<p><img alt="Per-knee reduction. Each series is one single configuration — mixing cells here is what produced an inflated asymmetry figure in earlier drafts." src="figures/cross_asymmetry.png" /></p>
+<p><strong><em>Figure 19.</em></strong> Per-knee reduction. Each series is one single configuration — mixing cells here is what produced an inflated asymmetry figure in earlier drafts.</p>
+<p><strong>The headline barely moved: 33.97% → 34.39%.</strong> That is the honest result. Mirroring did
+not buy a larger reduction; it bought a sweep in which all 90 cells are physically
+interpretable instead of 11.4% of knee-cells being wrong-signed, and in which the
+recommended setting helps all four knees nearly equally.</p>
+<p>Bilateral spread at each sweep's own optimum improves from <strong>3.96 to 2.71</strong> points, and
+at the recommended cell to <strong>1.15</strong> points — 3.4× tighter than Phase 2a.</p>
+<p>A caution about that comparison, because it has been got wrong before. The spread of the
+four knees' <em>individually best</em> reductions in Phase 2a is 6.12 points, but those four
+values come from four <em>different</em> grid cells (BL's 37.58% is at <span class="math">k<sub>x</sub></span> = 0.50, −15°). That
+number describes what separately-tuned springs could achieve; it is <strong>not</strong> the spread at
+any single operating point, and using it as such overstates Phase 2a's asymmetry by
+about 55%.</p>
+<p>The <span class="math">θ<sub>0</sub></span> = 0° column is a genuine regression check, since mirroring by zero is a no-op:
+at <span class="math">k<sub>x</sub></span> = 0.30 the two sweeps give 33.97% and 33.66%, within run-to-run variation
+(the baselines themselves differ by 0.31%).</p>
+<hr />
+<h2 id="7-phase-3a-replay-frequency-3-runs">7 Phase 3a — Replay frequency (3 runs)</h2>
+<h3 id="71-what-was-done">7.1 What was done</h3>
+<p><code>target_freq</code> was set to 5, 10 and 20 Hz, replaying the <em>same</em> 16-waypoint trajectory
+faster or slower. No spring was fitted. Cycle time is
+<code>NUM_DATA_POINTS / target_freq</code>, so this changes speed while leaving trajectory shape
+and per-step geometry untouched.</p>
+<h3 id="72-results">7.2 Results</h3>
+<p><strong><em>Table 17.</em></strong> Frequency sweep. Percentages are relative to the 10 Hz baseline. The knee step jump is identical across all three runs, confirming that only speed changed.</p>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th style="text-align: right;"><code>target_freq</code></th>
+<th style="text-align: right;">Cycle (s)</th>
+<th style="text-align: right;">Mean effort (N·m)</th>
+<th style="text-align: right;">RMS (N·m)</th>
+<th style="text-align: right;">Peak demand (N·m)</th>
+<th style="text-align: right;">Saturation</th>
+<th style="text-align: right;">Track err mean/RMS/peak</th>
+<th style="text-align: right;">Knee step jump</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>run3</td>
+<td style="text-align: right;"><strong>5 Hz</strong></td>
+<td style="text-align: right;">3.2</td>
+<td style="text-align: right;">0.2101 (-8.3%)</td>
+<td style="text-align: right;">0.2535 (-9.6%)</td>
+<td style="text-align: right;">0.953 (-1.9%)</td>
+<td style="text-align: right;">0.188% (0.25×)</td>
+<td style="text-align: right;">3.76° / 6.58° / 21.0°</td>
+<td style="text-align: right;">2.989</td>
+</tr>
+<tr>
+<td>run1</td>
+<td style="text-align: right;"><strong>10 Hz</strong> (baseline)</td>
+<td style="text-align: right;">1.6</td>
+<td style="text-align: right;">0.2292</td>
+<td style="text-align: right;">0.2804</td>
+<td style="text-align: right;">0.972</td>
+<td style="text-align: right;">0.750%</td>
+<td style="text-align: right;">4.11° / 6.81° / 20.8°</td>
+<td style="text-align: right;">2.989</td>
+</tr>
+<tr>
+<td>run2</td>
+<td style="text-align: right;"><strong>20 Hz</strong></td>
+<td style="text-align: right;">0.8</td>
+<td style="text-align: right;">0.2424 (+5.8%)</td>
+<td style="text-align: right;">0.3265 (+16.5%)</td>
+<td style="text-align: right;">1.235 (+27.1%)</td>
+<td style="text-align: right;">4.875% (6.50×)</td>
+<td style="text-align: right;">4.19° / 6.92° / 21.2°</td>
+<td style="text-align: right;">2.989</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="Frequency sweep metrics. The dashed line on the peak-demand panel is the actuator rating." src="figures/p3a_bars.png" /></p>
+<p><strong><em>Figure 20.</em></strong> Frequency sweep metrics. The dashed line on the peak-demand panel is the actuator rating.</p>
+<h3 id="73-analysis">7.3 Analysis</h3>
+<p>The isolation is verified rather than assumed: the mean per-step knee jump is <strong>2.989°</strong>
+and the maximum <strong>22.234°</strong> in all three runs, identical to three decimals. Only the time
+available to reach each waypoint changed.</p>
+<p>Speeding up is expensive at the peak, not at the mean. At 20 Hz the same 2.989° jump must
+be achieved in half the time, so the derivative term reacts harder: peak demand rises
+<strong>27.1%</strong> to 1.235 N·m — well above the 0.9414 N·m rating — and saturation multiplies by
+<strong>6.5×</strong> to 4.88%. At 5 Hz saturation falls to a quarter and peak demand is essentially
+flat.</p>
+<p>Mean and RMS effort move far more mildly (−8.3%/+5.8% and −9.6%/+16.5%) because they are
+dominated by stance holding torque, which speed does not change. Tracking error moves in
+the same direction but by only ±0.35°.</p>
+<p><strong>Frequency is the clean lever for changing speed</strong>, since it provably preserves
+trajectory geometry. It is not a good lever for reducing peak torque.</p>
+<hr />
+<h2 id="8-phase-3b-trajectory-resolution-3-runs">8 Phase 3b — Trajectory resolution (3 runs)</h2>
+<h3 id="81-what-was-done">8.1 What was done</h3>
+<p><code>NUM_DATA_POINTS</code> was set to 8, 16 and 32 at a fixed 10 Hz, sampling the <em>same</em>
+underlying Bézier swing arc and linear stance sweep at different resolutions. No spring
+was fitted.</p>
+<h3 id="82-a-degenerate-case-that-must-be-excluded-first">8.2 A degenerate case that must be excluded first</h3>
+<p><img alt="Foot lift actually sampled from the swing arc as a function of waypoint count, and where the samples land on the curve." src="figures/p3b_swing_cliff.png" /></p>
+<p><strong><em>Figure 21.</em></strong> Foot lift actually sampled from the swing arc as a function of waypoint count, and where the samples land on the curve.</p>
+<p><strong><em>Table 18.</em></strong> Swing-lift sampling against waypoint count. The cliff is a hard one.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;"><code>NUM_DATA_POINTS</code></th>
+<th style="text-align: right;"><span class="math">n<sub>swing</sub></span></th>
+<th style="text-align: right;">Lift (units)</th>
+<th style="text-align: right;">% of Bézier peak</th>
+<th>Sampled z</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;"><strong>0.0%</strong></td>
+<td>-7.00, -7.00</td>
+<td><strong>degenerate — foot drags</strong></td>
+</tr>
+<tr>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;"><strong>0.0%</strong></td>
+<td>-7.00, -7.00</td>
+<td><strong>degenerate — foot drags</strong></td>
+</tr>
+<tr>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3.000</td>
+<td style="text-align: right;"><strong>100.0%</strong></td>
+<td>-7.00, -4.00, -7.00</td>
+<td>minimum viable — single peak sample</td>
+</tr>
+<tr>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2.667</td>
+<td style="text-align: right;"><strong>88.9%</strong></td>
+<td>-7.00, -4.33, -4.33, -7.00</td>
+<td>usable</td>
+</tr>
+<tr>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">3.000</td>
+<td style="text-align: right;"><strong>100.0%</strong></td>
+<td>-7.00, -4.75, -4.00, -4.75, -7.00</td>
+<td>usable</td>
+</tr>
+<tr>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">2.939</td>
+<td style="text-align: right;"><strong>98.0%</strong></td>
+<td>-7.00, -5.53, -4.55, -4.06, -4.06…</td>
+<td>usable</td>
+</tr>
+</tbody>
+</table>
+<p>The swing foot-path is a quadratic Bézier through <span class="math">P<sub>1</sub></span>=(−3,−7), <span class="math">P<sub>2</sub></span>=(0,−1),
+<span class="math">P<sub>3</sub></span>=(3,−7), sampled at <code>n_swing = int(NUM_DATA_POINTS × 0.25)</code> points via
+<code>np.linspace(0, 1, n_swing)</code>. Two facts combine badly. <span class="math">P<sub>2</sub></span> is a <em>control</em> point, not a
+point on the curve, so the arc's true peak is at <span class="math">t</span> = 0.5 and reaches <span class="math">z</span> = −4.0 — three
+units of lift, not the six a naive reading suggests. And <code>linspace</code> always includes
+<span class="math">t</span> = 0 and <span class="math">t</span> = 1, both of which sit at stance height.</p>
+<p>At <code>NUM_DATA_POINTS</code> = 8, <code>n_swing</code> = 2, so the only samples are the two endpoints and
+<strong>the foot never lifts — it slides from one stance position to the next.</strong> This is not a
+coarser gait; it is a qualitatively different, much lower-amplitude motion. Every
+apparently favourable number in the 8-point run follows from doing less work: lower
+effort, no saturation, and a tracking error of 1.00° because a near-flat trajectory is
+trivial to follow. The fingerprint is the knee step jump, which <em>collapses</em> from 2.989°
+to 0.483° when reducing the point count should have increased it.</p>
+<p>Because <code>int()</code> truncates, <code>n_swing</code> stays at 2 for <span class="math">N</span> = 8…11 and jumps to 3 at
+<span class="math">N</span> = 12. <strong>Any lift at all requires <span class="math">N ≥ 12.</span></strong> The 8-point run is excluded from every
+conclusion below and retained only as a documented artifact.</p>
+<h3 id="83-a-metadata-contradiction-resolved-from-the-data">8.3 A metadata contradiction, resolved from the data</h3>
+<p><strong><em>Table 19.</em></strong> Phase 3b spring labelling against measured signed effort.</p>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th style="text-align: right;">Waypoints</th>
+<th><code>spring_mode</code> label</th>
+<th><code>spring_summary</code> label</th>
+<th>Measured signed mean effort FR/BR/BL/FL (N·m)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>run1</td>
+<td style="text-align: right;">16</td>
+<td>none</td>
+<td>Baseline (no spring)</td>
+<td>-0.176, -0.169, +0.186, +0.167</td>
+</tr>
+<tr>
+<td>run2</td>
+<td style="text-align: right;">8</td>
+<td>unknown</td>
+<td>Spring (native) — knee: kx=0.5 N·m/rad, θ₀=-50</td>
+<td>-0.192, -0.124, +0.121, +0.228</td>
+</tr>
+<tr>
+<td>run3</td>
+<td style="text-align: right;">32</td>
+<td>none</td>
+<td>Baseline (no spring)</td>
+<td>-0.163, -0.151, +0.170, +0.150</td>
+</tr>
+</tbody>
+</table>
+<p>The 8-point run's <code>run_info.txt</code> reports <code>spring_mode: unknown</code> with a summary
+describing a <span class="math">k<sub>x</sub></span> = 0.5, <span class="math">θ<sub>0</sub></span> = −50° spring, while its two siblings report no spring.
+This is a metadata race, not a physical difference: its measured signed per-knee efforts
+(−0.192, −0.124, +0.121, +0.228 N·m) sit in the same range and the same sign pattern as
+both baseline siblings, nowhere near the roughly doubled effort that configuration
+produced in Phase 2a. <strong>No spring was active; only the label is wrong.</strong> The same
+caveat applies to Phase 3a, whose runs carry a stale <code>spring_config</code> block while
+reporting <code>spring_mode: none</code>.</p>
+<h3 id="84-results">8.4 Results</h3>
+<p><strong><em>Table 20.</em></strong> Resolution sweep. Percentages are relative to the 16-point baseline. The 8-point run is degenerate and excluded from conclusions.</p>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th style="text-align: right;"><code>NUM_DATA_POINTS</code></th>
+<th style="text-align: right;">Cycle (s)</th>
+<th style="text-align: right;">Swing samples</th>
+<th style="text-align: right;">Lift sampled</th>
+<th style="text-align: right;">Mean effort (N·m)</th>
+<th style="text-align: right;">RMS (N·m)</th>
+<th style="text-align: right;">Peak demand (N·m)</th>
+<th style="text-align: right;">Saturation</th>
+<th style="text-align: right;">Track err</th>
+<th style="text-align: right;">Knee step jump</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>run2</td>
+<td style="text-align: right;"><strong>8 pts</strong> ⚠</td>
+<td style="text-align: right;">0.8</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0%</td>
+<td style="text-align: right;">0.1749 (-22.1%)</td>
+<td style="text-align: right;">0.2090 (-24.2%)</td>
+<td style="text-align: right;">0.689 (-28.7%)</td>
+<td style="text-align: right;">0.000%</td>
+<td style="text-align: right;">1.00°</td>
+<td style="text-align: right;">0.483</td>
+</tr>
+<tr>
+<td>run1</td>
+<td style="text-align: right;"><strong>16 pts</strong> (baseline)</td>
+<td style="text-align: right;">1.6</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">89%</td>
+<td style="text-align: right;">0.2246</td>
+<td style="text-align: right;">0.2756</td>
+<td style="text-align: right;">0.965</td>
+<td style="text-align: right;">0.625%</td>
+<td style="text-align: right;">4.05°</td>
+<td style="text-align: right;">2.989</td>
+</tr>
+<tr>
+<td>run3</td>
+<td style="text-align: right;"><strong>32 pts</strong></td>
+<td style="text-align: right;">3.2</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">98%</td>
+<td style="text-align: right;">0.1994 (-11.2%)</td>
+<td style="text-align: right;">0.2419 (-12.2%)</td>
+<td style="text-align: right;">0.495 (-48.7%)</td>
+<td style="text-align: right;">0.000%</td>
+<td style="text-align: right;">2.92°</td>
+<td style="text-align: right;">1.610</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="Resolution sweep metrics. The 8-point bar is greyed as degenerate." src="figures/p3b_bars.png" /></p>
+<p><strong><em>Figure 22.</em></strong> Resolution sweep metrics. The 8-point bar is greyed as degenerate.</p>
+<h3 id="85-analysis">8.5 Analysis</h3>
+<p>The valid comparison is 16 vs 32 points, and it is the strongest result in this section:
+<strong>peak demand falls 48.7%</strong> (0.965 → 0.495 N·m) and saturation goes to zero, with no
+spring and no change in replay speed. Mean and RMS effort fall much more modestly
+(−11.2%/−12.2%), again because stance holding torque dominates them and is
+resolution-independent.</p>
+<p>This confirms directly that peak knee demand in this system is an artifact of the
+stepped set-point rather than a property of the gait: finer sampling shrinks the
+step discontinuity itself.</p>
+<h3 id="86-the-two-levers-at-matched-cycle-time">8.6 The two levers at matched cycle time</h3>
+<p><strong><em>Table 21.</em></strong> Both levers at ≈3.2 s cycle time. Only these two runs are directly comparable in this way; the 8-point run reaches 0.8 s by breaking the trajectory.</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th style="text-align: right;">Slower replay<br>5 Hz, 16 pts</th>
+<th style="text-align: right;">Finer sampling<br>10 Hz, 32 pts</th>
+<th style="text-align: right;">Difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mean effort (N·m)</td>
+<td style="text-align: right;">0.2101</td>
+<td style="text-align: right;">0.1994</td>
+<td style="text-align: right;">-5.1%</td>
+</tr>
+<tr>
+<td>RMS effort (N·m)</td>
+<td style="text-align: right;">0.2535</td>
+<td style="text-align: right;">0.2419</td>
+<td style="text-align: right;">-4.6%</td>
+</tr>
+<tr>
+<td>Peak demand (N·m)</td>
+<td style="text-align: right;">0.953</td>
+<td style="text-align: right;">0.495</td>
+<td style="text-align: right;">-48.1%</td>
+</tr>
+<tr>
+<td>p99 demand (N·m)</td>
+<td style="text-align: right;">0.747</td>
+<td style="text-align: right;">0.475</td>
+<td style="text-align: right;">-36.4%</td>
+</tr>
+<tr>
+<td>Saturation (%)</td>
+<td style="text-align: right;">0.188</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">-100.0%</td>
+</tr>
+<tr>
+<td>Mean tracking error (deg)</td>
+<td style="text-align: right;">3.76</td>
+<td style="text-align: right;">2.92</td>
+<td style="text-align: right;">-22.3%</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="Slower replay against finer sampling at the same cycle time." src="figures/p3_matched.png" /></p>
+<p><strong><em>Figure 23.</em></strong> Slower replay against finer sampling at the same cycle time.</p>
+<p><img alt="FR-knee effort against angle under both levers. Frequency scales the magnitude; resolution changes the shape of the loop." src="figures/p3_effort_vs_angle.png" /></p>
+<p><strong><em>Figure 24.</em></strong> FR-knee effort against angle under both levers. Frequency scales the magnitude; resolution changes the shape of the loop.</p>
+<p>At matched cycle time, <strong>finer sampling roughly halves peak demand where slower replay
+does almost nothing</strong> (0.495 vs 0.953 N·m). The mechanism is different in each case:
+slowing the replay gives the controller more time to chase the same discontinuity, while
+finer sampling removes the discontinuity. If the objective is peak torque, resolution is
+the effective lever; if the objective is speed alone, frequency is the clean one.</p>
+<p>This also answers the question the speed experiments were run to settle: a different
+gait is not needed to change the torque–angle characteristic. Reducing speed lowers
+peaks moderately, and increasing waypoint resolution lowers them substantially, both
+without redesigning the gait.</p>
+<hr />
+<h2 id="9-synthesis">9 Synthesis</h2>
+<h3 id="91-findings">9.1 Findings</h3>
+<ol>
+<li>A mirrored parallel knee spring removes <strong>34.39%</strong> of mean knee motor torque and
+   <strong>25.7%</strong> of RMS effort, the thermally relevant figure.</li>
+<li>Electrical (copper-loss) cost of transport falls <strong>34.7%</strong>, 0.8779 → 0.5734.</li>
+<li>Mechanical CoT falls only <strong>7.4%</strong> — not a contradiction, but evidence that
+   mechanical work is the wrong instrument for a device that cancels static torque.</li>
+<li>Mirroring the rest angle eliminates wrong-sign assist entirely (<strong>0 of 360</strong>
+   knee-cells, against 50 of 440) and tightens bilateral spread to <strong>1.15</strong> points.</li>
+<li>The design has <strong>one effective degree of freedom</strong>: a ridge of <span class="math">(k<sub>x</sub>, θ<sub>0</sub>)</span> pairs all
+   deliver 33.6–34.4%.</li>
+<li>Average-torque and peak-torque objectives <strong>conflict</strong>; the best p99 cell gives only
+   21.40% reduction.</li>
+<li><strong>Finer trajectory sampling cuts peak demand 48.7%</strong> independently of the spring, and
+   is about twice as effective as slowing replay at the same cycle time.</li>
+<li>The knee actuator is marginally undersized regardless of the spring: baseline peak
+   demand is 0.9831 N·m against a 0.9414 N·m rating.</li>
+</ol>
+<h3 id="92-recommended-configuration">9.2 Recommended configuration</h3>
+<p><strong><span class="math">k<sub>x</sub></span> = 0.20 N·m/rad, <span class="math">|θ<sub>0</sub>|</span> = ±15°</strong> (right knees −15°, left knees +15°), giving
+34.12% torque reduction, 0.5734 electrical CoT, 1.15-point bilateral spread and p99
+demand 8.3% below the actuator rating. It is one of the 20 cells meeting both
+engineering constraints, and the ridge should be reported alongside it so the
+sensitivity is visible.</p>
+<h3 id="93-literature-context">9.3 Literature context</h3>
+<table>
+<thead>
+<tr>
+<th>Study</th>
+<th>Joint</th>
+<th>Spring type</th>
+<th>Reported saving</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Quadruped + RL, compliant feet</td>
+<td>foot</td>
+<td>compliant pad</td>
+<td>~17%</td>
+</tr>
+<tr>
+<td>Hexapod gait + torque optimisation</td>
+<td>multiple</td>
+<td>passive + gait management</td>
+<td>22–39%</td>
+</tr>
+<tr>
+<td><strong>This work</strong></td>
+<td><strong>knee</strong></td>
+<td><strong>linear torsion, parallel</strong></td>
+<td><strong>34% torque, 35% electrical CoT</strong></td>
+</tr>
+<tr>
+<td>Nonlinear elastic joints, design opt.</td>
+<td>multiple</td>
+<td>nonlinear PEA</td>
+<td>up to 50%</td>
+</tr>
+<tr>
+<td>Biped elastic coupling, trajectory opt.</td>
+<td>knee/hip</td>
+<td>mechanical spring</td>
+<td>&gt;50%</td>
+</tr>
+</tbody>
+</table>
+<p>The result sits inside the published 17–50% range using the simplest hardware in that
+range — a fixed linear spring, no clutch, no adaptive mechanism. Studies exceeding 50%
+use nonlinear springs or trajectory-optimised actuation. Two caveats on this comparison:
+these are simulation results with no hardware validation, and the studies quoted measure
+different things (whole-robot energy vs joint torque), so the row-to-row comparison is
+indicative rather than like-for-like.</p>
+<h3 id="94-supportable-and-unsupportable-claims">9.4 Supportable and unsupportable claims</h3>
+<table>
+<thead>
+<tr>
+<th>Supportable</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>~34% mean knee torque reduction</td>
+<td>90-cell sweep, combined over four knees</td>
+</tr>
+<tr>
+<td>~35% electrical-proxy CoT improvement</td>
+<td>all 12 joints, verified baseline</td>
+</tr>
+<tr>
+<td>0 wrong-sign knee-cells under mirroring</td>
+<td>360 cells checked against the assist-ratio model</td>
+</tr>
+<tr>
+<td>1.15-point bilateral spread</td>
+<td>measured at the recommended cell</td>
+</tr>
+<tr>
+<td>One effective DOF</td>
+<td>0.8-point band across five distinct cells</td>
+</tr>
+<tr>
+<td>−48.7% peak demand from resolution</td>
+<td>Phase 3b, 16 vs 32 points, no spring</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>Not</strong> supportable</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mechanical work drops in proportion to torque</td>
+<td>it drops 6.2% against 34.4%</td>
+</tr>
+<tr>
+<td>Any efficiency claim from mechanical CoT alone</td>
+<td>understates this device ~4.7×</td>
+</tr>
+<tr>
+<td>Electrical CoT in joules</td>
+<td>the proxy needs <span class="math">k<sub>t</sub></span> and <span class="math">R</span></td>
+</tr>
+<tr>
+<td>Absolute CoT compared to literature</td>
+<td>denominator carries a ±27% systematic band</td>
+</tr>
+<tr>
+<td>Tracking error as independent quality evidence</td>
+<td>collinear at <span class="math">r</span> = −0.996</td>
+</tr>
+<tr>
+<td>A smaller knee motor</td>
+<td>peak demand is control-limited, not spring-limited</td>
+</tr>
+<tr>
+<td>Saturation best-in-sweep at the recommended cell</td>
+<td>14 cells are strictly lower</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="10-limitations">10 Limitations</h2>
+<ol>
+<li><strong><span class="math">n</span> = 1 per cell.</strong> No repeats, no error bars, no significance tests. The top five
+   Phase-2b cells span 0.35 points while the two independently simulated baselines differ
+   by 0.31%, so <strong>nothing within the top five is statistically separable.</strong> The cheap fix
+   is 3 repeats at each of the 5 Pareto cells plus baseline — 18 runs.</li>
+<li><strong>No locomotion-success gate.</strong> Displacement is logged and nearly constant (CV 0.55%),
+   which is reassuring, but there is no explicit fall or body-tilt check, so the harmful
+   corner is interpreted on the assumption the robot still walked.</li>
+<li><strong>CoT denominator outside its validity range</strong> (Section 5.7): 14.20° heading error
+   against a ≲5° threshold, giving a ±27% systematic band on absolute CoT.</li>
+<li><strong>The ridge is truncated at both grid edges</strong>, so the low-stiffness branch is unmapped.</li>
+<li><strong>First-cycle bias.</strong> Warm-up is one gait cycle and the first <em>recorded</em> cycle still
+   runs measurably hot; excluding it shifts individual cells and reorders the closely
+   spaced ranks 2–3.</li>
+<li><strong>Saturation quantises too coarsely to discriminate.</strong> Many cells report identical
+   values (ten at exactly 0.3125%), so it separates good from bad but not good from good.</li>
+<li><strong><code>torque_variance</code> is computed on the rectified signal</strong>, so it describes the
+   magnitude envelope rather than the signed torque, and is not a smoothness measure of
+   the signed waveform.</li>
+<li><strong><span class="math">q<sub>op</sub></span> and HOLD are gait-specific.</strong> Both were measured on the 10 Hz,
+   16-waypoint gait and set the mirror sign and assist sizing. Phase 3 shows both levers
+   change the trajectory, so these constants must be re-measured if the gait changes —
+   which also means the Phase-2b optimum is not transferable to the 32-waypoint gait
+   recommended in Section 8.5 without re-running the sweep.</li>
+<li><strong>Simulation only.</strong> No hardware validation; spring hysteresis, friction, manufacturing
+   tolerance and mounting compliance are all unmodelled.</li>
+</ol>
+<h3 id="next-steps">Next steps</h3>
+<ol>
+<li>Three repeats at each Pareto cell plus baseline (18 runs) to make sub-point
+   differences separable.</li>
+<li>Extend the grid to <span class="math">|θ<sub>0</sub>| &gt; 45°</span> at low stiffness to close the ridge's open branch.</li>
+<li>Raise <code>NUM_DATA_POINTS</code> from 16 to 80 to remove the stepped-set-point artifact, then
+   re-measure peak demand and re-derive <span class="math">q<sub>op</sub></span>/HOLD on the new gait.</li>
+<li>Add an explicit fall/tilt gate rather than inferring success from displacement.</li>
+<li>Obtain <span class="math">k<sub>t</sub></span> and <span class="math">R</span> from the servo datasheet to convert the electrical proxy to
+   joules.</li>
+<li>Report per-cycle CoT to obtain a mean ± standard deviation from the existing runs at
+   no simulation cost.</li>
+</ol>
+<hr />
+<h2 id="appendix-a-reproducing-this-report">Appendix A — Reproducing this report</h2>
+<pre><code>cd ROS/report
+python3 make_figures.py     # regenerate all figures + figures/figure_values.json
+python3 make_tables.py      # print all tables (also importable as a dict)
+python3 build_report.py     # regenerate experiment_report.md
+python3 verify_claims.py    # recompute every quoted number; exit 0 = all hold
+python3 build_pdf.py        # render experiment_report.pdf
+</code></pre>
+<p><code>data.py</code> is the only module that touches the raw data; <code>verify_claims.py</code> recomputes
+every number quoted above directly from the CSVs and additionally cross-checks the
+figures against the prose, so a figure and its caption cannot disagree.</p>
+<h2 id="appendix-b-figure-and-table-index">Appendix B — Figure and table index</h2>
+<table>
+<thead>
+<tr>
+<th>Figure</th>
+<th>File</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>figures/timeline.png</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>figures/p1_transient.png</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>figures/p1_traces.png</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>figures/p2a_grids.png</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>figures/p2a_failure_map.png</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>figures/p2a_kx_star.png</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>figures/p2b_ridge.png</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>figures/p2b_per_knee.png</code></td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>figures/p2b_cot_bars.png</code></td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>figures/p2b_cot_grids.png</code></td>
+</tr>
+<tr>
+<td>11</td>
+<td><code>figures/p2b_cot_denominator.png</code></td>
+</tr>
+<tr>
+<td>12</td>
+<td><code>figures/p2b_correlations.png</code></td>
+</tr>
+<tr>
+<td>13</td>
+<td><code>figures/p2b_p99_vs_mean.png</code></td>
+</tr>
+<tr>
+<td>14</td>
+<td><code>figures/p2b_safe_region.png</code></td>
+</tr>
+<tr>
+<td>15</td>
+<td><code>figures/p2b_pareto.png</code></td>
+</tr>
+<tr>
+<td>16</td>
+<td><code>figures/p2b_effort_vs_angle.png</code></td>
+</tr>
+<tr>
+<td>17</td>
+<td><code>figures/cross_sweeps.png</code></td>
+</tr>
+<tr>
+<td>18</td>
+<td><code>figures/cross_best_per_kx.png</code></td>
+</tr>
+<tr>
+<td>19</td>
+<td><code>figures/cross_asymmetry.png</code></td>
+</tr>
+<tr>
+<td>20</td>
+<td><code>figures/p3a_bars.png</code></td>
+</tr>
+<tr>
+<td>21</td>
+<td><code>figures/p3b_swing_cliff.png</code></td>
+</tr>
+<tr>
+<td>22</td>
+<td><code>figures/p3b_bars.png</code></td>
+</tr>
+<tr>
+<td>23</td>
+<td><code>figures/p3_matched.png</code></td>
+</tr>
+<tr>
+<td>24</td>
+<td><code>figures/p3_effort_vs_angle.png</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Table</th>
+<th>Generator id</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>make_tables.py:T21</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>make_tables.py:T1</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>make_tables.py:T2</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>make_tables.py:T3</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>make_tables.py:T4</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>make_tables.py:T5</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>make_tables.py:T6</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>make_tables.py:T7</code></td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>make_tables.py:T8</code></td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>make_tables.py:T9</code></td>
+</tr>
+<tr>
+<td>11</td>
+<td><code>make_tables.py:T10</code></td>
+</tr>
+<tr>
+<td>12</td>
+<td><code>make_tables.py:T14</code></td>
+</tr>
+<tr>
+<td>13</td>
+<td><code>make_tables.py:T11</code></td>
+</tr>
+<tr>
+<td>14</td>
+<td><code>make_tables.py:T12</code></td>
+</tr>
+<tr>
+<td>15</td>
+<td><code>make_tables.py:T13</code></td>
+</tr>
+<tr>
+<td>16</td>
+<td><code>make_tables.py:T15</code></td>
+</tr>
+<tr>
+<td>17</td>
+<td><code>make_tables.py:T16</code></td>
+</tr>
+<tr>
+<td>18</td>
+<td><code>make_tables.py:T18</code></td>
+</tr>
+<tr>
+<td>19</td>
+<td><code>make_tables.py:T20</code></td>
+</tr>
+<tr>
+<td>20</td>
+<td><code>make_tables.py:T17</code></td>
+</tr>
+<tr>
+<td>21</td>
+<td><code>make_tables.py:T19</code></td>
+</tr>
+</tbody>
+</table>
+</body></html>

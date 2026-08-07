@@ -146,8 +146,8 @@
         <dynamics>
           <damping>0.01</damping>
           <friction>0.005</friction>
-          <spring_reference>-0.8727</spring_reference>
-          <spring_stiffness>0.5000</spring_stiffness>
+          <spring_reference>0.7854</spring_reference>
+          <spring_stiffness>0.4500</spring_stiffness>
         </dynamics>
       </axis>
       <physics>
@@ -368,8 +368,8 @@
         <dynamics>
           <damping>0.01</damping>
           <friction>0.005</friction>
-          <spring_reference>-0.8727</spring_reference>
-          <spring_stiffness>0.5000</spring_stiffness>
+          <spring_reference>-0.7854</spring_reference>
+          <spring_stiffness>0.4500</spring_stiffness>
         </dynamics>
       </axis>
       <physics>
@@ -590,8 +590,8 @@
         <dynamics>
           <damping>0.01</damping>
           <friction>0.005</friction>
-          <spring_reference>-0.8727</spring_reference>
-          <spring_stiffness>0.5000</spring_stiffness>
+          <spring_reference>0.7854</spring_reference>
+          <spring_stiffness>0.4500</spring_stiffness>
         </dynamics>
       </axis>
       <physics>
@@ -812,8 +812,8 @@
         <dynamics>
           <damping>0.01</damping>
           <friction>0.005</friction>
-          <spring_reference>-0.8727</spring_reference>
-          <spring_stiffness>0.5000</spring_stiffness>
+          <spring_reference>-0.7854</spring_reference>
+          <spring_stiffness>0.4500</spring_stiffness>
         </dynamics>
       </axis>
       <physics>
@@ -1080,6 +1080,12 @@
     </plugin>
     <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
       <joint_name>fl_foot_joint</joint_name>
+    </plugin>
+    <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+      <odom_frame>odom</odom_frame>
+      <robot_base_frame>base_link</robot_base_frame>
+      <odom_publish_frequency>50</odom_publish_frequency>
+      <dimensions>3</dimensions>
     </plugin>
     <plugin filename="commanded_effort_publisher" name="gz_joint_torsional_spring::CommandedEffortPublisher">
       <joint_name>bl_hip_joint</joint_name>

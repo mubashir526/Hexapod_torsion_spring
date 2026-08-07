@@ -1,12 +1,18 @@
 #!/usr/bin/env python3
 """
-run_parameter_sweep.py — Resilient Automated 111-Run Spring Parameter Sweep.
+run_parameter_sweep.py — Resilient Automated 91-Run Spring Parameter Sweep.
+
+Uses MIRRORED knee rest angles (ref_mode='mirror'): each knee's rest angle is
+sign(HOLD)*|ref_deg|, so right knees get -|ref_deg| and left knees +|ref_deg|.
+The assist direction is therefore correct on all four knees at every grid point,
+unlike the earlier shared-angle sweep which reversed the spring on the left
+knees past about -38 deg. ref_deg = 0 reproduces that sweep's theta0 = 0 column.
 
 Runs:
   1. Baseline run (spring:=none, record:=true)
-  2. 110 Spring runs (spring:=native, record:=true) sweeping:
-     - kx in [0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50]
-     - ref_deg in [0.0, -5.0, -10.0, -15.0, -20.0, -25.0, -30.0, -35.0, -40.0, -45.0, -50.0]
+  2. 90 Spring runs (spring:=native, record:=true) sweeping:
+     - kx in [0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45]
+     - ref_deg (mirrored magnitude) in [0, 5, 10, 15, 20, 25, 30, 35, 40, 45]
 
 For each iteration:
   1. Updates SPRING_CONFIG in make_spring_models.py
@@ -38,8 +44,22 @@ MAKE_MODELS_SCRIPT = os.path.join(MODEL_DIR, "make_spring_models.py")
 EXPERIMENT_DIR = os.path.join(ROS_DIR, "experiment")
 
 # Parameter Grid Definition
-KX_VALUES = [0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50]
-REF_DEG_VALUES = [0.0, -5.0, -10.0, -15.0, -20.0, -25.0, -30.0, -35.0, -40.0, -45.0, -50.0]
+#
+# ref_deg is now a MIRRORED MAGNITUDE (ref_mode='mirror'), not a shared signed
+# angle. Each knee receives sign(HOLD)*|ref_deg|, so right knees get -|ref_deg|
+# and left knees +|ref_deg| and the assist direction is correct on all four for
+# every value. Values are therefore NON-NEGATIVE: 0 reproduces the old
+# theta0 = 0 column exactly, and increasing it raises assist on BOTH sides
+# together (the old signed sweep raised it on the right while reversing the
+# left).
+#
+# kx capped at 0.45 (was 0.50) and r capped at 45 (was 50): the smoke test
+# after adding 'mirror' showed the practical optimum sits near assist ratio
+# ~0.85, not the DC model's 1.00, so kx=0.50 combined with high r was already
+# deep into wasted over-assist. r=35 and r=45 were added to fill in resolution
+# on the (now denser, still 10-point) angle axis.
+KX_VALUES = [0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45]
+REF_DEG_VALUES = [0.0, 5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0]
 
 EFFORT_LIM = 0.9414
 
@@ -65,7 +85,7 @@ def update_spring_config(knee_enabled, kx, ref_deg):
             in_config = True
             new_lines.append("SPRING_CONFIG = {\n")
             new_lines.append('    "hip":  {"enabled": False,  "kx": 0.20, "ref_mode": "data"},\n')
-            new_lines.append(f'    "knee": {{"enabled": {knee_enabled},  "kx": {kx:.2f}, "ref_mode": "fixed", "ref_deg": {ref_deg:.1f}}},\n')
+            new_lines.append(f'    "knee": {{"enabled": {knee_enabled},  "kx": {kx:.2f}, "ref_mode": "mirror", "ref_deg": {ref_deg:.1f}}},\n')
             new_lines.append('    "foot": {"enabled": False,  "kx": 0.35, "ref_mode": "data"},\n')
             new_lines.append("}\n")
             continue
@@ -397,8 +417,8 @@ def generate_heatmaps_and_report(results, baseline_effort):
 
 def main():
     log("==========================================================================")
-    log(" Starting Resilient 111-Run Spring Parameter Sweep")
-    log(" Grid: 10 kx values (0.05..0.50) x 11 ref_deg values (0..-50 deg) + Baseline")
+    log(f" Starting Resilient {1 + len(KX_VALUES)*len(REF_DEG_VALUES)}-Run Spring Parameter Sweep")
+    log(" Grid: 9 kx values (0.05..0.45) x 10 mirrored ref_deg magnitudes (0..45 deg) + Baseline")
     log("==========================================================================")
 
     os.makedirs(EXPERIMENT_DIR, exist_ok=True)
@@ -529,7 +549,7 @@ def main():
     log(" Sweep complete! Generating master report and heatmaps...")
     log("==========================================================================")
     generate_heatmaps_and_report(results, baseline_effort)
-    log("All 111 experiments completed successfully!")
+    log(f"All {total_experiments} experiments completed successfully!")
 
 
 if __name__ == "__main__":

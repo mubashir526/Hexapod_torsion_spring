@@ -1,6 +1,9 @@
 # Experiment folders
 experiment/
+experiment*/
+ROS/experiment*/
 ROS/experiment/
+
 
 # Python cache & bytecode
 __pycache__/

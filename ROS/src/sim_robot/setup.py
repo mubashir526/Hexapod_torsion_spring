@@ -54,6 +54,7 @@ setup(
             'camera_recorder = sim_robot.camera_recorder:main',
             'torque_peaks = sim_robot.torque_peaks:main',
             'run_parameter_sweep = sim_robot.run_parameter_sweep:main',
+            'visualize_joint_angles = sim_robot.visualize_joint_angles:main',
         ],
     },
 )

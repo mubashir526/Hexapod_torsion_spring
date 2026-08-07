@@ -3,8 +3,9 @@ from rclpy.node import Node
 from rclpy.parameter import Parameter
 from rclpy.qos import QoSProfile, DurabilityPolicy
 from std_msgs.msg import Float64, String
-from sensor_msgs.msg import JointState
+from sensor_msgs.msg import JointState, Imu
 from geometry_msgs.msg import WrenchStamped
+from nav_msgs.msg import Odometry
 import math
 import os
 import json
@@ -138,6 +139,40 @@ class KinematicGait(Node):
             {"hip": [], "knee": [], "foot": []}
         ]
 
+        # --- 2d. BODY STATE: odometry (pose + twist) and IMU ---
+        # Body pose is what joint-space logging cannot give us: distance covered
+        # (the 'd' in Cost of Transport = E/(m*g*d)), body velocity, and body
+        # attitude. Odometry comes from the OdometryPublisher plugin on the model
+        # (added to model.sdf) bridged to /odom; the IMU sensor and its /imu/data
+        # bridge already existed and only needed a subscriber.
+        #
+        # Frame conventions (nav_msgs/Odometry): pose is in the odom frame
+        # (world-fixed), twist is in the BODY frame. Distance is computed as a
+        # DIFFERENCE of two poses in the same fixed frame, so wherever the odom
+        # origin sits is irrelevant -- any constant offset cancels.
+        #
+        # Both are snapshotted in torque_logging_loop at 50Hz, sharing
+        # torque_timestamps with the torque/effort/angle streams, so body_state
+        # rows are 1:1 index-aligned with every other 50Hz CSV.
+        self.odom_available = False
+        self.imu_available = False
+        self.latest_odom_pos = [0.0, 0.0, 0.0]          # x, y, z (odom frame, m)
+        self.latest_odom_quat = [0.0, 0.0, 0.0, 1.0]    # x, y, z, w
+        self.latest_odom_lin_vel = [0.0, 0.0, 0.0]      # body frame, m/s
+        self.latest_odom_ang_vel = [0.0, 0.0, 0.0]      # body frame, rad/s
+        self.latest_imu_quat = [0.0, 0.0, 0.0, 1.0]
+        self.latest_imu_ang_vel = [0.0, 0.0, 0.0]       # rad/s
+        self.latest_imu_lin_acc = [0.0, 0.0, 0.0]       # m/s^2
+
+        # Per-sample body-state history, appended in torque_logging_loop.
+        self.body_pos = []        # [x, y, z]
+        self.body_quat = []       # [qx, qy, qz, qw]
+        self.body_lin_vel = []    # [vx, vy, vz] body frame
+        self.body_ang_vel = []    # [wx, wy, wz] body frame
+        self.imu_quat = []
+        self.imu_ang_vel = []
+        self.imu_lin_acc = []
+
         # --- 3. CREATE PUBLISHERS & SUBSCRIBERS ---
         self.pubs = {}
         
@@ -173,6 +208,14 @@ class KinematicGait(Node):
                     lambda msg, l=i, j=joint: self.joint_effort_cb(msg, l, j),
                     1
                 )
+
+        # Subscribe to body odometry and IMU. /odom requires the
+        # OdometryPublisher plugin on the loaded model plus its bridge entry;
+        # /imu/data was already bridged. Both degrade gracefully -- if a topic
+        # never fires, its *_available flag stays False and body_state.csv simply
+        # omits those columns.
+        self.create_subscription(Odometry, '/odom', self.odom_cb, 1)
+        self.create_subscription(Imu, '/imu/data', self.imu_cb, 1)
 
         # --- 4. PRE-COMPUTE TRAJECTORY ---
         self.get_logger().info("Pre-computing Trajectory...")
@@ -360,6 +403,46 @@ class KinematicGait(Node):
         self.latest_effort[leg_idx][joint_type] = msg.data
         self.effort_available = True
 
+    def odom_cb(self, msg):
+        # Cache latest body pose (odom frame) and twist (body frame).
+        # Snapshotted by torque_logging_loop at 50Hz, 1:1 with torque/effort.
+        p = msg.pose.pose.position
+        q = msg.pose.pose.orientation
+        lv = msg.twist.twist.linear
+        av = msg.twist.twist.angular
+        self.latest_odom_pos = [p.x, p.y, p.z]
+        self.latest_odom_quat = [q.x, q.y, q.z, q.w]
+        self.latest_odom_lin_vel = [lv.x, lv.y, lv.z]
+        self.latest_odom_ang_vel = [av.x, av.y, av.z]
+        self.odom_available = True
+
+    def imu_cb(self, msg):
+        # Cache latest IMU. Unlike odometry (clean sim truth) this carries
+        # Gazebo's sensor noise model, so keeping both gives a truth-vs-sensor
+        # comparison for free.
+        q = msg.orientation
+        av = msg.angular_velocity
+        la = msg.linear_acceleration
+        self.latest_imu_quat = [q.x, q.y, q.z, q.w]
+        self.latest_imu_ang_vel = [av.x, av.y, av.z]
+        self.latest_imu_lin_acc = [la.x, la.y, la.z]
+        self.imu_available = True
+
+    @staticmethod
+    def _quat_to_rpy(q):
+        """[qx,qy,qz,qw] -> (roll, pitch, yaw) in radians, ZYX convention."""
+        x, y, z, w = q
+        sinr_cosp = 2.0 * (w * x + y * z)
+        cosr_cosp = 1.0 - 2.0 * (x * x + y * y)
+        roll = math.atan2(sinr_cosp, cosr_cosp)
+        sinp = 2.0 * (w * y - z * x)
+        sinp = max(-1.0, min(1.0, sinp))          # clamp against domain error
+        pitch = math.asin(sinp)
+        siny_cosp = 2.0 * (w * z + x * y)
+        cosy_cosp = 1.0 - 2.0 * (y * y + z * z)
+        yaw = math.atan2(siny_cosp, cosy_cosp)
+        return roll, pitch, yaw
+
     def torque_logging_loop(self):
         # Nothing is recorded until the homing/settle phase has completed.
         if not self.recording:
@@ -382,6 +465,32 @@ class KinematicGait(Node):
                 # Commanded (motor) effort, same 50Hz instant. 0.0 stays cached
                 # if the effort publisher is absent; effort_available gates output.
                 self.commanded_effort[leg_idx][joint_type].append(self.latest_effort[leg_idx][joint_type])
+
+        # Body state, same 50Hz instant. Appended unconditionally so these lists
+        # stay 1:1 with torque_timestamps, but NaN (not 0.0) is recorded until a
+        # source has actually reported -- a false 0.0 would look like "robot at
+        # the origin, stationary and level", which is indistinguishable from real
+        # data. NaN is honest and the CSV writer emits it as an empty cell.
+        nan3 = [float("nan")] * 3
+        nan4 = [float("nan")] * 4
+        if self.odom_available:
+            self.body_pos.append(list(self.latest_odom_pos))
+            self.body_quat.append(list(self.latest_odom_quat))
+            self.body_lin_vel.append(list(self.latest_odom_lin_vel))
+            self.body_ang_vel.append(list(self.latest_odom_ang_vel))
+        else:
+            self.body_pos.append(list(nan3))
+            self.body_quat.append(list(nan4))
+            self.body_lin_vel.append(list(nan3))
+            self.body_ang_vel.append(list(nan3))
+        if self.imu_available:
+            self.imu_quat.append(list(self.latest_imu_quat))
+            self.imu_ang_vel.append(list(self.latest_imu_ang_vel))
+            self.imu_lin_acc.append(list(self.latest_imu_lin_acc))
+        else:
+            self.imu_quat.append(list(nan4))
+            self.imu_ang_vel.append(list(nan3))
+            self.imu_lin_acc.append(list(nan3))
 
     def _spring_config_cb(self, msg):
         """Cache the spring config JSON from the launch file."""
@@ -429,7 +538,16 @@ class KinematicGait(Node):
                     if ref_mode == 'fixed':
                         ref_deg = jcfg.get('ref_deg', '?')
                         parts.append(f"{jtype}: kx={kx} N\u00b7m/rad, "
-                                     f"\u03b8\u2080={ref_deg}\u00b0")
+                                     f"\u03b8\u2080={ref_deg}\u00b0 (shared)")
+                    elif ref_mode == 'mirror':
+                        # Mirrored per leg: right knees -|ref_deg|, left +|ref_deg|.
+                        ref_deg = jcfg.get('ref_deg', '?')
+                        try:
+                            r = abs(float(ref_deg))
+                        except (TypeError, ValueError):
+                            r = ref_deg
+                        parts.append(f"{jtype}: kx={kx} N\u00b7m/rad, "
+                                     f"\u03b8\u2080=\u00b1{r}\u00b0 (mirrored)")
                     else:
                         parts.append(f"{jtype}: kx={kx} N\u00b7m/rad, "
                                      f"ref=data-driven")
@@ -480,7 +598,29 @@ class KinematicGait(Node):
                 "  joint_effort_vs_angle.csv             (50Hz paired applied-effort+angle)")
             lines.append(
                 "  {fr,br,bl,fl}_effort_vs_angle.png     (per-leg, signed applied effort vs angle)")
+        if self.odom_available or self.imu_available:
+            lines.append(
+                "  body_state.csv                        (50Hz body pose + twist + IMU)")
         lines.append(f"effort_recorded:  {self.effort_available}")
+        lines.append(f"odom_recorded:    {self.odom_available}")
+        lines.append(f"imu_recorded:     {self.imu_available}")
+
+        # Distance / velocity over the recorded window. forward_displacement_m is
+        # the 'd' for Cost of Transport = E/(m*g*d); m = 1.39847 kg (sum of all 13
+        # link masses in model.sdf), g = 9.8 m/s^2 (Gazebo default), so
+        # m*g = 13.71 N. Energy must be integrated over this SAME window.
+        summary = self._body_summary()
+        if summary:
+            lines.append("")
+            lines.append("body displacement (recorded window, warm-up excluded):")
+            for k in ('forward_displacement_m', 'lateral_drift_m',
+                      'net_horizontal_m', 'heading_error_deg', 'yaw_drift_deg',
+                      'path_length_m', 'straightness_ratio',
+                      'recorded_duration_s', 'mean_forward_speed_mps'):
+                if k in summary:
+                    lines.append(f"  {k}: {summary[k]:.6f}")
+            lines.append("  note: forward_displacement_m (= delta y) is the CoT "
+                         "denominator; path_length_m is diagnostic only")
         lines.append("")
         lines.append(f"spring_mode:      {self.spring_mode}")
         lines.append(f"spring_config:    {json.dumps(self.spring_config)}")
@@ -1028,6 +1168,115 @@ class KinematicGait(Node):
         else:
             print("No commanded_effort topics seen this run — skipping effort CSV "
                   "(load a model_effort/model_spring_* model to record it).")
+
+        # --- CSV 6: Body state (pose + twist + IMU), @torque_freq ---
+        # 1:1 index-aligned with every other 50Hz CSV via torque_timestamps.
+        # Written whenever EITHER source reported; missing columns come out empty.
+        if self.odom_available or self.imu_available:
+            with open(os.path.join(self.run_dir, 'body_state.csv'),
+                      'w', newline='') as csvfile:
+                writer = csv.writer(csvfile)
+                writer.writerow([
+                    'Time_Step', 'Time_s',
+                    'base_x', 'base_y', 'base_z',
+                    'base_qx', 'base_qy', 'base_qz', 'base_qw',
+                    'base_roll', 'base_pitch', 'base_yaw',
+                    'odom_vel_lin_x', 'odom_vel_lin_y', 'odom_vel_lin_z',
+                    'odom_vel_ang_x', 'odom_vel_ang_y', 'odom_vel_ang_z',
+                    'imu_qx', 'imu_qy', 'imu_qz', 'imu_qw',
+                    'imu_ang_vel_x', 'imu_ang_vel_y', 'imu_ang_vel_z',
+                    'imu_lin_acc_x', 'imu_lin_acc_y', 'imu_lin_acc_z',
+                ])
+
+                def _cells(vals):
+                    # NaN -> empty cell, so "no data" never reads as a real 0.
+                    return ['' if (v != v) else v for v in vals]
+
+                n_rows_b = len(self.torque_timestamps)
+                for i in range(n_rows_b):
+                    row = [i, self.torque_timestamps[i]]
+                    try:
+                        pos = self.body_pos[i]
+                        quat = self.body_quat[i]
+                        lin = self.body_lin_vel[i]
+                        ang = self.body_ang_vel[i]
+                    except IndexError:
+                        pos = [float('nan')] * 3
+                        quat = [float('nan')] * 4
+                        lin = [float('nan')] * 3
+                        ang = [float('nan')] * 3
+                    row += _cells(pos) + _cells(quat)
+                    if quat[0] == quat[0]:                 # not NaN
+                        row += _cells(self._quat_to_rpy(quat))
+                    else:
+                        row += ['', '', '']
+                    row += _cells(lin) + _cells(ang)
+                    try:
+                        row += _cells(self.imu_quat[i])
+                        row += _cells(self.imu_ang_vel[i])
+                        row += _cells(self.imu_lin_acc[i])
+                    except IndexError:
+                        row += [''] * 10
+                    writer.writerow(row)
+            print(f"Body state ({n_rows_b} samples @ {self.torque_freq}Hz) "
+                  f"saved to body_state.csv "
+                  f"[odom={self.odom_available}, imu={self.imu_available}]")
+        else:
+            print("No /odom or /imu/data seen this run — skipping body_state.csv "
+                  "(needs the OdometryPublisher plugin + bridge entry).")
+
+    def _body_summary(self):
+        """Distance / velocity summary over the RECORDED window only.
+
+        Start and end are the first and last logged samples, so the numerator
+        (energy) and denominator (distance) of Cost of Transport cover exactly
+        the same window -- the warm-up cycles are excluded from both, because
+        torque_logging_loop does not record until self.recording is True.
+
+        The odom frame origin is irrelevant here: every quantity is a DIFFERENCE
+        of two poses expressed in the same fixed frame, so any constant offset
+        cancels. Vertical (z) is excluded from all distance measures -- this is
+        level ground and body bob is not transport.
+
+        Returns {} when no usable odometry was recorded.
+        """
+        pts = [p for p in self.body_pos if p[0] == p[0]]     # drop NaN rows
+        if len(pts) < 2:
+            return {}
+        x0, y0 = pts[0][0], pts[0][1]
+        x1, y1 = pts[-1][0], pts[-1][1]
+        dx, dy = x1 - x0, y1 - y0
+
+        # Path length in the horizontal plane. Reported for completeness only --
+        # NOT used as the CoT denominator: it is a sum of magnitudes, so error
+        # never cancels and the estimate grows with sample rate (coastline
+        # paradox), and it would REWARD lateral drift by inflating d.
+        path = 0.0
+        for a, b in zip(pts[:-1], pts[1:]):
+            path += math.hypot(b[0] - a[0], b[1] - a[1])
+
+        net_h = math.hypot(dx, dy)
+        out = {
+            'forward_displacement_m': dy,        # PRIMARY: the CoT denominator
+            'lateral_drift_m': dx,
+            'net_horizontal_m': net_h,
+            'heading_error_deg': math.degrees(math.atan2(abs(dx), dy))
+                                 if dy != 0 else float('nan'),
+            'path_length_m': path,
+            'straightness_ratio': (dy / path) if path > 0 else float('nan'),
+        }
+        ts = self.torque_timestamps
+        if len(ts) >= 2 and (ts[-1] - ts[0]) > 0:
+            out['recorded_duration_s'] = ts[-1] - ts[0]
+            out['mean_forward_speed_mps'] = dy / (ts[-1] - ts[0])
+
+        quats = [q for q in self.body_quat if q[0] == q[0]]
+        if len(quats) >= 2:
+            yaw0 = self._quat_to_rpy(quats[0])[2]
+            yaw1 = self._quat_to_rpy(quats[-1])[2]
+            dyaw = math.atan2(math.sin(yaw1 - yaw0), math.cos(yaw1 - yaw0))
+            out['yaw_drift_deg'] = math.degrees(dyaw)
+        return out
 
 def main(args=None):
     rclpy.init(args=args)

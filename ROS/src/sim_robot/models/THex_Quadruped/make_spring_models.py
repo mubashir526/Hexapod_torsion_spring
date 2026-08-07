@@ -51,8 +51,15 @@ TYPES = ["hip", "knee", "foot"]
 # --- PER-ACTUATOR SPRING CONFIG -------------------------------------------
 # For each actuator TYPE (hip, knee, foot): set 'enabled' to True/False.
 # When enabled, 'kx' (N*m/rad) and 'ref_mode' control the spring.
-#   ref_mode = 'data'  → rest angle = OP + ASSIST_FRAC * HOLD / kx  (measured)
-#   ref_mode = 'fixed' → rest angle = 'ref_deg' (hand-set, in degrees)
+#   ref_mode = 'data'   → rest angle = OP + ASSIST_FRAC * HOLD / kx  (measured)
+#   ref_mode = 'fixed'  → rest angle = 'ref_deg' (hand-set, SHARED by all legs)
+#   ref_mode = 'mirror' → rest angle = sign(HOLD) * |ref_deg|, i.e. mirrored
+#                         per leg. Right knees get -|ref_deg|, left knees
+#                         +|ref_deg|, so the assist direction is correct on all
+#                         four for ANY magnitude. This is the mode to use for
+#                         knee sweeps; 'fixed' shares one angle across mirrored
+#                         legs and therefore reverses the spring on the left
+#                         knees past about -38 deg. KNEE ONLY -- see spring_ref().
 #
 # When 'enabled' is False, spring_stiffness and spring_reference stay at 0
 # (no spring — baseline behavior for that joint type).
@@ -66,7 +73,7 @@ TYPES = ["hip", "knee", "foot"]
 #     "foot": {"enabled": False, "kx": 0.35, "ref_mode": "data"}
 SPRING_CONFIG = {
     "hip":  {"enabled": False,  "kx": 0.20, "ref_mode": "data"},
-    "knee": {"enabled": True,  "kx": 0.50, "ref_mode": "fixed", "ref_deg": -50.0},
+    "knee": {"enabled": True,  "kx": 0.45, "ref_mode": "mirror", "ref_deg": 45.0},
     "foot": {"enabled": False,  "kx": 0.35, "ref_mode": "data"},
 }
 
@@ -135,9 +142,11 @@ def spring_kx(name):
 def spring_ref(name):
     """Rest angle (rad) for this joint from SPRING_CONFIG.
     Returns 0.0 if the joint type is disabled.
-    Supports two modes:
-      'fixed' — hand-set angle in degrees (ref_deg key).
-      'data'  — data-driven from measured hold torque (OP, HOLD, ASSIST_FRAC).
+    Supports three modes:
+      'fixed'  — hand-set angle in degrees (ref_deg key), SHARED by all legs.
+      'mirror' — per-leg MIRRORED angle: magnitude |ref_deg| carrying the sign of
+                 that joint's measured HOLD torque.
+      'data'   — data-driven from measured hold torque (OP, HOLD, ASSIST_FRAC).
     """
     _, jtype = joint_key(name)
     cfg = SPRING_CONFIG[jtype]
@@ -146,6 +155,30 @@ def spring_ref(name):
     lim = LIMIT[jtype]
     if cfg["ref_mode"] == "fixed":
         return max(-lim, min(lim, math.radians(cfg.get("ref_deg", 0.0))))
+    if cfg["ref_mode"] == "mirror":
+        # MIRRORED rest angle. The legs are mirrored: right knees operate at
+        # q_op ~ +37/+43 deg with HOLD < 0, left knees at ~ -41/-38 deg with
+        # HOLD > 0. A single shared rest angle therefore cannot assist both
+        # sides -- past theta0 ~ -38 deg the spring REVERSES on the left knees
+        # and no stiffness can help. Giving each knee the sign of its own HOLD
+        # makes the assist direction correct on all four for any magnitude:
+        #
+        #     theta0 = sign(HOLD) * |ref_deg|
+        #       fr_knee, br_knee (HOLD < 0)  ->  theta0 = -|ref_deg|
+        #       bl_knee, fl_knee (HOLD > 0)  ->  theta0 = +|ref_deg|
+        #
+        # abs() means the swept axis is unambiguously a MAGNITUDE, so a stray
+        # sign in the sweep driver cannot silently flip one side.
+        #
+        # NOTE: this rule is correct for the KNEES (verified against all four),
+        # but does NOT generalise -- it is wrong-signed for all four feet and
+        # for br/bl hips (the hips mirror diagonally, matching
+        # kinematics.py's beta = [-45, +45, -45, +45]). Only enable 'mirror'
+        # on the knee.
+        base, _ = joint_key(name)
+        r = abs(math.radians(cfg.get("ref_deg", 0.0)))
+        ref = math.copysign(r, HOLD[base])
+        return max(-lim, min(lim, ref))
     # ref_mode == "data": data-driven from measured hold
     # tau_spring(op) = kx*(ref - op) = ASSIST_FRAC * HOLD
     # => ref = op + ASSIST_FRAC * HOLD / kx
